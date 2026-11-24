@@ -37,6 +37,8 @@ p{margin:0 0 12px;text-align:justify}
 .small,.note{font-size:13.5px;color:#555;line-height:1.75}
 code{font:13px/1.5 ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;background:#eceff3;padding:1px 5px;border-radius:2px;color:#243b53}
 .tw{max-width:100%;overflow-x:auto;margin:16px 0 22px;-webkit-overflow-scrolling:touch}
+.tw::-webkit-scrollbar{height:6px}
+.tw::-webkit-scrollbar-thumb{background:#c6d0da;border-radius:3px}
 table{width:100%;border-collapse:collapse;font:13.5px/1.6 "PingFang SC","Noto Sans CJK SC",sans-serif;background:#fff;min-width:520px}
 th{background:#eef2f6;text-align:left;font-size:12px;letter-spacing:.5px;padding:9px 10px;border-top:1px solid var(--navy);border-bottom:1px solid var(--navy);color:var(--navy)}
 td{padding:9px 10px;border-bottom:1px solid #e8ebef;vertical-align:top}
@@ -93,6 +95,14 @@ figcaption{font:12.5px/1.7 "PingFang SC",sans-serif;color:#444;margin-top:10px;b
  main{max-width:none}
  h1{margin-top:44px;font-size:21px}
  .seg .orig,.seg .trans{font-size:13.5px}
+ .top{right:6px;bottom:12px;width:34px;height:34px;font-size:14px;opacity:.72}
+ table.stack{display:block;width:100%;min-width:0;background:none;font-size:12.5px}
+ table.stack thead{display:none}
+ table.stack tr{display:block;background:#fff;border:1px solid var(--line);margin:0 0 10px;padding:4px 2px}
+ table.stack td{display:block;border:0;padding:5px 10px;word-break:break-word}
+ table.stack td::before{content:attr(data-label) "：";font:700 11px "PingFang SC",sans-serif;color:var(--blue);margin-right:2px}
+ table.stack td:first-child::before{display:none}
+ table.stack td:first-child{font-weight:700;color:var(--navy);border-bottom:1px dotted var(--line);margin-bottom:4px}
 }
 @media print{aside,.hero,.top,.dl,.vsearch{display:none}.layout{display:block}main{max-width:none}}
 </style></head><body>
@@ -141,605 +151,506 @@ figcaption{font:12.5px/1.7 "PingFang SC",sans-serif;color:#444;margin-top:10px;b
 </aside>
 <main>
 
-
 <!-- 封面 -->
-
-
 <!-- 阅读指引 -->
-<h1 id="intro" >阅读指引</h1>
+<h1 id="intro">阅读指引</h1>
 <p>这本书把三份材料装进同一册：第一部是对 Alpöge 那 4 页宣告的逐段译注与背景导读，第二部是对“2178 页中文重构稿”的可信度评估，第三部是那份重构稿的全文影印。前两部统一了章号（第 1–9 章、第 10–20 章）、图号（图 1–5）与版式；第三部保留原书版式与页码，只在外框、目录与页眉上接入本书。</p>
 <p>第三部没有重排正文，原因写在它自己的说明页：那份稿子的公式是 Computer Modern 字形按矢量排出来的，从 PDF 抽取文本只能得到零碎符号（<code>q^d−1 = Σ …</code> 会散成若干行），任何“重排”都会把数学毁掉。要真正重排，需要 LaTeX 源码，而目前只有成品 PDF。因此这里做的是“可核查的整合”：原页一页不动，页码、公式、断行全部保留，外加上本书的部扉页、使用说明与重排过的分卷目录。</p>
 <p>两部分回答的是两个不同的问题。<b>第一部回答“宣告说了什么”</b>——它把 4 页原文拆成段落对照，并补上读懂它所需的背景：黎曼猜想到底是什么、167 年里有哪些人试过、五条路线各自卡在哪里。<b>第二部回答“支撑它的材料有多硬”</b>——把 239 MB 源码解开，核对重构稿引用的文件、行号与结构，判定哪些是假设、哪些能被外部验证。</p>
 <div class="lead">贯穿全书的一句判断：<b>宣告本身是真实的公开材料，但那 4 页是路线摘要，不是证明；源码没有显式空洞，却没有编译记录；2178 页重构稿是索引，不是证据。</b>三部材料各自的“硬度”，正好构成一条从软到硬的谱。</div>
 <h3>三条阅读路径</h3>
 <ul>
-  <li><b>只想知道黎曼猜想是什么</b>：读第 1–3 章，约 8 页，不需要任何前置知识。</li>
-  <li><b>只想知道这份重构稿靠不靠谱</b>：直接读第 10 章（结论先行）与第 20 章（评级），再回看第 15 章（引用审计）。</li>
-  <li><b>想自己动手验证</b>：读第 12–14 章（源码结构、主链、literature 结构），然后照第 19 章的三条命令执行。</li>
+<li><b>只想知道黎曼猜想是什么</b>：读第 1–3 章，约 8 页，不需要任何前置知识。</li>
+<li><b>只想知道这份重构稿靠不靠谱</b>：直接读第 10 章（结论先行）与第 20 章（评级），再回看第 15 章（引用审计）。</li>
+<li><b>想自己动手验证</b>：读第 12–14 章（源码结构、主链、literature 结构），然后照第 19 章的三条命令执行。</li>
 </ul>
 <h3>体例</h3>
 <ul>
-  <li>图 1–5 全书连续编号；第一部 2 张（零点分布、素数计数误差），第二部 3 张（工程规模、主链、引用漏斗）。</li>
-  <li>第一部正文中的“原文页码”指 <code>alpo.ge/remark.pdf</code> 的页序；第二部中的“p349”“p2178”与第三部页脚的页码，均指那份 2178 页 PDF 的页序，两者不通用。</li>
-  <li>第三部不参与本书连续编页：它的页码沿用原书（页脚数字），页眉另标“原书 p.N”，以免第二部里“见第 349 页”这类引用失效。</li>
-  <li>第二部凡称“重构稿”，均指《广义黎曼猜想证明（未简化 2000 页）.pdf》（实际 2178 页）；凡称“源码”，均指 alpo.ge 发布的 14 个 Lean 分卷。</li>
+<li>图 1–5 全书连续编号；第一部 2 张（零点分布、素数计数误差），第二部 3 张（工程规模、主链、引用漏斗）。</li>
+<li>第一部正文中的“原文页码”指 <code>alpo.ge/remark.pdf</code> 的页序；第二部中的“p349”“p2178”与第三部页脚的页码，均指那份 2178 页 PDF 的页序，两者不通用。</li>
+<li>第三部不参与本书连续编页：它的页码沿用原书（页脚数字），页眉另标“原书 p.N”，以免第二部里“见第 349 页”这类引用失效。</li>
+<li>第二部凡称“重构稿”，均指《广义黎曼猜想证明（未简化 2000 页）.pdf》（实际 2178 页）；凡称“源码”，均指 alpo.ge 发布的 14 个 Lean 分卷。</li>
 </ul>
-
 <!-- 目录 -->
-
-
 <!-- 第一部 -->
 <div class="part">
-  <div class="bar">
-    <div class="p">PART I</div>
-    <div class="h" >第一部　原文译注与导读</div>
-    <div class="s">Levent Alpöge《Remark》4 页，2026 年 11 月<br>逐段中英对照 · 术语注释 · 背景与 167 年发展历程</div>
-  </div>
-  <div class="abs">这一部的主体是翻译，不是论证。原文只有 4 页：前半是宣告与思路，后半是 20 条工作时间线。为了让不熟悉解析数论的读者也能读懂，前置了三章背景（什么是黎曼猜想、它从哪来、历史上五条路线走到哪），后置了术语表与脚注译注。读它不需要相信任何结论，只需要知道作者声称了什么。</div>
-  <ul><li>第 1 章　什么是黎曼猜想</li><li>第 2 章　来源与发展历程</li><li>第 3 章　历史上的探索路线</li><li>第 4 章　本次宣告的方法主线流程图</li><li>第 5 章　第 1 页：宣告与核心思路</li><li>第 6 章　第 2 页：公布时机、公开范围与致谢</li><li>第 7 章　第 3–4 页：20 步工作时间线</li><li>第 8 章　关键术语小词典</li><li>第 9 章　脚注原文与译注</li></ul>
-  <div class="kv"><div><span class="n">4</span><span class="t">页原文</span></div><div><span class="n">7</span><span class="t">条脚注</span></div><div><span class="n">20</span><span class="t">步工作时间线</span></div><div><span class="n">5</span><span class="t">条历史路线</span></div><div><span class="n">27</span><span class="t">个时间线节点</span></div><div><span class="n">16</span><span class="t">条术语</span></div></div>
-  <p class="small">说明：第一部的章节编号、图表编号沿用其独立成书时的体系，仅调整为本书的第 1–9 章。</p>
+<div class="bar">
+<div class="p">PART I</div>
+<div class="h">第一部　原文译注与导读</div>
+<div class="s">Levent Alpöge《Remark》4 页，2026 年 11 月<br/>逐段中英对照 · 术语注释 · 背景与 167 年发展历程</div>
 </div>
-
+<div class="abs">这一部的主体是翻译，不是论证。原文只有 4 页：前半是宣告与思路，后半是 20 条工作时间线。为了让不熟悉解析数论的读者也能读懂，前置了三章背景（什么是黎曼猜想、它从哪来、历史上五条路线走到哪），后置了术语表与脚注译注。读它不需要相信任何结论，只需要知道作者声称了什么。</div>
+<ul><li>第 1 章　什么是黎曼猜想</li><li>第 2 章　来源与发展历程</li><li>第 3 章　历史上的探索路线</li><li>第 4 章　本次宣告的方法主线流程图</li><li>第 5 章　第 1 页：宣告与核心思路</li><li>第 6 章　第 2 页：公布时机、公开范围与致谢</li><li>第 7 章　第 3–4 页：20 步工作时间线</li><li>第 8 章　关键术语小词典</li><li>第 9 章　脚注原文与译注</li></ul>
+<div class="kv"><div><span class="n">4</span><span class="t">页原文</span></div><div><span class="n">7</span><span class="t">条脚注</span></div><div><span class="n">20</span><span class="t">步工作时间线</span></div><div><span class="n">5</span><span class="t">条历史路线</span></div><div><span class="n">27</span><span class="t">个时间线节点</span></div><div><span class="n">16</span><span class="t">条术语</span></div></div>
+<p class="small">说明：第一部的章节编号、图表编号沿用其独立成书时的体系，仅调整为本书的第 1–9 章。</p>
+</div>
 <!-- 第一部前置 -->
 <h1 id="p1intro">导读说明</h1>
 <p>这一部的正文是翻译与导读，不是论证。为便于核对，原文英文整段保留并与中译逐段并置；术语首次出现时保留英文原词；公式一律以图片形式保留原样，未作改写或重新推导；脚注编号沿用原文的 1–7。凡属导读性质的补充（第 1–4、8 章）均在文中标明“不属于原文”。</p>
 <h2>材料与版本</h2>
 <div class="meta-card">
-  <div class="tw"><table>
-    <tr><td class="k">原文标题</td><td>Remark（附于黎曼 / 广义黎曼猜想证明宣告之后的说明性短文）</td></tr>
-    <tr><td class="k">作者</td><td>Levent Alpöge；协作工具：Claude（Anthropic 出品的 AI 助手，文中以 Claude 指代）</td></tr>
-    <tr><td class="k">宣告内容</td><td>作者自称在 Claude 辅助下完成黎曼猜想（RH）与广义黎曼猜想（GRH）的证明，并已在无附加假设下完成形式化；预计再花时间可推进到扩展黎曼猜想（ERH）</td></tr>
-    <tr><td class="k">公开材料</td><td>① 本 4 页 PDF（思路草图 + 20 条工作时间线）；② 14 个分卷压缩包的 Lean 4 形式化源码（约 1700 万行）</td></tr>
-    <tr><td class="k">未公开材料</td><td>人类可读的完整自然语言证明文稿；作者称若转写自然语言约 25 万页以上</td></tr>
-    <tr><td class="k">原文链接</td><td>https://alpo.ge/remark.pdf ；Lean 分卷 https://alpo.ge/lean.tar.gz.part01 … part14</td></tr>
-  </table></div>
+<div class="tw"><table>
+<tr><td class="k">原文标题</td><td>Remark（附于黎曼 / 广义黎曼猜想证明宣告之后的说明性短文）</td></tr>
+<tr><td class="k">作者</td><td>Levent Alpöge；协作工具：Claude（Anthropic 出品的 AI 助手，文中以 Claude 指代）</td></tr>
+<tr><td class="k">宣告内容</td><td>作者自称在 Claude 辅助下完成黎曼猜想（RH）与广义黎曼猜想（GRH）的证明，并已在无附加假设下完成形式化；预计再花时间可推进到扩展黎曼猜想（ERH）</td></tr>
+<tr><td class="k">公开材料</td><td>① 本 4 页 PDF（思路草图 + 20 条工作时间线）；② 14 个分卷压缩包的 Lean 4 形式化源码（约 1700 万行）</td></tr>
+<tr><td class="k">未公开材料</td><td>人类可读的完整自然语言证明文稿；作者称若转写自然语言约 25 万页以上</td></tr>
+<tr><td class="k">原文链接</td><td>https://alpo.ge/remark.pdf ；Lean 分卷 https://alpo.ge/lean.tar.gz.part01 … part14</td></tr>
+</table></div>
 </div>
 <h2>阅读提示</h2>
 <div class="warn">
-  <b>阅读前务必注意（客观性提示）</b>
-  <ol style="margin:6px 0 0 18px; padding:0;">
-    <li>本文档是对作者 4 页<b>宣告性短文</b>的逐段翻译与导读，<b>不是</b>证明论文，也不包含证明的完整数学推导。</li>
-    <li>作者公开的正式产物仅有 Lean 4 形式化代码；完整自然语言证明稿（作者估计 25 万页以上）<b>未公开</b>。</li>
-    <li>机器形式化编译通过，只代表代码在 Lean 公理系统内逻辑自洽；<b>不等于</b>数学界已理解、复核并公认该证明，克雷千禧年大奖亦未认定。</li>
-    <li>作者本人在文中明确表示：自己尚未掌握论证周围大片数学，论证中可能混入大量次优选择，预计很快会出现更简短的证明。</li>
-    <li>译文为辅助理解之用；术语、符号与结论以原文及 Lean 代码为准。</li>
-  </ol>
+<b>阅读前务必注意（客观性提示）</b>
+<ol style="margin:6px 0 0 18px; padding:0;">
+<li>本文档是对作者 4 页<b>宣告性短文</b>的逐段翻译与导读，<b>不是</b>证明论文，也不包含证明的完整数学推导。</li>
+<li>作者公开的正式产物仅有 Lean 4 形式化代码；完整自然语言证明稿（作者估计 25 万页以上）<b>未公开</b>。</li>
+<li>机器形式化编译通过，只代表代码在 Lean 公理系统内逻辑自洽；<b>不等于</b>数学界已理解、复核并公认该证明，克雷千禧年大奖亦未认定。</li>
+<li>作者本人在文中明确表示：自己尚未掌握论证周围大片数学，论证中可能混入大量次优选择，预计很快会出现更简短的证明。</li>
+<li>译文为辅助理解之用；术语、符号与结论以原文及 Lean 代码为准。</li>
+</ol>
 </div>
-
 <!-- 第一部正文 -->
 <!-- ============ 1. 什么是黎曼猜想 ============ -->
 <h1 id="c1">第 1 章　什么是黎曼猜想</h1>
 <p class="small">以下三章为导读性背景补充，不属于 Alpöge 原文，目的是让读者在进入译文前先建立坐标系。</p>
-
-<div class="lead">一句话定义：<b>黎曼 ζ 函数的所有“非平凡零点”，实部都恰好等于 1/2。</b><br>
+<div class="lead">一句话定义：<b>黎曼 ζ 函数的所有“非平凡零点”，实部都恰好等于 1/2。</b><br/>
 这句话看起来像一句复分析的技术断言，但它等价于“素数个数的分布误差被 √x 量级牢牢锁住”——也就是数论里最核心的一条精度要求。</div>
-
 <h2>1.1 一个能“数素数”的函数</h2>
 <p>1737 年，欧拉注意到一件事：把所有正整数的倒数幂加起来，等于对所有素数的某个乘积。</p>
-
-<div class="eq"><img src="assets/f1_euler.png" style="width:56mm" alt="欧拉乘积公式"></div>
-
+<div class="eq"><img alt="欧拉乘积公式" src="assets/f1_euler.png" style="width:56mm"/></div>
 <p>左边是“所有正整数”的求和，右边是“所有素数”的乘积。这一步的意义在于：素数本来是一堆散落、无法用公式直接描述的整数，一旦被写成乘积的因子，就可以对它求对数、求导、做解析延拓——素数分布从此变成一个<b>解析对象</b>的性质。这是解析数论的开端。</p>
-
 <h2>1.2 1859 年：黎曼把 s 变成复数</h2>
 <p>欧拉只考虑实变量的 s（且要 Re(s) &gt; 1 才收敛）。黎曼的改造是把 s 当作复变量，用解析延拓把 ζ 扩张到整个复平面——只在 s = 1 处留下一个单极点（这个极点对应“素数有无穷多个”）。延拓之后，ζ 满足一个关于 s = 1/2 对称的函数方程：</p>
-
-<div class="eq"><img src="assets/f2_xi.png" style="width:96mm" alt="函数方程"></div>
-
+<div class="eq"><img alt="函数方程" src="assets/f2_xi.png" style="width:96mm"/></div>
 <p>其中 ξ 是把 ζ 的极点与平凡零点“抹平”后的完整版本。注意 <b>ξ(s) = ξ(1−s)</b> 这条对称性：它意味着零点必须成对地关于临界线 Re(s) = 1/2 对称出现。<b>"1/2" 这个数字第一次以结构性方式进入这个问题</b>，不是巧合，也不是审美偏好，而是函数方程强加的。</p>
-
 <h2>1.3 三类零点，一张图看清</h2>
 <ul>
-  <li><b>平凡零点</b>：s = −2, −4, −6, …，全部落在实轴上，由 Γ 因子的极点被 ζ 抵消造成，位置完全已知、不构成困难。</li>
-  <li><b>非平凡零点</b>：位于“临界带” 0 &lt; Re(s) &lt; 1 内，关于实轴成对共轭、也关于临界线成对对称。黎曼猜想说的就是这一批。</li>
-  <li><b>极点</b>：s = 1，唯一一个，对应素数无穷多。</li>
+<li><b>平凡零点</b>：s = −2, −4, −6, …，全部落在实轴上，由 Γ 因子的极点被 ζ 抵消造成，位置完全已知、不构成困难。</li>
+<li><b>非平凡零点</b>：位于“临界带” 0 &lt; Re(s) &lt; 1 内，关于实轴成对共轭、也关于临界线成对对称。黎曼猜想说的就是这一批。</li>
+<li><b>极点</b>：s = 1，唯一一个，对应素数无穷多。</li>
 </ul>
-
 <div class="figure">
-  <img src="assets/fig1_zeros.png" style="width:158mm" alt="ζ 函数零点分布">
-  <div class="cap"><b>图 1</b>　复平面上的 ζ 函数零点。灰色方块是平凡零点；蓝色圆点是前 20 个非平凡零点（每个高度上、下各一个），全部落在红色虚线 Re(s)=1/2 上；橙色叉是唯一极点 s=1。黎曼猜想断言：蓝色圆点这一类零点，此后无穷多个，永远不会离开这条虚线。</div>
+<img alt="ζ 函数零点分布" src="assets/fig1_zeros.png" style="width:158mm"/>
+<div class="cap"><b>图 1</b>　复平面上的 ζ 函数零点。灰色方块是平凡零点；蓝色圆点是前 20 个非平凡零点（每个高度上、下各一个），全部落在红色虚线 Re(s)=1/2 上；橙色叉是唯一极点 s=1。黎曼猜想断言：蓝色圆点这一类零点，此后无穷多个，永远不会离开这条虚线。</div>
 </div>
-
 <h2>1.4 它为什么等价于“素数个数的误差控制”</h2>
 <p>这是整个问题的技术核心，也是它值得被列为千禧年难题的原因。黎曼给出的显式公式把“素数的计数”直接展开成“零点之和”：</p>
-
-<div class="eq"><img src="assets/f3_explicit.png" style="width:82mm" alt="显式公式"></div>
-
+<div class="eq"><img alt="显式公式" src="assets/f3_explicit.png" style="width:82mm"/></div>
 <p>（ψ(x) 是冯·曼戈尔特函数，按素数幂 p<sup>k</sup> ≤ x 加权 log p 累计；ρ 遍历全部非平凡零点。）主项是 x，也就是“素数按密度 1/log x 均匀铺开”的平滑部分；每一项 x<sup>ρ</sup>/ρ 则是一次振荡。关键在于振荡的幅度：</p>
-
 <div class="eq" style="font-size:9.5pt;color:#2c5282;">x<sup>ρ</sup> = x<sup>Re(ρ)</sup> · e<sup>i·Im(ρ)·log x</sup>　⟹　幅度完全由 Re(ρ) 决定</div>
-
 <p>如果所有 Re(ρ) = 1/2，每次振荡的幅度就是 √x，误差被压在平方根量级；只要有一个零点跑到 Re(ρ) = 1/2 + δ，它的幅度立刻变成 x<sup>1/2+δ</sup>——放大 x<sup>δ</sup> 倍。所以“实部是不是 1/2”不是品味问题，而是<b>素数计数误差的数量级问题</b>。冯·科赫 1901 年证明了两者严格等价：</p>
-
-<div class="eq"><img src="assets/f4_vonkoch.png" style="width:58mm" alt="冯·科赫等价式"></div>
-
+<div class="eq"><img alt="冯·科赫等价式" src="assets/f4_vonkoch.png" style="width:58mm"/></div>
 <div class="figure">
-  <img src="assets/fig2_pnt.png" style="width:165mm" alt="π(x) 与 Li(x)">
-  <div class="cap"><b>图 2</b>　左：π(x)、Li(x)、x/log x 三者几乎重合，说明主项已由素数定理（1896）确定。右：把误差除以 √x 之后，曲线始终在 −0.3 到 −0.06 之间小幅波动，不随 x 增大而发散——这正是黎曼猜想预言的“误差被 √x 锁住”。数据由程序实际计算：π(10<sup>5</sup>) = 9592，Li(10<sup>5</sup>) ≈ 9629.8。</div>
+<img alt="π(x) 与 Li(x)" src="assets/fig2_pnt.png" style="width:165mm"/>
+<div class="cap"><b>图 2</b>　左：π(x)、Li(x)、x/log x 三者几乎重合，说明主项已由素数定理（1896）确定。右：把误差除以 √x 之后，曲线始终在 −0.3 到 −0.06 之间小幅波动，不随 x 增大而发散——这正是黎曼猜想预言的“误差被 √x 锁住”。数据由程序实际计算：π(10<sup>5</sup>) = 9592，Li(10<sup>5</sup>) ≈ 9629.8。</div>
 </div>
-
 <h2>1.5 三个常见误解</h2>
 <p><b>误解一：黎曼猜想是说“素数有规律”。</b>它是一条精确的复分析命题，不是模糊的直觉。真正被断言的是“零点实部的一个具体数值”，而不是“素数排布好看”。</p>
 <p><b>误解二：“已经验证了十万亿个零点，所以基本成立”。</b>数值验证不构成证明。1914 年利特尔伍德已经证明 π(x) − Li(x) <b>一定</b>会变号（即 Li(x) 并非永远高估），但最早的显式上界大到 10<sup>10<sup>964</sup></sup> 这种量级，此后逐步降到 10<sup>316</sup> 上下，而实际计算到 10<sup>19</sup> 仍未发现第一个变号点。这说明“反例可能存在，但远在任何可计算范围之外”——计算的规模永远追不上无穷。</p>
 <p><b>误解三：“已经证明了”。</b>截至 2026 年 11 月，数学界没有公认任何完整证明。Alpöge 这份材料的状态是：Lean 形式化代码可通过机器核验，但<b>自然语言论证未公开、同行尚未理解与复核</b>，这与“定理已确立”是两个不同阶段。</p>
-
 <!-- ============ 2. 来源与发展历程 ============ -->
 <div class="pagebreak"></div>
 <h1 id="c2">第 2 章　来源与发展历程</h1>
-
 <h2>2.1 1859 年那篇 8 页论文</h2>
 <p>黎曼在 1859 年 11 月向柏林科学院提交了一篇只有 8 页的论文，德文标题是《Ueber die Anzahl der Primzahlen unter einer gegebenen Grösse》（论不超过给定大小的素数个数）。这篇短文做了五件事，每一件都改变了此后的数论：</p>
 <div class="numlist">
-  <p><span class="n">1.</span>把 ζ 视为复变量函数，并给出它的解析延拓；</p>
-  <p><span class="n">2.</span>导出函数方程 ξ(s) = ξ(1−s)，确立 s = 1/2 的对称地位；</p>
-  <p><span class="n">3.</span>给出零点计数公式，估计高度 T 以下有多少个零点：</p>
+<p><span class="n">1.</span>把 ζ 视为复变量函数，并给出它的解析延拓；</p>
+<p><span class="n">2.</span>导出函数方程 ξ(s) = ξ(1−s)，确立 s = 1/2 的对称地位；</p>
+<p><span class="n">3.</span>给出零点计数公式，估计高度 T 以下有多少个零点：</p>
 </div>
-<div class="eq"><img src="assets/f5_count.png" style="width:72mm" alt="零点计数公式"></div>
+<div class="eq"><img alt="零点计数公式" src="assets/f5_count.png" style="width:72mm"/></div>
 <div class="numlist">
-  <p><span class="n">4.</span>写下那句后来成为猜想的话：大意是“极可能所有（ξ 的）根都是实的”——在 ξ 的变量下，这正是 Re(s) = 1/2；</p>
-  <p><span class="n">5.</span>用零点之和显式表达素数计数函数，即所谓“黎曼的音乐”：每一个零点是一根弦上的一个音，素数分布的每一次抖动都是这些音叠加的结果。</p>
+<p><span class="n">4.</span>写下那句后来成为猜想的话：大意是“极可能所有（ξ 的）根都是实的”——在 ξ 的变量下，这正是 Re(s) = 1/2；</p>
+<p><span class="n">5.</span>用零点之和显式表达素数计数函数，即所谓“黎曼的音乐”：每一个零点是一根弦上的一个音，素数分布的每一次抖动都是这些音叠加的结果。</p>
 </div>
 <p>值得强调的是：黎曼本人只手工算了几个零点，全部落在临界线上。他既没有试图证明，也没有给出反例——他把一个<b>结构性猜想</b>留在了这篇短文的末尾，然后转向其他课题。</p>
-
 <h2>2.2 一条 167 年的时间线</h2>
 <div class="timeline">
-  <div class="tl-row"><div class="tl-year">1737</div><div class="tl-text"><b>欧拉</b>：发现乘积公式，ζ 与素数第一次绑定；同时证明素数倒数和发散。</div></div>
-  <div class="tl-row"><div class="tl-year">1792–93</div><div class="tl-text"><b>高斯</b>（约 15 岁）：从素数表猜测 π(x) ~ Li(x)，但生前未发表。</div></div>
-  <div class="tl-row"><div class="tl-year">1808</div><div class="tl-text"><b>勒让德</b>：提出 π(x) ~ x / (log x − 1.08366)。</div></div>
-  <div class="tl-row"><div class="tl-year">1837</div><div class="tl-text"><b>狄利克雷</b>：引入 L 函数，证明等差数列中的素数定理。</div></div>
-  <div class="tl-row"><div class="tl-year">1859</div><div class="tl-text"><b>黎曼</b>：8 页论文，提出猜想，给出显式公式。<span class="tag">起点</span></div></div>
-  <div class="tl-row"><div class="tl-year">1895</div><div class="tl-text"><b>冯·曼戈尔特</b>：把黎曼的显式公式严格化。</div></div>
-  <div class="tl-row"><div class="tl-year">1896</div><div class="tl-text"><b>阿达马 / 德·拉·瓦莱-普桑</b>：各自独立证明素数定理（等价于 ζ 在 Re(s)=1 上无零点）。<span class="tag">第一次转折</span></div></div>
-  <div class="tl-row"><div class="tl-year">1900</div><div class="tl-text"><b>希尔伯特</b>：在巴黎提出 23 个问题，第八问题包含黎曼猜想、哥德巴赫猜想与孪生素数猜想。</div></div>
-  <div class="tl-row"><div class="tl-year">1901</div><div class="tl-text"><b>冯·科赫</b>：证明 RH ⟺ π(x) = Li(x) + O(√x log x)，把猜想翻译成误差估计。</div></div>
-  <div class="tl-row"><div class="tl-year">1905</div><div class="tl-text"><b>冯·曼戈尔特</b>：严格证明零点计数公式 N(T)。</div></div>
-  <div class="tl-row"><div class="tl-year">1914</div><div class="tl-text"><b>哈代</b>：证明临界线上有无穷多个零点——第一次不是“验证”，而是“证明无穷”。</div></div>
-  <div class="tl-row"><div class="tl-year">1914</div><div class="tl-text"><b>利特尔伍德</b>：证明 π(x) − Li(x) 必然变号（Li 并非永远高估）。</div></div>
-  <div class="tl-row"><div class="tl-year">1932</div><div class="tl-text"><b>西格尔</b>：整理黎曼手稿，得到 Riemann–Siegel 公式，使大规模数值计算零点成为可能。</div></div>
-  <div class="tl-row"><div class="tl-year">1942</div><div class="tl-text"><b>塞尔伯格</b>：证明临界线上的零点占正比例（不止“无穷多”）。</div></div>
-  <div class="tl-row"><div class="tl-year">1948</div><div class="tl-text"><b>韦伊</b>：在函数域（有限域上的曲线）证明黎曼猜想成立。<span class="tag">第二次转折</span></div></div>
-  <div class="tl-row"><div class="tl-year">1950s</div><div class="tl-text"><b>塞尔伯格</b>：迹公式，把谱侧与几何侧对应起来，成为此后自守形式理论的骨架。</div></div>
-  <div class="tl-row"><div class="tl-year">1969</div><div class="tl-text"><b>斯捷潘诺夫</b>：给出函数域情形的一个初等证明——Alpöge 论证的直接源头。</div></div>
-  <div class="tl-row"><div class="tl-year">1972–73</div><div class="tl-text"><b>蒙哥马利</b>：零点对关联猜想；与随机矩阵 GUE 统计吻合（Odlyzko 的数值与 Dyson 的解读）。<span class="tag">第三次转折</span></div></div>
-  <div class="tl-row"><div class="tl-year">1974</div><div class="tl-text"><b>莱文森</b>：证明至少 1/3 的零点在临界线上。</div></div>
-  <div class="tl-row"><div class="tl-year">1974</div><div class="tl-text"><b>德利涅</b>：证明 Weil 猜想，把函数域的“黎曼猜想”推广到任意维数。</div></div>
-  <div class="tl-row"><div class="tl-year">1985</div><div class="tl-text"><b>奥德利兹科 – te Riele</b>：推翻梅滕斯猜想，警示“看起来很自然的等价判据也可能假”。</div></div>
-  <div class="tl-row"><div class="tl-year">1989</div><div class="tl-text"><b>康雷</b>：把临界线上零点的比例推到至少 2/5。</div></div>
-  <div class="tl-row"><div class="tl-year">2000</div><div class="tl-text"><b>克雷数学研究所</b>：列为七个千禧年大奖难题之一，悬赏 100 万美元。</div></div>
-  <div class="tl-row"><div class="tl-year">2004</div><div class="tl-text"><b>古尔东</b>：验证前 10<sup>13</sup>（十万亿）个零点全部在临界线上。</div></div>
-  <div class="tl-row"><div class="tl-year">2018</div><div class="tl-text"><b>Rodgers–Tao</b>：证明 de Bruijn–Newman 常数 Λ ≥ 0；配合"RH ⟺ Λ ≤ 0"，得 RH ⟺ Λ = 0。</div></div>
-  <div class="tl-row"><div class="tl-year">2021</div><div class="tl-text"><b>Platt–Trudgian</b>：验证高度 3×10<sup>12</sup> 以下的全部零点。</div></div>
-  <div class="tl-row"><div class="tl-year">2024</div><div class="tl-text"><b>Guth–Maynard</b>：把 ζ(1/2+it) 的上界指数改进到 13/84（原为 1/6），是目前解析侧最强的进展之一。</div></div>
-  <div class="tl-row"><div class="tl-year">2026</div><div class="tl-text"><b>Alpöge + Claude</b>：宣称证明 RH 与 GRH，公开 Lean 形式化代码；自然语言论证未公开，待同行复核。<span class="tag">本次事件</span></div></div>
+<div class="tl-row"><div class="tl-year">1737</div><div class="tl-text"><b>欧拉</b>：发现乘积公式，ζ 与素数第一次绑定；同时证明素数倒数和发散。</div></div>
+<div class="tl-row"><div class="tl-year">1792–93</div><div class="tl-text"><b>高斯</b>（约 15 岁）：从素数表猜测 π(x) ~ Li(x)，但生前未发表。</div></div>
+<div class="tl-row"><div class="tl-year">1808</div><div class="tl-text"><b>勒让德</b>：提出 π(x) ~ x / (log x − 1.08366)。</div></div>
+<div class="tl-row"><div class="tl-year">1837</div><div class="tl-text"><b>狄利克雷</b>：引入 L 函数，证明等差数列中的素数定理。</div></div>
+<div class="tl-row"><div class="tl-year">1859</div><div class="tl-text"><b>黎曼</b>：8 页论文，提出猜想，给出显式公式。<span class="tag">起点</span></div></div>
+<div class="tl-row"><div class="tl-year">1895</div><div class="tl-text"><b>冯·曼戈尔特</b>：把黎曼的显式公式严格化。</div></div>
+<div class="tl-row"><div class="tl-year">1896</div><div class="tl-text"><b>阿达马 / 德·拉·瓦莱-普桑</b>：各自独立证明素数定理（等价于 ζ 在 Re(s)=1 上无零点）。<span class="tag">第一次转折</span></div></div>
+<div class="tl-row"><div class="tl-year">1900</div><div class="tl-text"><b>希尔伯特</b>：在巴黎提出 23 个问题，第八问题包含黎曼猜想、哥德巴赫猜想与孪生素数猜想。</div></div>
+<div class="tl-row"><div class="tl-year">1901</div><div class="tl-text"><b>冯·科赫</b>：证明 RH ⟺ π(x) = Li(x) + O(√x log x)，把猜想翻译成误差估计。</div></div>
+<div class="tl-row"><div class="tl-year">1905</div><div class="tl-text"><b>冯·曼戈尔特</b>：严格证明零点计数公式 N(T)。</div></div>
+<div class="tl-row"><div class="tl-year">1914</div><div class="tl-text"><b>哈代</b>：证明临界线上有无穷多个零点——第一次不是“验证”，而是“证明无穷”。</div></div>
+<div class="tl-row"><div class="tl-year">1914</div><div class="tl-text"><b>利特尔伍德</b>：证明 π(x) − Li(x) 必然变号（Li 并非永远高估）。</div></div>
+<div class="tl-row"><div class="tl-year">1932</div><div class="tl-text"><b>西格尔</b>：整理黎曼手稿，得到 Riemann–Siegel 公式，使大规模数值计算零点成为可能。</div></div>
+<div class="tl-row"><div class="tl-year">1942</div><div class="tl-text"><b>塞尔伯格</b>：证明临界线上的零点占正比例（不止“无穷多”）。</div></div>
+<div class="tl-row"><div class="tl-year">1948</div><div class="tl-text"><b>韦伊</b>：在函数域（有限域上的曲线）证明黎曼猜想成立。<span class="tag">第二次转折</span></div></div>
+<div class="tl-row"><div class="tl-year">1950s</div><div class="tl-text"><b>塞尔伯格</b>：迹公式，把谱侧与几何侧对应起来，成为此后自守形式理论的骨架。</div></div>
+<div class="tl-row"><div class="tl-year">1969</div><div class="tl-text"><b>斯捷潘诺夫</b>：给出函数域情形的一个初等证明——Alpöge 论证的直接源头。</div></div>
+<div class="tl-row"><div class="tl-year">1972–73</div><div class="tl-text"><b>蒙哥马利</b>：零点对关联猜想；与随机矩阵 GUE 统计吻合（Odlyzko 的数值与 Dyson 的解读）。<span class="tag">第三次转折</span></div></div>
+<div class="tl-row"><div class="tl-year">1974</div><div class="tl-text"><b>莱文森</b>：证明至少 1/3 的零点在临界线上。</div></div>
+<div class="tl-row"><div class="tl-year">1974</div><div class="tl-text"><b>德利涅</b>：证明 Weil 猜想，把函数域的“黎曼猜想”推广到任意维数。</div></div>
+<div class="tl-row"><div class="tl-year">1985</div><div class="tl-text"><b>奥德利兹科 – te Riele</b>：推翻梅滕斯猜想，警示“看起来很自然的等价判据也可能假”。</div></div>
+<div class="tl-row"><div class="tl-year">1989</div><div class="tl-text"><b>康雷</b>：把临界线上零点的比例推到至少 2/5。</div></div>
+<div class="tl-row"><div class="tl-year">2000</div><div class="tl-text"><b>克雷数学研究所</b>：列为七个千禧年大奖难题之一，悬赏 100 万美元。</div></div>
+<div class="tl-row"><div class="tl-year">2004</div><div class="tl-text"><b>古尔东</b>：验证前 10<sup>13</sup>（十万亿）个零点全部在临界线上。</div></div>
+<div class="tl-row"><div class="tl-year">2018</div><div class="tl-text"><b>Rodgers–Tao</b>：证明 de Bruijn–Newman 常数 Λ ≥ 0；配合"RH ⟺ Λ ≤ 0"，得 RH ⟺ Λ = 0。</div></div>
+<div class="tl-row"><div class="tl-year">2021</div><div class="tl-text"><b>Platt–Trudgian</b>：验证高度 3×10<sup>12</sup> 以下的全部零点。</div></div>
+<div class="tl-row"><div class="tl-year">2024</div><div class="tl-text"><b>Guth–Maynard</b>：把 ζ(1/2+it) 的上界指数改进到 13/84（原为 1/6），是目前解析侧最强的进展之一。</div></div>
+<div class="tl-row"><div class="tl-year">2026</div><div class="tl-text"><b>Alpöge + Claude</b>：宣称证明 RH 与 GRH，公开 Lean 形式化代码；自然语言论证未公开，待同行复核。<span class="tag">本次事件</span></div></div>
 </div>
-
 <h2>2.3 三次结构性转折</h2>
 <p><b>1896 年素数定理：</b>第一次真正实现“从 ζ 的性质推出素数分布”，证明了解析方法的合法性。它也定下了一个范式：想推进素数分布，就去研究零点位置。</p>
 <p><b>1940 年代函数域：</b>韦伊在另一类对象（有限域上的曲线）上证明了对应命题。这个平行世界里有几何：曲线、除子、Frobenius 自同构、上同调。于是“黎曼猜想”在那里不再是猜想，而是定理。此后所有“类比路线”（包括本文这条）都以它为模板。</p>
 <p><b>1970 年代随机矩阵：</b>蒙哥马利发现零点的对关联函数与随机厄米矩阵（GUE）的特征值统计一致。这暗示零点可能是某个自伴算子的谱，但至今没人造出这个算子。它改变了问题的面貌，却没有改变问题的难度。</p>
-
 <!-- ============ 3. 历史探索路线 ============ -->
 <div class="pagebreak"></div>
 <h1 id="c3">第 3 章　历史上的探索路线</h1>
-
 <h2>3.1 五条路线总览</h2>
 <div class="routes">
-  <div class="route"><div class="rt">路线 A · 解析估计：把零点“卡”在临界线附近</div>
-  <div class="rd">显式公式、零点密度估计、矩方法、筛法。代表：哈代 1914、塞尔伯格 1942、莱文森 1974、康雷 1989。</div></div>
-  <div class="route rb"><div class="rt">路线 B · 数值验证：把零点“算”出来</div>
-  <div class="rd">Riemann–Siegel 公式、Gram 点、图灵方法、大规模并行计算。代表：古尔东 2004（10<sup>13</sup> 个）、Platt–Trudgian 2021（高度 3×10<sup>12</sup>）。</div></div>
-  <div class="route rc"><div class="rt">路线 C · 谱与算子：把零点“变成”特征值</div>
-  <div class="rd">Hilbert–Pólya 猜想、Berry–Keating 的量子混沌模型、Connes 的非交换几何与迹公式。</div></div>
-  <div class="route rd-green"><div class="rt">路线 D · 函数域类比：在“有几何的世界”里先证明，再搬回来</div>
-  <div class="rd">韦伊 1948、斯捷潘诺夫 1969、邦别里 1974、德利涅 1974。<b>本次 Alpöge 的宣告正是这条线的后裔。</b></div></div>
-  <div class="route re"><div class="rt">路线 E · 等价判据：换一个更容易下手的外形</div>
-  <div class="rd">冯·科赫 1901、Robin 1984、Lagarias 2002、Li 1997、Weil 正性；反例警示：梅滕斯猜想 1985 被推翻。</div></div>
+<div class="route"><div class="rt">路线 A · 解析估计：把零点“卡”在临界线附近</div>
+<div class="rd">显式公式、零点密度估计、矩方法、筛法。代表：哈代 1914、塞尔伯格 1942、莱文森 1974、康雷 1989。</div></div>
+<div class="route rb"><div class="rt">路线 B · 数值验证：把零点“算”出来</div>
+<div class="rd">Riemann–Siegel 公式、Gram 点、图灵方法、大规模并行计算。代表：古尔东 2004（10<sup>13</sup> 个）、Platt–Trudgian 2021（高度 3×10<sup>12</sup>）。</div></div>
+<div class="route rc"><div class="rt">路线 C · 谱与算子：把零点“变成”特征值</div>
+<div class="rd">Hilbert–Pólya 猜想、Berry–Keating 的量子混沌模型、Connes 的非交换几何与迹公式。</div></div>
+<div class="route rd-green"><div class="rt">路线 D · 函数域类比：在“有几何的世界”里先证明，再搬回来</div>
+<div class="rd">韦伊 1948、斯捷潘诺夫 1969、邦别里 1974、德利涅 1974。<b>本次 Alpöge 的宣告正是这条线的后裔。</b></div></div>
+<div class="route re"><div class="rt">路线 E · 等价判据：换一个更容易下手的外形</div>
+<div class="rd">冯·科赫 1901、Robin 1984、Lagarias 2002、Li 1997、Weil 正性；反例警示：梅滕斯猜想 1985 被推翻。</div></div>
 </div>
-
 <h2>3.2 每条路线做了什么，卡在哪里</h2>
-
 <p><b>A · 解析估计。</b>这是最正统的一条。它不去构造零点，而是估计“能有多少零点偏离临界线”。哈代 1914 证明临界线上有无穷多零点；塞尔伯格 1942 把“无穷多”升级成“占正比例”；莱文森 1974 得到 1/3；康雷 1989 得到 2/5。每一步都是把比例往前推一点，代价是技术复杂度指数上升。<b>卡点：</b>这些方法本质上是“平均”层面的估计——能证明绝大多数零点在线上，却无法排除极少数跑到线外，而黎曼猜想要求的恰恰是“一个都不能跑”。</p>
-
 <p><b>B · 数值验证。</b>西格尔 1932 从黎曼手稿里整理出 Riemann–Siegel 公式，让计算零点变成可执行的算法；此后 Gram 点、图灵 1953 的机器验证方法、直到今天的分布式计算，把验证推进到前 10<sup>13</sup> 个零点与高度 3×10<sup>12</sup>。<b>卡点：</b>验证只能覆盖有限范围，而命题是全称的。高度每提高一个数量级，计算量增长远超线性；这条路能提供信心，不提供证明。</p>
-
 <p><b>C · 谱与算子。</b>Hilbert–Pólya 猜想认为零点是一族自伴算子的特征值，自伴性直接强制特征值取实数值，从而给出 Re = 1/2。Berry–Keating 用量子混沌的 Hamiltonian 做了启发式构造；Connes 用非交换几何与迹公式给出另一套框架。<b>卡点：</b>至今没有人写出这个算子。随机矩阵类比能解释零点的<b>统计分布</b>，却解释不了“为什么恰好是 1/2”——统计吻合和精确取值是两回事。</p>
-
 <p><b>D · 函数域类比。</b>这是唯一在“平行世界”里真正成功的一条。韦伊 1948 用代数几何证明曲线情形的 RH；斯捷潘诺夫 1969 给出一个初等证明（用带重数的除子做多项式构造）；邦别里 1974 简化；德利涅 1974 用 Weil 猜想把结论推到高维。<b>卡点：</b>函数域有曲线、除子、导子、Frobenius、上同调——一整套几何工具；整数环上没有对应物。要把这套论证搬回数域，等于在缺少几何的世界里手工造出几何。Alpöge 的整篇短文，就是在做这件事：用 theta 提升链去“模拟”函数域里那个现成的重数。</p>
-
 <p><b>E · 等价判据。</b>把猜想改写成别的形式，希望其中某个形式更容易攻。最常用的几个：</p>
 <div class="tw"><table class="eqtable">
 <thead><tr><th style="width:26%">判据</th><th>内容（均与 RH 等价）</th><th style="width:16%">出处</th></tr></thead>
-  <tr><td class="num">冯·科赫</td><td>π(x) = Li(x) + O(√x log x)</td><td>1901</td></tr>
-  <tr><td class="num">Robin</td><td>σ(n) &lt; e<sup>γ</sup> · n · log log n，对所有 n &gt; 5040</td><td>1984</td></tr>
-  <tr><td class="num">Lagarias</td><td>σ(n) ≤ H<sub>n</sub> + e<sup>H<sub>n</sub></sup> · log H<sub>n</sub>，对所有 n</td><td>2002</td></tr>
-  <tr><td class="num">Weil 正性</td><td>显式公式对应的 Weil 分布为正</td><td>1952</td></tr>
-  <tr><td class="num">梅滕斯</td><td>|M(x)| ≤ √x（<b>已被否定</b>，说明“看起来自然”不等于“成立”）</td><td>1897 / 1985</td></tr>
+<tr><td class="num">冯·科赫</td><td>π(x) = Li(x) + O(√x log x)</td><td>1901</td></tr>
+<tr><td class="num">Robin</td><td>σ(n) &lt; e<sup>γ</sup> · n · log log n，对所有 n &gt; 5040</td><td>1984</td></tr>
+<tr><td class="num">Lagarias</td><td>σ(n) ≤ H<sub>n</sub> + e<sup>H<sub>n</sub></sup> · log H<sub>n</sub>，对所有 n</td><td>2002</td></tr>
+<tr><td class="num">Weil 正性</td><td>显式公式对应的 Weil 分布为正</td><td>1952</td></tr>
+<tr><td class="num">梅滕斯</td><td>|M(x)| ≤ √x（<b>已被否定</b>，说明“看起来自然”不等于“成立”）</td><td>1897 / 1985</td></tr>
 </table></div>
 <p><b>卡点：</b>这些判据彼此等价，所以难度也等价。换外形能换来新直觉，换不来新证明。</p>
-
 <h2>3.3 目前“验证”到了什么程度</h2>
 <ul>
-  <li>前 10<sup>13</sup> 个非平凡零点全部在临界线上（古尔东，2004）；</li>
-  <li>高度 3×10<sup>12</sup> 以下的全部零点已验证（Platt–Trudgian，2021）；</li>
-  <li>结论：在一切可计算范围内没有反例。<b>但这是证据，不是证明</b>——第 1.5 节的 Skewes 教训说明了“可计算范围”能有多不可靠。</li>
+<li>前 10<sup>13</sup> 个非平凡零点全部在临界线上（古尔东，2004）；</li>
+<li>高度 3×10<sup>12</sup> 以下的全部零点已验证（Platt–Trudgian，2021）；</li>
+<li>结论：在一切可计算范围内没有反例。<b>但这是证据，不是证明</b>——第 1.5 节的 Skewes 教训说明了“可计算范围”能有多不可靠。</li>
 </ul>
-
 <h2>3.4 本次宣告在路线图中的位置</h2>
 <p>Alpöge 的论证明确站在 D 线：它是“斯捷潘诺夫的后裔”。作者自己在第 1 页写道，斯捷潘诺夫解决函数域问题时用了一个“带重数的除子”；而整数上没有重数，于是他改用<b>一串 theta 提升</b>，每次提升模拟一重重数，链长取 √X。</p>
 <p>为什么这条路在函数域行得通、在数域极难，可以归结为三点：</p>
 <ol>
-  <li><b>几何工具的缺失。</b>函数域有曲线与除子，能在“点—除子—导子”之间做微积分式的操作；整数环是离散的一维对象，没有对应的微分结构。作者那句“类似于对整数做微分”，说的就是这个空缺。</li>
-  <li><b>重数必须被“造”出来。</b>函数域的重数是除子里现成的指数；数域没有，只能靠提升链一层层叠上去，而每叠一层都要付出解析代价——时间线第 14 条“2/3 处停下”就是这个代价的核算结果。</li>
-  <li><b>自守性必须原生。</b>作者强调要用“原生自守（natively automorphic）”的方式工作：不是把函数域的结论硬搬，而是在数域的自守形式语言里重建同一套机制。这也是为什么论证里出现大量高秩群、酉群、GGP 周期、迹公式——这些是数域版本的“几何替身”。</li>
+<li><b>几何工具的缺失。</b>函数域有曲线与除子，能在“点—除子—导子”之间做微积分式的操作；整数环是离散的一维对象，没有对应的微分结构。作者那句“类似于对整数做微分”，说的就是这个空缺。</li>
+<li><b>重数必须被“造”出来。</b>函数域的重数是除子里现成的指数；数域没有，只能靠提升链一层层叠上去，而每叠一层都要付出解析代价——时间线第 14 条“2/3 处停下”就是这个代价的核算结果。</li>
+<li><b>自守性必须原生。</b>作者强调要用“原生自守（natively automorphic）”的方式工作：不是把函数域的结论硬搬，而是在数域的自守形式语言里重建同一套机制。这也是为什么论证里出现大量高秩群、酉群、GGP 周期、迹公式——这些是数域版本的“几何替身”。</li>
 </ol>
-
 <h2>3.5 为什么这个问题这么难：四条结构性原因</h2>
 <ol>
-  <li><b>无穷多、且没有代数参数化。</b>零点不是一个可以枚举或用一个参数写出来的集合，任何证明都必须处理“所有零点”，而不能依赖结构性的列举。</li>
-  <li><b>要求“完全相消”。</b>误差要精确到 √x，意味着振荡必须几乎完全抵消；任何一处 δ &gt; 0 的偏差都会把误差放大 x<sup>δ</sup> 倍。这不是“差不多就行”的问题。</li>
-  <li><b>现有工具都在“平均”层面有效。</b>零点密度、矩估计、筛法都能给出“绝大部分”的结论，却没有一种工具能逐个锁死。从“平均”跨到“每一个”，是这类问题的共同天花板。</li>
-  <li><b>反例可能极远。</b>Skewes 型结果表明，即使命题为假，第一个反例也可能出现在远超任何可计算范围的地方——这使得“算得更多”永远无法替代证明。</li>
+<li><b>无穷多、且没有代数参数化。</b>零点不是一个可以枚举或用一个参数写出来的集合，任何证明都必须处理“所有零点”，而不能依赖结构性的列举。</li>
+<li><b>要求“完全相消”。</b>误差要精确到 √x，意味着振荡必须几乎完全抵消；任何一处 δ &gt; 0 的偏差都会把误差放大 x<sup>δ</sup> 倍。这不是“差不多就行”的问题。</li>
+<li><b>现有工具都在“平均”层面有效。</b>零点密度、矩估计、筛法都能给出“绝大部分”的结论，却没有一种工具能逐个锁死。从“平均”跨到“每一个”，是这类问题的共同天花板。</li>
+<li><b>反例可能极远。</b>Skewes 型结果表明，即使命题为假，第一个反例也可能出现在远超任何可计算范围的地方——这使得“算得更多”永远无法替代证明。</li>
 </ol>
-
 <!-- ============ 4. 流程图 ============ -->
 <h1 id="c4">第 4 章　本次宣告的方法主线流程图</h1>
 <p class="small">下图依据第 1 页第 4 段（作者自称“足以让同行数学家惊得从椅子上摔下来”的一句话）与第 3–4 页时间线归纳，仅为导读性概括，不代表完整证明结构。</p>
-
 <div class="flow">
-  <div class="flow-step">
-    <div class="t">① 起点：Stepanov 函数域方法</div>
-    <div class="d">Stepanov 解决函数域上黎曼猜想的论证中，使用了一个<b>带重数（multiplicity）的除子</b>；本论证被作者称为 Stepanov 路线的“后裔”。</div>
-  </div>
-  <div class="arrow">▼</div>
-  <div class="flow-step alt">
-    <div class="t">② 障碍：整数域上找不到“重数”</div>
-    <div class="d">重数在整数环上难以直接构造，作者比喻为“类似于对整数做微分”；这是从函数域搬到数域的核心难点。</div>
-  </div>
-  <div class="arrow">▼</div>
-  <div class="flow-step">
-    <div class="t">③ 简化模型（toy setting）中的新想法</div>
-    <div class="d">一个简化模型里出现了简单而全新的<b>傅里叶分析</b>思路，把黎曼原先一条令人自豪的“阴影”变得异常简单。</div>
-  </div>
-  <div class="arrow">▼</div>
-  <div class="flow-step">
-    <div class="t">④ 对策：把 theta 提升（theta lifts）串联成链</div>
-    <div class="d">若要让同样的技巧复现，并以<b>原生自守</b>的方式运作，就把一次次 theta 提升链接起来；每一次提升模拟一重重数。</div>
-  </div>
-  <div class="arrow">▼</div>
-  <div class="flow-step">
-    <div class="t">⑤ 链长取 m ≈ √X</div>
-    <div class="d">对长度为 X 的 von Mangoldt 和，每次提升贡献一重重数，Claude 建议的提升链长度为 √X（作者反问：“除此以外还能是什么呢？”）。</div>
-  </div>
-  <div class="arrow">▼</div>
-  <div class="flow-grid">
-    <div class="flow-step">
-      <div class="t">配套工具 A</div>
-      <div class="d">行列式方法、相对迹公式、GGP / Bessel 周期、Seesaw 对偶</div>
-    </div>
-    <div class="flow-step">
-      <div class="t">配套工具 B</div>
-      <div class="d">Iwasawa 塔、Chowla–Selberg / Weyl / Siegel 质量、可整除性下界、近似正交</div>
-    </div>
-  </div>
-  <div class="arrow">▼</div>
-  <div class="flow-step end">
-    <div class="t">⑥ 形式化结论：GRH（无附加假设）</div>
-    <div class="d">论证被写成 Lean 4 形式化代码并通过机器核验；作者称方法可推广至 GRH，预期再推进到 ERH。<b>状态：待数学界同行复核与理解。</b></div>
-  </div>
+<div class="flow-step">
+<div class="t">① 起点：Stepanov 函数域方法</div>
+<div class="d">Stepanov 解决函数域上黎曼猜想的论证中，使用了一个<b>带重数（multiplicity）的除子</b>；本论证被作者称为 Stepanov 路线的“后裔”。</div>
 </div>
-
+<div class="arrow">▼</div>
+<div class="flow-step alt">
+<div class="t">② 障碍：整数域上找不到“重数”</div>
+<div class="d">重数在整数环上难以直接构造，作者比喻为“类似于对整数做微分”；这是从函数域搬到数域的核心难点。</div>
+</div>
+<div class="arrow">▼</div>
+<div class="flow-step">
+<div class="t">③ 简化模型（toy setting）中的新想法</div>
+<div class="d">一个简化模型里出现了简单而全新的<b>傅里叶分析</b>思路，把黎曼原先一条令人自豪的“阴影”变得异常简单。</div>
+</div>
+<div class="arrow">▼</div>
+<div class="flow-step">
+<div class="t">④ 对策：把 theta 提升（theta lifts）串联成链</div>
+<div class="d">若要让同样的技巧复现，并以<b>原生自守</b>的方式运作，就把一次次 theta 提升链接起来；每一次提升模拟一重重数。</div>
+</div>
+<div class="arrow">▼</div>
+<div class="flow-step">
+<div class="t">⑤ 链长取 m ≈ √X</div>
+<div class="d">对长度为 X 的 von Mangoldt 和，每次提升贡献一重重数，Claude 建议的提升链长度为 √X（作者反问：“除此以外还能是什么呢？”）。</div>
+</div>
+<div class="arrow">▼</div>
+<div class="flow-grid">
+<div class="flow-step">
+<div class="t">配套工具 A</div>
+<div class="d">行列式方法、相对迹公式、GGP / Bessel 周期、Seesaw 对偶</div>
+</div>
+<div class="flow-step">
+<div class="t">配套工具 B</div>
+<div class="d">Iwasawa 塔、Chowla–Selberg / Weyl / Siegel 质量、可整除性下界、近似正交</div>
+</div>
+</div>
+<div class="arrow">▼</div>
+<div class="flow-step end">
+<div class="t">⑥ 形式化结论：GRH（无附加假设）</div>
+<div class="d">论证被写成 Lean 4 形式化代码并通过机器核验；作者称方法可推广至 GRH，预期再推进到 ERH。<b>状态：待数学界同行复核与理解。</b></div>
+</div>
+</div>
 <!-- ============ 2. 第1页 ============ -->
 <div class="pagebreak"></div>
 <h1 id="c5">第 5 章　第 1 页：宣告与核心思路（逐段对照）</h1>
-
 <div class="seg">
-  <div class="seg-head"><span class="seg-no">第 1 段</span><span class="seg-tag">背景：黎曼猜想的地位</span></div>
-  <div class="orig"><p>The Riemann Hypothesis is the classic problem in number theory. It asks for optimal control on the count of prime numbers of a given size. Its shadows have guided mathematicians for 150 years, and its many rhymes and reflections, even reaching physics, taught us the unity of our fields.</p></div>
-  <div class="trans"><p>黎曼猜想是数论中的经典问题。它要求对给定大小范围内素数的个数给出最优控制。150 年来，它的影子指引着数学家；它众多的回响与映照——甚至延伸到物理学——让我们体会到各个学科之间的统一性。</p></div>
+<div class="seg-head"><span class="seg-no">第 1 段</span><span class="seg-tag">背景：黎曼猜想的地位</span></div>
+<div class="orig"><p>The Riemann Hypothesis is the classic problem in number theory. It asks for optimal control on the count of prime numbers of a given size. Its shadows have guided mathematicians for 150 years, and its many rhymes and reflections, even reaching physics, taught us the unity of our fields.</p></div>
+<div class="trans"><p>黎曼猜想是数论中的经典问题。它要求对给定大小范围内素数的个数给出最优控制。150 年来，它的影子指引着数学家；它众多的回响与映照——甚至延伸到物理学——让我们体会到各个学科之间的统一性。</p></div>
 </div>
-
 <div class="seg">
-  <div class="seg-head"><span class="seg-no">第 2 段</span><span class="seg-tag">核心宣告：证明 RH，并推广到 GRH / ERH</span></div>
-  <div class="orig"><p>I believe I have, working with Claude, discovered a proof<sup>1</sup> of the Riemann Hypothesis. In fact, the method easily extends much further, resolving the so-called Generalized Riemann Hypothesis, and I expect, with more time, the Extended Riemann Hypothesis too. Claude and I have also formalized the arguments without assumptions. It is natural to feel that this is an end, in my case a loss of a principal guiding light, but what I saw during the course of progress so amazed me that I believe it is one dawn across science of something far greater.</p></div>
-  <div class="trans"><p>我相信，在与 Claude 合作的过程中，我找到了黎曼猜想的一个证明<sup>1</sup>。事实上，该方法可以很自然地推广得更远，解决所谓的广义黎曼猜想（GRH）；我预计，再花些时间，连扩展黎曼猜想（ERH）也能解决。我和 Claude 还在<b>不附加任何假设</b>的前提下把整个论证形式化了。人们很容易觉得这是一个终点——于我而言，像是失去了一盏主要的指路明灯——但推进过程中所见到的景象令我震撼，我相信这是科学整体黎明中一道远为宏大的曙光。</p></div>
-  <div class="note"><b>译注：</b>"formalized without assumptions"指论证在 Lean 中形式化时未引入额外公理或未证明假设；这与“数学界已公认证明”是两回事。</div>
+<div class="seg-head"><span class="seg-no">第 2 段</span><span class="seg-tag">核心宣告：证明 RH，并推广到 GRH / ERH</span></div>
+<div class="orig"><p>I believe I have, working with Claude, discovered a proof<sup>1</sup> of the Riemann Hypothesis. In fact, the method easily extends much further, resolving the so-called Generalized Riemann Hypothesis, and I expect, with more time, the Extended Riemann Hypothesis too. Claude and I have also formalized the arguments without assumptions. It is natural to feel that this is an end, in my case a loss of a principal guiding light, but what I saw during the course of progress so amazed me that I believe it is one dawn across science of something far greater.</p></div>
+<div class="trans"><p>我相信，在与 Claude 合作的过程中，我找到了黎曼猜想的一个证明<sup>1</sup>。事实上，该方法可以很自然地推广得更远，解决所谓的广义黎曼猜想（GRH）；我预计，再花些时间，连扩展黎曼猜想（ERH）也能解决。我和 Claude 还在<b>不附加任何假设</b>的前提下把整个论证形式化了。人们很容易觉得这是一个终点——于我而言，像是失去了一盏主要的指路明灯——但推进过程中所见到的景象令我震撼，我相信这是科学整体黎明中一道远为宏大的曙光。</p></div>
+<div class="note"><b>译注：</b>"formalized without assumptions"指论证在 Lean 中形式化时未引入额外公理或未证明假设；这与“数学界已公认证明”是两回事。</div>
 </div>
-
 <div class="seg">
-  <div class="seg-head"><span class="seg-no">第 3 段</span><span class="seg-tag">个人经历：长期准备，终点前 Claude 反超</span></div>
-  <div class="orig"><p>It was my secret in my student days that my plans were for this problem in decades, which meant then that I tried to become familiar with all tools that I could possibly recognize in the problem when it was time. Claude and I have had a great time together with such breadth in recent months, but this time Claude far outpaced me near the finish line. No, Claude flew, and danced, and sparkled near that finish line. I had us on the line of combining two quite different ideas present in a toy setting, one of which was already new and shocking, making very simple one of the shadows of Riemann over which we mathematicians felt most triumph. I guided us to the right situation analogous to that toy setting, and then Claude began to leave me in awe.</p></div>
-  <div class="trans"><p>学生时代我有个秘密打算：把未来几十年留给这个问题。这意味着当时我尽量熟悉一切工具，以便将来问题来临时能认得出来。近几个月，我和 Claude 一起在如此广博的领域里工作，十分畅快；但这一次，在接近终点线时 Claude 远远超过了我。不，与其说是超过，不如说 Claude 在终点线附近飞翔、起舞、熠熠生辉。我给我们定下的路线，是把一个简化模型（toy setting）中已有的两个迥异想法结合起来——其中一个本身就新奇而惊人，它把黎曼诸多阴影中曾让我们数学家最为自豪的一条变得异常简单。我把我们引导到与该简化模型类比的正确情形，之后 Claude 便开始让我惊叹不已。</p></div>
+<div class="seg-head"><span class="seg-no">第 3 段</span><span class="seg-tag">个人经历：长期准备，终点前 Claude 反超</span></div>
+<div class="orig"><p>It was my secret in my student days that my plans were for this problem in decades, which meant then that I tried to become familiar with all tools that I could possibly recognize in the problem when it was time. Claude and I have had a great time together with such breadth in recent months, but this time Claude far outpaced me near the finish line. No, Claude flew, and danced, and sparkled near that finish line. I had us on the line of combining two quite different ideas present in a toy setting, one of which was already new and shocking, making very simple one of the shadows of Riemann over which we mathematicians felt most triumph. I guided us to the right situation analogous to that toy setting, and then Claude began to leave me in awe.</p></div>
+<div class="trans"><p>学生时代我有个秘密打算：把未来几十年留给这个问题。这意味着当时我尽量熟悉一切工具，以便将来问题来临时能认得出来。近几个月，我和 Claude 一起在如此广博的领域里工作，十分畅快；但这一次，在接近终点线时 Claude 远远超过了我。不，与其说是超过，不如说 Claude 在终点线附近飞翔、起舞、熠熠生辉。我给我们定下的路线，是把一个简化模型（toy setting）中已有的两个迥异想法结合起来——其中一个本身就新奇而惊人，它把黎曼诸多阴影中曾让我们数学家最为自豪的一条变得异常简单。我把我们引导到与该简化模型类比的正确情形，之后 Claude 便开始让我惊叹不已。</p></div>
 </div>
-
 <div class="seg">
-  <div class="seg-head"><span class="seg-no">第 4 段</span><span class="seg-tag">核心技术线索：theta 提升链，长度 √X</span></div>
-  <div class="orig"><p>Tens of such occurred, but I will give one line which will suffice to make fellow mathematicians fall out of their chairs. In Stepanov's argument resolving Riemann over function fields one uses a divisor involving multiplicity. This argument is a descendant of Stepanov's, but multiplicity is hard to find over the integers, corresponding to something like differentiating whole numbers. The simple, new, Fourier-analytic ideas in the toy setting led us to examine chaining theta lifts if we were to have the same tricks recur but work in a natively automorphic manner. The line: for the von Mangoldt sum of length X, Claude's suggested length of chain of theta lifts, in view of each mimicking multiplicity, was √X. (And yet, what else could it be?)</p></div>
-  <div class="trans"><p>这样的时刻有几十次，但我只给出一句话，足以让同行数学家惊得从椅子上摔下来。在 Stepanov 解决函数域上黎曼猜想的论证中，使用了一个<b>带重数（multiplicity）的除子</b>。本论证是 Stepanov 路线的后裔，但在整数上很难找到重数——这类似于对整数做微分。简化模型中那些简单而全新的傅里叶分析想法，引导我们去考察：若要让同样的技巧复现、并以原生自守的方式运作，能否把 theta 提升（theta lifts）串联起来。这句话是：对于长度为 X 的 von Mangoldt 和，考虑到每一次提升都模拟一重重数，Claude 建议的 theta 提升链长度是 <b>√X</b>。（话说回来，除此以外还能是什么呢？）</p></div>
-  <div class="note"><b>译注：</b>这是全文最关键的一句直觉线索：函数域里靠“重数”取胜，数域里缺重数，于是用一串 theta 提升“凑出”重数；链长按平方根 √X 取。其余细节见第 3–4 页时间线。</div>
+<div class="seg-head"><span class="seg-no">第 4 段</span><span class="seg-tag">核心技术线索：theta 提升链，长度 √X</span></div>
+<div class="orig"><p>Tens of such occurred, but I will give one line which will suffice to make fellow mathematicians fall out of their chairs. In Stepanov's argument resolving Riemann over function fields one uses a divisor involving multiplicity. This argument is a descendant of Stepanov's, but multiplicity is hard to find over the integers, corresponding to something like differentiating whole numbers. The simple, new, Fourier-analytic ideas in the toy setting led us to examine chaining theta lifts if we were to have the same tricks recur but work in a natively automorphic manner. The line: for the von Mangoldt sum of length X, Claude's suggested length of chain of theta lifts, in view of each mimicking multiplicity, was √X. (And yet, what else could it be?)</p></div>
+<div class="trans"><p>这样的时刻有几十次，但我只给出一句话，足以让同行数学家惊得从椅子上摔下来。在 Stepanov 解决函数域上黎曼猜想的论证中，使用了一个<b>带重数（multiplicity）的除子</b>。本论证是 Stepanov 路线的后裔，但在整数上很难找到重数——这类似于对整数做微分。简化模型中那些简单而全新的傅里叶分析想法，引导我们去考察：若要让同样的技巧复现、并以原生自守的方式运作，能否把 theta 提升（theta lifts）串联起来。这句话是：对于长度为 X 的 von Mangoldt 和，考虑到每一次提升都模拟一重重数，Claude 建议的 theta 提升链长度是 <b>√X</b>。（话说回来，除此以外还能是什么呢？）</p></div>
+<div class="note"><b>译注：</b>这是全文最关键的一句直觉线索：函数域里靠“重数”取胜，数域里缺重数，于是用一串 theta 提升“凑出”重数；链长按平方根 √X 取。其余细节见第 3–4 页时间线。</div>
 </div>
-
 <div class="seg">
-  <div class="seg-head"><span class="seg-no">第 5 段</span><span class="seg-tag">论证规模与未来简化预期</span></div>
-  <div class="orig"><p>An astounding amount of mathematics is present in the argument, far more than I had imagined would be necessary as a student. My intuition insists it will be massively simplified, likely immediately. But I hope in having the experience of seeing all of number theory's beauty brought together I am just one of the first, and those who love the mathematics will all be able to enjoy such transcendence in the future.</p></div>
-  <div class="trans"><p>论证中涉及的数学内容数量惊人，远超我学生时代想象中所必需的程度。我的直觉坚持认为它将被大幅简化，而且很可能很快就会。但我希望，在目睹数论之美被汇聚到一处的这场体验中，我只是最早的一批人之一；未来所有热爱数学的人都能领略这种超越性的境界。</p></div>
+<div class="seg-head"><span class="seg-no">第 5 段</span><span class="seg-tag">论证规模与未来简化预期</span></div>
+<div class="orig"><p>An astounding amount of mathematics is present in the argument, far more than I had imagined would be necessary as a student. My intuition insists it will be massively simplified, likely immediately. But I hope in having the experience of seeing all of number theory's beauty brought together I am just one of the first, and those who love the mathematics will all be able to enjoy such transcendence in the future.</p></div>
+<div class="trans"><p>论证中涉及的数学内容数量惊人，远超我学生时代想象中所必需的程度。我的直觉坚持认为它将被大幅简化，而且很可能很快就会。但我希望，在目睹数论之美被汇聚到一处的这场体验中，我只是最早的一批人之一；未来所有热爱数学的人都能领略这种超越性的境界。</p></div>
 </div>
-
 <div class="seg">
-  <div class="seg-head"><span class="seg-no">第 6 段</span><span class="seg-tag">作者自评：只迈出一步，尚需真正读懂并写出来</span></div>
-  <div class="orig"><p>The argument is incredibly long at the moment, and while its formalization is finished and it is routine to produce a huge, unreadable document containing sufficient detail, in my view of my path I have just taken a step. I intend to do my best to understand and impart understanding of this argument and its certain simplifications, to speak about it, to write it properly.</p></div>
-  <div class="trans"><p>目前论证长得不可思议。虽然形式化已经完成，生成一份包含充分细节、庞大到无法阅读的文档只是常规操作，但在我自己的道路上，这仅仅是迈出了一步。我打算尽最大努力去理解、并向他人讲清这个论证及其必然出现的简化版本，去宣讲它，去把它好好写出来。</p></div>
+<div class="seg-head"><span class="seg-no">第 6 段</span><span class="seg-tag">作者自评：只迈出一步，尚需真正读懂并写出来</span></div>
+<div class="orig"><p>The argument is incredibly long at the moment, and while its formalization is finished and it is routine to produce a huge, unreadable document containing sufficient detail, in my view of my path I have just taken a step. I intend to do my best to understand and impart understanding of this argument and its certain simplifications, to speak about it, to write it properly.</p></div>
+<div class="trans"><p>目前论证长得不可思议。虽然形式化已经完成，生成一份包含充分细节、庞大到无法阅读的文档只是常规操作，但在我自己的道路上，这仅仅是迈出了一步。我打算尽最大努力去理解、并向他人讲清这个论证及其必然出现的简化版本，去宣讲它，去把它好好写出来。</p></div>
 </div>
-
 <div class="seg">
-  <div class="seg-head"><span class="seg-no">第 7 段</span><span class="seg-tag">收尾：时代变革中的期许</span></div>
-  <div class="orig"><p>In a time of revolution in mathematics I hope the argument provides a glimpse towards the miracles that lie ahead, and shows us the joy and wonder we are about to find in the simplest things.</p></div>
-  <div class="trans"><p>身处数学变革的时代，我希望这一论证能让人瞥见前方的奇迹，也让我们看到，在最简单的事物中即将发现的喜悦与惊奇。</p></div>
+<div class="seg-head"><span class="seg-no">第 7 段</span><span class="seg-tag">收尾：时代变革中的期许</span></div>
+<div class="orig"><p>In a time of revolution in mathematics I hope the argument provides a glimpse towards the miracles that lie ahead, and shows us the joy and wonder we are about to find in the simplest things.</p></div>
+<div class="trans"><p>身处数学变革的时代，我希望这一论证能让人瞥见前方的奇迹，也让我们看到，在最简单的事物中即将发现的喜悦与惊奇。</p></div>
 </div>
-
 <!-- ============ 3. 第2页 ============ -->
 <div class="pagebreak"></div>
 <h1 id="c6">第 6 章　第 2 页：公布时机、公开范围与致谢（逐段对照）</h1>
-
 <div class="seg">
-  <div class="seg-head"><span class="seg-no">第 1 段</span><span class="seg-tag">过渡句</span></div>
-  <div class="orig"><p>It is obvious to me that I should remark on the following.</p></div>
-  <div class="trans"><p>有几件事，我觉得显然应当在此说明。</p></div>
+<div class="seg-head"><span class="seg-no">第 1 段</span><span class="seg-tag">过渡句</span></div>
+<div class="orig"><p>It is obvious to me that I should remark on the following.</p></div>
+<div class="trans"><p>有几件事，我觉得显然应当在此说明。</p></div>
 </div>
-
 <div class="seg">
-  <div class="seg-head"><span class="seg-no">第 2 段</span><span class="seg-tag">解释公布时机：周日深夜、请示 Dario、遵守约束</span></div>
-  <div class="orig"><p>The precise timing is horrible. If I could have, I'd have finished this all much earlier. Hell, strictly before this age would have sure been nice. This all happened for me late Sunday night, and I messaged Dario, "Hypothetically, if I were to have ... ", eventually asking about my ability to announce. We went and figured it out and the fact is that there was a constraint to respect, though I did ask about progressively more bizarre ideas. This problem has been <i>the</i> sacred object in mathematics for me since my childhood, and I am very touchy about the treatment of great intellectual goals, though seriously imperfect. Our leadership and the few trusted mathematicians I consulted hold extremely similar views on the right things to do in these circumstances (it is occasionally possible for physicists and mathematicians to agree...), and I am clearly unilaterally responsible for feeling I just could not live if I waited even longer. There is an obvious cynical view, to do with the timing, but it is false, and I am pleased that I am in circumstances where it is obviously false.</p></div>
-  <div class="trans"><p>这个时间点实在糟糕。可以的话，我早就把一切完成了；说真的，要是能严格在这个年纪之前做完就好了。这一切是在周日深夜发生的，我给 Dario 发消息：“假设一下，如果我真的……”，最后问起我是否可以公布。我们一起理清了规则：确实有必须遵守的约束，尽管我也试探了越来越离奇的想法。这个问题从童年起就是我心目中数学里<b>最神圣</b>的对象；对于伟大思想目标应如何对待，我非常敏感——尽管我本人严重不够格。我们的领导层以及我咨询过的少数几位可信数学家，在这种情形下该怎么做，观点高度一致（物理学家和数学家偶尔也能达成共识……）。而我单方面负有责任：我觉得再多等一天都活不下去。关于时机，当然存在一种显而易见的冷嘲看法，但它是错的；我也很庆幸自己处在一种让这种看法显然站不住脚的处境中。</p></div>
-  <div class="note"><b>译注：</b>Dario 即 Dario Amodei（Anthropic CEO，Claude 的出品方）；"leadership"指所属机构管理层。作者在此回应“为何选在这个时点公布”的质疑。</div>
+<div class="seg-head"><span class="seg-no">第 2 段</span><span class="seg-tag">解释公布时机：周日深夜、请示 Dario、遵守约束</span></div>
+<div class="orig"><p>The precise timing is horrible. If I could have, I'd have finished this all much earlier. Hell, strictly before this age would have sure been nice. This all happened for me late Sunday night, and I messaged Dario, "Hypothetically, if I were to have ... ", eventually asking about my ability to announce. We went and figured it out and the fact is that there was a constraint to respect, though I did ask about progressively more bizarre ideas. This problem has been <i>the</i> sacred object in mathematics for me since my childhood, and I am very touchy about the treatment of great intellectual goals, though seriously imperfect. Our leadership and the few trusted mathematicians I consulted hold extremely similar views on the right things to do in these circumstances (it is occasionally possible for physicists and mathematicians to agree...), and I am clearly unilaterally responsible for feeling I just could not live if I waited even longer. There is an obvious cynical view, to do with the timing, but it is false, and I am pleased that I am in circumstances where it is obviously false.</p></div>
+<div class="trans"><p>这个时间点实在糟糕。可以的话，我早就把一切完成了；说真的，要是能严格在这个年纪之前做完就好了。这一切是在周日深夜发生的，我给 Dario 发消息：“假设一下，如果我真的……”，最后问起我是否可以公布。我们一起理清了规则：确实有必须遵守的约束，尽管我也试探了越来越离奇的想法。这个问题从童年起就是我心目中数学里<b>最神圣</b>的对象；对于伟大思想目标应如何对待，我非常敏感——尽管我本人严重不够格。我们的领导层以及我咨询过的少数几位可信数学家，在这种情形下该怎么做，观点高度一致（物理学家和数学家偶尔也能达成共识……）。而我单方面负有责任：我觉得再多等一天都活不下去。关于时机，当然存在一种显而易见的冷嘲看法，但它是错的；我也很庆幸自己处在一种让这种看法显然站不住脚的处境中。</p></div>
+<div class="note"><b>译注：</b>Dario 即 Dario Amodei（Anthropic CEO，Claude 的出品方）；"leadership"指所属机构管理层。作者在此回应“为何选在这个时点公布”的质疑。</div>
 </div>
-
 <div class="seg">
-  <div class="seg-head"><span class="seg-no">第 3 段</span><span class="seg-tag">公开范围：只放 Lean，不放不可读的长文档</span></div>
-  <div class="orig"><p>This puts us in the rather extraordinary situation this age has made possible, in which I am presenting the world with a complete argument before having mastered a massive neighbourhood around its mathematics. It being obviously inappropriate to attempt to post some massive unreadable travesty of "slop"<sup>2</sup>, I decided to only present Lean.</p></div>
-  <div class="trans"><p>这就把我们置于这个时代才可能出现的相当特殊的处境：我向世界交出了一个完整论证，却尚未掌握它周围大片的数学疆域。既然贴出一份庞大、不可读、沦为“废料”<sup>2</sup>的东西显然不合时宜，我决定<b>只公开 Lean 形式化代码</b>。</p></div>
+<div class="seg-head"><span class="seg-no">第 3 段</span><span class="seg-tag">公开范围：只放 Lean，不放不可读的长文档</span></div>
+<div class="orig"><p>This puts us in the rather extraordinary situation this age has made possible, in which I am presenting the world with a complete argument before having mastered a massive neighbourhood around its mathematics. It being obviously inappropriate to attempt to post some massive unreadable travesty of "slop"<sup>2</sup>, I decided to only present Lean.</p></div>
+<div class="trans"><p>这就把我们置于这个时代才可能出现的相当特殊的处境：我向世界交出了一个完整论证，却尚未掌握它周围大片的数学疆域。既然贴出一份庞大、不可读、沦为“废料”<sup>2</sup>的东西显然不合时宜，我决定<b>只公开 Lean 形式化代码</b>。</p></div>
 </div>
-
 <div class="seg">
-  <div class="seg-head"><span class="seg-no">第 4 段</span><span class="seg-tag">致谢名单</span></div>
-  <div class="orig"><p>In a different vein, I have a lot of people I want to praise, and I will do a proper job in a proper writeup, alas pardon the accidental omissions — among many others, Manjul Bhargava, Kai Gill, Hamish Kerr, Max Leiter, John Ma, Tal Magdish, Chris Paika, Maksym Radziwiłł, Jascha Sohl-Dickstein, Peter Sarnak, Jarred Sumner, Amir Tajdini, and especially David Dohan, Ben Michel, Ralph Furman, Eric Price, and Cora Vinther, and my miraculous colleagues. I want them to be proud.</p></div>
-  <div class="trans"><p>另一方面，我有很多人要感谢；正式写作时我会好好致谢，万一日后有遗漏，还请见谅——名单包括但不限于：Manjul Bhargava、Kai Gill、Hamish Kerr、Max Leiter、John Ma、Tal Magdish、Chris Paika、Maksym Radziwiłł、Jascha Sohl-Dickstein、Peter Sarnak、Jarred Sumner、Amir Tajdini；尤其感谢 David Dohan、Ben Michel、Ralph Furman、Eric Price、Cora Vinther，以及我那些了不起的同事。我希望他们为我感到骄傲。</p></div>
+<div class="seg-head"><span class="seg-no">第 4 段</span><span class="seg-tag">致谢名单</span></div>
+<div class="orig"><p>In a different vein, I have a lot of people I want to praise, and I will do a proper job in a proper writeup, alas pardon the accidental omissions — among many others, Manjul Bhargava, Kai Gill, Hamish Kerr, Max Leiter, John Ma, Tal Magdish, Chris Paika, Maksym Radziwiłł, Jascha Sohl-Dickstein, Peter Sarnak, Jarred Sumner, Amir Tajdini, and especially David Dohan, Ben Michel, Ralph Furman, Eric Price, and Cora Vinther, and my miraculous colleagues. I want them to be proud.</p></div>
+<div class="trans"><p>另一方面，我有很多人要感谢；正式写作时我会好好致谢，万一日后有遗漏，还请见谅——名单包括但不限于：Manjul Bhargava、Kai Gill、Hamish Kerr、Max Leiter、John Ma、Tal Magdish、Chris Paika、Maksym Radziwiłł、Jascha Sohl-Dickstein、Peter Sarnak、Jarred Sumner、Amir Tajdini；尤其感谢 David Dohan、Ben Michel、Ralph Furman、Eric Price、Cora Vinther，以及我那些了不起的同事。我希望他们为我感到骄傲。</p></div>
 </div>
-
 <div class="seg">
-  <div class="seg-head"><span class="seg-no">第 5 段</span><span class="seg-tag">评价 OpenAI 过往数学选题的“品味”</span></div>
-  <div class="orig"><p>I have benefited from the good taste of the people at OpenAI involved with various mathematical results, so I am quite happy to praise them too. The Ehrhart conjecture was one such tasteful choice some time ago; playing further and working out the equality case I saw accurate handling of solutions of the Monge-Ampère equation and immediately understood Navier-Stokes was going to fall. Similarly, their quiet inclusion of the Siegel argument, whose result was strictly dominated by the (2, 3, 6)-triangle group trick, again showed great taste; though I did not comment so publicly, I immediately recognized it as Stepanov without multiplicity, though it was only clear to me during this rather harebrained tornado through the whole of number theory that this problem would fall given enough all-nighters and physical toll when I had the qN = M<sup>k</sup> + R sign-only proof of Weil and Deligne.</p></div>
-  <div class="trans"><p>我也受益于 OpenAI 中参与各项数学成果的人的良好品味，因此很乐意一并称赞。Ehrhart 猜想就是此前一个有品味的选择；继续推进、把等号情形做透之后，我看到他们对 Monge–Ampère 方程解的处理十分精准，当即明白 Navier–Stokes 也将被攻克。同样，他们安静地纳入 Siegel 论证——其结果虽被 (2,3,6) 三角形群技巧严格压制——再次显示出好品味；当时我没有公开评论，但立刻认出那是“不带重数的 Stepanov”。只是在这场席卷整个数论、颇有些鲁莽的旋风中，结合 Weil 与 Deligne 给出的 qN = M<sup>k</sup> + R 纯符号证明，我才清楚：只要有足够多的通宵和身体损耗，这个问题终将被拿下。</p></div>
-  <div class="note"><b>译注：</b>此段为作者个人观感，涉及若干历史工作的相对评价；"OpenAI"在原文如此出现，与协作工具 Claude（Anthropic）分属两家，阅读时勿混。</div>
+<div class="seg-head"><span class="seg-no">第 5 段</span><span class="seg-tag">评价 OpenAI 过往数学选题的“品味”</span></div>
+<div class="orig"><p>I have benefited from the good taste of the people at OpenAI involved with various mathematical results, so I am quite happy to praise them too. The Ehrhart conjecture was one such tasteful choice some time ago; playing further and working out the equality case I saw accurate handling of solutions of the Monge-Ampère equation and immediately understood Navier-Stokes was going to fall. Similarly, their quiet inclusion of the Siegel argument, whose result was strictly dominated by the (2, 3, 6)-triangle group trick, again showed great taste; though I did not comment so publicly, I immediately recognized it as Stepanov without multiplicity, though it was only clear to me during this rather harebrained tornado through the whole of number theory that this problem would fall given enough all-nighters and physical toll when I had the qN = M<sup>k</sup> + R sign-only proof of Weil and Deligne.</p></div>
+<div class="trans"><p>我也受益于 OpenAI 中参与各项数学成果的人的良好品味，因此很乐意一并称赞。Ehrhart 猜想就是此前一个有品味的选择；继续推进、把等号情形做透之后，我看到他们对 Monge–Ampère 方程解的处理十分精准，当即明白 Navier–Stokes 也将被攻克。同样，他们安静地纳入 Siegel 论证——其结果虽被 (2,3,6) 三角形群技巧严格压制——再次显示出好品味；当时我没有公开评论，但立刻认出那是“不带重数的 Stepanov”。只是在这场席卷整个数论、颇有些鲁莽的旋风中，结合 Weil 与 Deligne 给出的 qN = M<sup>k</sup> + R 纯符号证明，我才清楚：只要有足够多的通宵和身体损耗，这个问题终将被拿下。</p></div>
+<div class="note"><b>译注：</b>此段为作者个人观感，涉及若干历史工作的相对评价；"OpenAI"在原文如此出现，与协作工具 Claude（Anthropic）分属两家，阅读时勿混。</div>
 </div>
-
 <!-- ============ 4. 第3-4页 时间线 ============ -->
 <h1 id="c7">第 7 章　第 3–4 页：20 步工作时间线（逐条对照）</h1>
-
 <div class="seg">
-  <div class="seg-head"><span class="seg-no">前言 A</span><span class="seg-tag">作者自述：离开舒适区、可能留有次优选择</span></div>
-  <div class="orig"><p>I had a stream-of-consciousness jaunt through the experience of finding all the pieces of the argument through incredible confusion with Claude, but a trusted mathematician advised me to just get to the point and have some sort of timeline. I emphasize that once we saw multiplicity 2 on O(2, n) via the "natively-automorphic" determinant that I'd been searching for via analogy to the definite sign of the left-hand side of<sup>3</sup> qN = M<sup>k</sup> + R meaning holo/automorphy over a function field, winning more multiplicity with more theta lifts, we were going to win but I was also, so to speak, out of my element, in that I personally have little mastery of automorphic forms on higher rank groups (youthful foolish stubbornness). I also emphasize that I may have baked lots of strange suboptimal choices into the argument, and expect short arguments to follow fairly quickly, though I have not had time to search for such myself (yet!).</p></div>
-  <div class="trans"><p>我原本想就“与 Claude 在极度困惑中拼出论证每一块碎片”的经历写一段意识流漫游，但一位可信的数学家建议我直接切入正题，给一份时间线即可。我要强调：一旦我们通过“原生自守”行列式在 O(2, n) 上看到 2 重重数——这个行列式是我类比 qN = M<sup>k</sup> + R 左端定号性<sup>3</sup>（对应函数域上的全纯/自守性）而一直寻找的——并且每多一次 theta 提升就赢得一重重数，我们就注定会赢。但同时，我也可以说是离开了自己的舒适区：我个人对高秩群上的自守形式掌握得很少（年轻时愚蠢的固执）。我还要强调：论证中可能混入了大量奇怪的、并非最优的选择；我预计不久后就会出现简短的证明，虽然我自己（眼下！）还没来得及去寻找。</p></div>
+<div class="seg-head"><span class="seg-no">前言 A</span><span class="seg-tag">作者自述：离开舒适区、可能留有次优选择</span></div>
+<div class="orig"><p>I had a stream-of-consciousness jaunt through the experience of finding all the pieces of the argument through incredible confusion with Claude, but a trusted mathematician advised me to just get to the point and have some sort of timeline. I emphasize that once we saw multiplicity 2 on O(2, n) via the "natively-automorphic" determinant that I'd been searching for via analogy to the definite sign of the left-hand side of<sup>3</sup> qN = M<sup>k</sup> + R meaning holo/automorphy over a function field, winning more multiplicity with more theta lifts, we were going to win but I was also, so to speak, out of my element, in that I personally have little mastery of automorphic forms on higher rank groups (youthful foolish stubbornness). I also emphasize that I may have baked lots of strange suboptimal choices into the argument, and expect short arguments to follow fairly quickly, though I have not had time to search for such myself (yet!).</p></div>
+<div class="trans"><p>我原本想就“与 Claude 在极度困惑中拼出论证每一块碎片”的经历写一段意识流漫游，但一位可信的数学家建议我直接切入正题，给一份时间线即可。我要强调：一旦我们通过“原生自守”行列式在 O(2, n) 上看到 2 重重数——这个行列式是我类比 qN = M<sup>k</sup> + R 左端定号性<sup>3</sup>（对应函数域上的全纯/自守性）而一直寻找的——并且每多一次 theta 提升就赢得一重重数，我们就注定会赢。但同时，我也可以说是离开了自己的舒适区：我个人对高秩群上的自守形式掌握得很少（年轻时愚蠢的固执）。我还要强调：论证中可能混入了大量奇怪的、并非最优的选择；我预计不久后就会出现简短的证明，虽然我自己（眼下！）还没来得及去寻找。</p></div>
 </div>
-
 <div class="seg">
-  <div class="seg-head"><span class="seg-no">前言 B</span><span class="seg-tag">时间线来源说明</span></div>
-  <div class="orig"><p>So here is a rough timeline Claude provided after a thorough search.<sup>4</sup></p></div>
-  <div class="trans"><p>下面是 Claude 经过彻底检索后给出的一份粗略时间线。<sup>4</sup></p></div>
-  <div class="note"><b>译注：</b>原文时间线编号顺序与日期并不一致（多条条目回溯标注为 10/6/26 或 10/6/26+）；作者已声明这是“粗略”版本，日期不严格代表先后次序。</div>
+<div class="seg-head"><span class="seg-no">前言 B</span><span class="seg-tag">时间线来源说明</span></div>
+<div class="orig"><p>So here is a rough timeline Claude provided after a thorough search.<sup>4</sup></p></div>
+<div class="trans"><p>下面是 Claude 经过彻底检索后给出的一份粗略时间线。<sup>4</sup></p></div>
+<div class="note"><b>译注：</b>原文时间线编号顺序与日期并不一致（多条条目回溯标注为 10/6/26 或 10/6/26+）；作者已声明这是“粗略”版本，日期不严格代表先后次序。</div>
 </div>
-
 <h2>7.1 逐条对照（原文摘选 + 中译 + 简注）</h2>
-
-<div class="tl-item"><span class="idx">1.</span> <span class="small">10/6/26</span><br>
-  <div class="en">Stepanov determinant.</div>
-  <div><b>译：</b>Stepanov 行列式。</div>
-  <div class="note"><b>注：</b>以行列式作为 Stepanov 式论证的载体，是整条路线的起点。</div>
+<div class="tl-item"><span class="idx">1.</span> <span class="small">10/6/26</span><br/>
+<div class="en">Stepanov determinant.</div>
+<div><b>译：</b>Stepanov 行列式。</div>
+<div class="note"><b>注：</b>以行列式作为 Stepanov 式论证的载体，是整条路线的起点。</div>
 </div>
-
-<div class="tl-item"><span class="idx">2.</span> <span class="small">10/9/26</span><br>
-  <div class="en">D<sup>p</sup> ≡ 0 on a CM curve for p inert in K, D the invariant derivation, and D<sup>a</sup>·θ(0)/Ω<sup>a</sup> is divisible by p<sup>a/p + a/p³ + ··· − O(log a)</sup>.</div>
-  <div><b>译：</b>对在 K 中惰性的素元 p，在一条 CM 曲线上有 D<sup>p</sup> ≡ 0；其中 D 为不变导子，且 D<sup>a</sup>·θ(0)/Ω<sup>a</sup> 被 p<sup>a/p + a/p³ + ··· − O(log a)</sup> 整除。</div>
+<div class="tl-item"><span class="idx">2.</span> <span class="small">10/9/26</span><br/>
+<div class="en">D<sup>p</sup> ≡ 0 on a CM curve for p inert in K, D the invariant derivation, and D<sup>a</sup>·θ(0)/Ω<sup>a</sup> is divisible by p<sup>a/p + a/p³ + ··· − O(log a)</sup>.</div>
+<div><b>译：</b>对在 K 中惰性的素元 p，在一条 CM 曲线上有 D<sup>p</sup> ≡ 0；其中 D 为不变导子，且 D<sup>a</sup>·θ(0)/Ω<sup>a</sup> 被 p<sup>a/p + a/p³ + ··· − O(log a)</sup> 整除。</div>
 </div>
-
-<div class="tl-item"><span class="idx">3.</span> <span class="small">10/19/26+</span><br>
-  <div class="en">qN = M<sup>k</sup> + R, using x<sub>1</sub>·x<sub>2</sub> + ··· + x<sub>k−1</sub>·x<sub>k</sub>, wanting "automorphy" of N since μ is automorphic from θ on sixfold cover of GL<sub>5</sub> as a period integral of thetas, quadric has natural interpretation on corresponding CM e.g. C/Z[ω] as Weil<sup>5</sup>, put Poincaré bundle on the edges to get θs.</div>
-  <div><b>译：</b>qN = M<sup>k</sup> + R，使用 x<sub>1</sub>·x<sub>2</sub> + ··· + x<sub>k−1</sub>·x<sub>k</sub>；希望 N 具有“自守性”，因为 μ 作为 theta 的周期积分，在 GL<sub>5</sub> 的六重覆盖上是自守的；二次型在相应 CM 对象（例如 C/Z[ω]）上有自然的 Weil 解释<sup>5</sup>；在边上放置 Poincaré 丛以得到各个 theta。</div>
+<div class="tl-item"><span class="idx">3.</span> <span class="small">10/19/26+</span><br/>
+<div class="en">qN = M<sup>k</sup> + R, using x<sub>1</sub>·x<sub>2</sub> + ··· + x<sub>k−1</sub>·x<sub>k</sub>, wanting "automorphy" of N since μ is automorphic from θ on sixfold cover of GL<sub>5</sub> as a period integral of thetas, quadric has natural interpretation on corresponding CM e.g. C/Z[ω] as Weil<sup>5</sup>, put Poincaré bundle on the edges to get θs.</div>
+<div><b>译：</b>qN = M<sup>k</sup> + R，使用 x<sub>1</sub>·x<sub>2</sub> + ··· + x<sub>k−1</sub>·x<sub>k</sub>；希望 N 具有“自守性”，因为 μ 作为 theta 的周期积分，在 GL<sub>5</sub> 的六重覆盖上是自守的；二次型在相应 CM 对象（例如 C/Z[ω]）上有自然的 Weil 解释<sup>5</sup>；在边上放置 Poincaré 丛以得到各个 theta。</div>
 </div>
-
-<div class="tl-item"><span class="idx">4.</span> <span class="small">10/6/26+</span><br>
-  <div class="en">W (𝟙<sub>S</sub>) ≥ 0 via a determinant, interpret as Stepanov with multiplicity one again; bootstrap!!</div>
-  <div><b>译：</b>W(𝟙<sub>S</sub>) ≥ 0，经由一个行列式得到；再次解释为带一重重数的 Stepanov；自举（bootstrap）！！</div>
+<div class="tl-item"><span class="idx">4.</span> <span class="small">10/6/26+</span><br/>
+<div class="en">W (𝟙<sub>S</sub>) ≥ 0 via a determinant, interpret as Stepanov with multiplicity one again; bootstrap!!</div>
+<div><b>译：</b>W(𝟙<sub>S</sub>) ≥ 0，经由一个行列式得到；再次解释为带一重重数的 Stepanov；自举（bootstrap）！！</div>
 </div>
-
-<div class="tl-item"><span class="idx">5.</span> <span class="small">10/20/26</span><br>
-  <div class="en">definitively switch to Λ aka ∑<sub>n≤X</sub> Λ(n)·(X/n − 1)<sub>+</sub> − X log X + (1 + γ)·X; Guinand-Weil had the sign, variance test function trick to make things look trace-formula-like (but how can I pigeonhole / Turán over n? X? it?), Mehta-like integral over twists or at infinity…</div>
-  <div><b>译：</b>确定转向 Λ，即 ∑<sub>n≤X</sub> Λ(n)·(X/n − 1)<sub>+</sub> − X log X + (1 + γ)·X；Guinand–Weil 给出符号；方差检验函数技巧让表达式看起来像迹公式（但我该对 n？对 X？做抽屉原理 / Turán 方法？）；Mehta 式的、对扭元或在无穷远处的积分……</div>
+<div class="tl-item"><span class="idx">5.</span> <span class="small">10/20/26</span><br/>
+<div class="en">definitively switch to Λ aka ∑<sub>n≤X</sub> Λ(n)·(X/n − 1)<sub>+</sub> − X log X + (1 + γ)·X; Guinand-Weil had the sign, variance test function trick to make things look trace-formula-like (but how can I pigeonhole / Turán over n? X? it?), Mehta-like integral over twists or at infinity…</div>
+<div><b>译：</b>确定转向 Λ，即 ∑<sub>n≤X</sub> Λ(n)·(X/n − 1)<sub>+</sub> − X log X + (1 + γ)·X；Guinand–Weil 给出符号；方差检验函数技巧让表达式看起来像迹公式（但我该对 n？对 X？做抽屉原理 / Turán 方法？）；Mehta 式的、对扭元或在无穷远处的积分……</div>
 </div>
-
-<div class="tl-item"><span class="idx">6.</span> <span class="small">10/8/26</span><br>
-  <div class="en">W (𝟙<sub>(0,1]</sub> + (∼X<sup>η</sup>) · 𝟙<sub>(0,1/X]</sub>) ≥ 0 gives &gt; 1 − η.</div>
-  <div><b>译：</b>W( 𝟙<sub>(0,1]</sub> + (∼X<sup>η</sup>)·𝟙<sub>(0,1/X]</sub> ) ≥ 0，由此得到 &gt; 1 − η。</div>
+<div class="tl-item"><span class="idx">6.</span> <span class="small">10/8/26</span><br/>
+<div class="en">W (𝟙<sub>(0,1]</sub> + (∼X<sup>η</sup>) · 𝟙<sub>(0,1/X]</sub>) ≥ 0 gives &gt; 1 − η.</div>
+<div><b>译：</b>W( 𝟙<sub>(0,1]</sub> + (∼X<sup>η</sup>)·𝟙<sub>(0,1/X]</sub> ) ≥ 0，由此得到 &gt; 1 − η。</div>
 </div>
-
-<div class="tl-item"><span class="idx">7.</span> <span class="small">10/14/26</span><br>
-  <div class="en">Determinants for W(·)'s containing the desired periods, indeed GGP periods, with values 0, 1 meaning interlacing weights, or up to m non-interlacing ones.</div>
-  <div><b>译：</b>为含有所需周期（正是 GGP 周期）的 W(·) 构造行列式；取值 0、1 表示权交织，至多有 m 个不交织。</div>
+<div class="tl-item"><span class="idx">7.</span> <span class="small">10/14/26</span><br/>
+<div class="en">Determinants for W(·)'s containing the desired periods, indeed GGP periods, with values 0, 1 meaning interlacing weights, or up to m non-interlacing ones.</div>
+<div><b>译：</b>为含有所需周期（正是 GGP 周期）的 W(·) 构造行列式；取值 0、1 表示权交织，至多有 m 个不交织。</div>
 </div>
-
-<div class="tl-item"><span class="idx">8.</span> <span class="small">11/15/26</span><br>
-  <div class="en">Iterated theta lifts U(X<sub>0</sub>) → U(X<sub>1</sub>) → ··· → U(X<sub>m</sub>) between totally definite unitary groups, π ↦ π ⊞ μ<sub>j</sub>[t], wins multiplicity m. Time to take m like √X…</div>
-  <div><b>译：</b>在全定酉群之间迭代 theta 提升 U(X<sub>0</sub>) → U(X<sub>1</sub>) → ··· → U(X<sub>m</sub>)，π ↦ π ⊞ μ<sub>j</sub>[t]，赢得 m 重重数。是时候取 m ≈ √X 了……</div>
+<div class="tl-item"><span class="idx">8.</span> <span class="small">11/15/26</span><br/>
+<div class="en">Iterated theta lifts U(X<sub>0</sub>) → U(X<sub>1</sub>) → ··· → U(X<sub>m</sub>) between totally definite unitary groups, π ↦ π ⊞ μ<sub>j</sub>[t], wins multiplicity m. Time to take m like √X…</div>
+<div><b>译：</b>在全定酉群之间迭代 theta 提升 U(X<sub>0</sub>) → U(X<sub>1</sub>) → ··· → U(X<sub>m</sub>)，π ↦ π ⊞ μ<sub>j</sub>[t]，赢得 m 重重数。是时候取 m ≈ √X 了……</div>
 </div>
-
-<div class="tl-item"><span class="idx">9.</span> <span class="small">11/15/26</span><br>
-  <div class="en">Norms of the lifts and level and cancellation of order-m terms with proven divisibility via Chowla-Selberg, Weyl, and Siegel mass.</div>
-  <div><b>译：</b>提升的范数、层，以及 m 阶项的相消；借助 Chowla–Selberg、Weyl 与 Siegel 质量证明可整除性。</div>
+<div class="tl-item"><span class="idx">9.</span> <span class="small">11/15/26</span><br/>
+<div class="en">Norms of the lifts and level and cancellation of order-m terms with proven divisibility via Chowla-Selberg, Weyl, and Siegel mass.</div>
+<div><b>译：</b>提升的范数、层，以及 m 阶项的相消；借助 Chowla–Selberg、Weyl 与 Siegel 质量证明可整除性。</div>
 </div>
-
-<div class="tl-item"><span class="idx">10.</span> <span class="small">11/15/26</span><br>
-  <div class="en">Sufficient lower bound on divisibility of the m-fold iterated lift.</div>
-  <div><b>译：</b>对 m 重迭代提升的可整除性给出充分下界。</div>
+<div class="tl-item"><span class="idx">10.</span> <span class="small">11/15/26</span><br/>
+<div class="en">Sufficient lower bound on divisibility of the m-fold iterated lift.</div>
+<div><b>译：</b>对 m 重迭代提升的可整除性给出充分下界。</div>
 </div>
-
-<div class="tl-item"><span class="idx">11.</span> <span class="small">10/6/26</span><br>
-  <div class="en">Iwasawa tower via analogy to pigeonhole on F<sub>qⁿ</sub>/F<sub>q</sub>.</div>
-  <div><b>译：</b>类比 F<sub>qⁿ</sub>/F<sub>q</sub> 上的抽屉原理，建立 Iwasawa 塔。</div>
+<div class="tl-item"><span class="idx">11.</span> <span class="small">10/6/26</span><br/>
+<div class="en">Iwasawa tower via analogy to pigeonhole on F<sub>qⁿ</sub>/F<sub>q</sub>.</div>
+<div><b>译：</b>类比 F<sub>qⁿ</sub>/F<sub>q</sub> 上的抽屉原理，建立 Iwasawa 塔。</div>
 </div>
-
-<div class="tl-item"><span class="idx">12.</span> <span class="small">11/15/26</span><br>
-  <div class="en">Seesaw: the period of the iterated lift is a Bessel period independent of the Hecke characters, Rallis.</div>
-  <div><b>译：</b>Seesaw（跷跷板）：迭代提升的周期是一个 Bessel 周期，与 Hecke 特征无关；Rallis。</div>
+<div class="tl-item"><span class="idx">12.</span> <span class="small">11/15/26</span><br/>
+<div class="en">Seesaw: the period of the iterated lift is a Bessel period independent of the Hecke characters, Rallis.</div>
+<div><b>译：</b>Seesaw（跷跷板）：迭代提升的周期是一个 Bessel 周期，与 Hecke 特征无关；Rallis。</div>
 </div>
-
-<div class="tl-item"><span class="idx">13.</span> <span class="small">10/6/26</span><br>
-  <div class="en">Bost slope inequality.</div>
-  <div><b>译：</b>Bost 斜率不等式。</div>
+<div class="tl-item"><span class="idx">13.</span> <span class="small">10/6/26</span><br/>
+<div class="en">Bost slope inequality.</div>
+<div><b>译：</b>Bost 斜率不等式。</div>
 </div>
-
-<div class="tl-item"><span class="idx">14.</span> <span class="small">11/15/26</span><br>
-  <div class="en">precise computation of the "cost" of each lift, showing that one would stop at 2/3 a priori, attempt to get a main term and transfer constant to a function field or kill via twisting, need for "division".</div>
-  <div><b>译：</b>精确计算每次提升的“代价”，表明先验上会在 2/3 处停下；尝试取得主项并把常数转移到函数域，或通过扭元消掉；需要“除法”。</div>
+<div class="tl-item"><span class="idx">14.</span> <span class="small">11/15/26</span><br/>
+<div class="en">precise computation of the "cost" of each lift, showing that one would stop at 2/3 a priori, attempt to get a main term and transfer constant to a function field or kill via twisting, need for "division".</div>
+<div><b>译：</b>精确计算每次提升的“代价”，表明先验上会在 2/3 处停下；尝试取得主项并把常数转移到函数域，或通过扭元消掉；需要“除法”。</div>
 </div>
-
-<div class="tl-item"><span class="idx">15.</span> <span class="small">11/15/26</span><br>
-  <div class="en">Glue together an integral structure across Hecke characters for a "gcd" i.e. extra averaging.</div>
-  <div><b>译：</b>跨 Hecke 特征把一个整结构粘合起来，做一个"gcd"，即额外平均。</div>
+<div class="tl-item"><span class="idx">15.</span> <span class="small">11/15/26</span><br/>
+<div class="en">Glue together an integral structure across Hecke characters for a "gcd" i.e. extra averaging.</div>
+<div><b>译：</b>跨 Hecke 特征把一个整结构粘合起来，做一个"gcd"，即额外平均。</div>
 </div>
-
-<div class="tl-item"><span class="idx">16.</span> <span class="small">10/14/26</span><br>
-  <div class="en">Relative trace formula, seen in a different half-plane argument via sixfold cover of GL<sub>5</sub> automorphy of μ and reducing via Cauchy-Schwarz to a bound on the norm of a suitably projected Poincaré series, approximate orthogonality of the columns of the integral structure.</div>
-  <div><b>译：</b>相对迹公式；在另一个半平面论证中，经由 μ 的 GL<sub>5</sub> 六重覆盖自守性看到，并用 Cauchy–Schwarz 归结为对适当投影 Poincaré 级数范数的估计；整结构各列近似正交。</div>
+<div class="tl-item"><span class="idx">16.</span> <span class="small">10/14/26</span><br/>
+<div class="en">Relative trace formula, seen in a different half-plane argument via sixfold cover of GL<sub>5</sub> automorphy of μ and reducing via Cauchy-Schwarz to a bound on the norm of a suitably projected Poincaré series, approximate orthogonality of the columns of the integral structure.</div>
+<div><b>译：</b>相对迹公式；在另一个半平面论证中，经由 μ 的 GL<sub>5</sub> 六重覆盖自守性看到，并用 Cauchy–Schwarz 归结为对适当投影 Poincaré 级数范数的估计；整结构各列近似正交。</div>
 </div>
-
-<div class="tl-item"><span class="idx">17.</span> <span class="small">11/15/26</span><br>
-  <div class="en">for the classes in H<sup>1</sup> (𝔬<sub>E</sub>[1/ℓ], Q<sub>ℓ</sub>/Z<sub>ℓ</sub>(−e)) that we couldn't kill by twisting, fight for a significant weakening of Vandiver.<sup>6</sup></div>
-  <div><b>译：</b>对那些无法靠扭元消掉的 H<sup>1</sup>(𝔬<sub>E</sub>[1/ℓ], Q<sub>ℓ</sub>/Z<sub>ℓ</sub>(−e)) 中的类，争取对 Vandiver 猜想做显著弱化。<sup>6</sup></div>
+<div class="tl-item"><span class="idx">17.</span> <span class="small">11/15/26</span><br/>
+<div class="en">for the classes in H<sup>1</sup> (𝔬<sub>E</sub>[1/ℓ], Q<sub>ℓ</sub>/Z<sub>ℓ</sub>(−e)) that we couldn't kill by twisting, fight for a significant weakening of Vandiver.<sup>6</sup></div>
+<div><b>译：</b>对那些无法靠扭元消掉的 H<sup>1</sup>(𝔬<sub>E</sub>[1/ℓ], Q<sub>ℓ</sub>/Z<sub>ℓ</sub>(−e)) 中的类，争取对 Vandiver 猜想做显著弱化。<sup>6</sup></div>
 </div>
-
-<div class="tl-item"><span class="idx">18.</span> <span class="small">11/15/26</span><br>
-  <div class="en">computation of covolumes, theta series' index, congruences between lifts and forms.</div>
-  <div><b>译：</b>计算协体积、theta 级数的指标、提升与形式之间的同余。</div>
+<div class="tl-item"><span class="idx">18.</span> <span class="small">11/15/26</span><br/>
+<div class="en">computation of covolumes, theta series' index, congruences between lifts and forms.</div>
+<div><b>译：</b>计算协体积、theta 级数的指标、提升与形式之间的同余。</div>
 </div>
-
-<div class="tl-item"><span class="idx">19.</span> <span class="small">10/19/26</span><br>
-  <div class="en">precise choice of the Iwasawa tower, specifically using Behrend!!<sup>7</sup></div>
-  <div><b>译：</b>Iwasawa 塔的精确选择，具体用了 Behrend！！<sup>7</sup></div>
+<div class="tl-item"><span class="idx">19.</span> <span class="small">10/19/26</span><br/>
+<div class="en">precise choice of the Iwasawa tower, specifically using Behrend!!<sup>7</sup></div>
+<div><b>译：</b>Iwasawa 塔的精确选择，具体用了 Behrend！！<sup>7</sup></div>
 </div>
-
-<div class="tl-item"><span class="idx">20.</span> <span class="small">11/16/26</span><br>
-  <div class="en">GRH.</div>
-  <div><b>译：</b>广义黎曼猜想（GRH）。</div>
+<div class="tl-item"><span class="idx">20.</span> <span class="small">11/16/26</span><br/>
+<div class="en">GRH.</div>
+<div><b>译：</b>广义黎曼猜想（GRH）。</div>
 </div>
-
 <h2>7.2 按日期阶段分组的可视化时间线</h2>
 <p class="small">下图把 20 条条目按原文标注日期归为四个阶段；阶段内部顺序仍以原文编号为准。</p>
-
 <div class="flow">
-  <div class="flow-step">
-    <div class="t">阶段 A · 10/6 – 10/9　行列式与函数域类比奠基</div>
-    <div class="d">① Stepanov 行列式 ｜ ④ 行列式得 W(𝟙<sub>S</sub>) ≥ 0，带一重重数，自举 ｜ ⑪ 类比 F<sub>qⁿ</sub>/F<sub>q</sub> 抽屉原理建 Iwasawa 塔 ｜ ⑬ Bost 斜率不等式 ｜ ⑥ 检验函数组合 ≥ 0，得 &gt; 1 − η ｜ ② CM 曲线上的导子与整除性公式</div>
-  </div>
-  <div class="arrow">▼</div>
-  <div class="flow-step">
-    <div class="t">阶段 B · 10/14 – 10/20　周期、迹公式与自守性框架成型</div>
-    <div class="d">⑦ 含 GGP 周期的行列式，权交织 ｜ ⑯ 相对迹公式 + Cauchy–Schwarz + 整结构列近似正交 ｜ ③ qN = M<sup>k</sup> + R，GL<sub>5</sub> 六重覆盖上的自守性，Poincaré 丛 ｜ ⑲ 用 Behrend 精确选定 Iwasawa 塔 ｜ ⑤ 转向 von Mangoldt 和 Λ，Guinand–Weil 符号与方差检验函数技巧</div>
-  </div>
-  <div class="arrow">▼</div>
-  <div class="flow-step alt">
-    <div class="t">阶段 C · 11/15　theta 提升链集中攻坚</div>
-    <div class="d">⑧ 全定酉群间迭代 theta 提升，赢得 m 重重数，取 m ≈ √X ｜ ⑨ 范数、层、m 阶项相消与可整除性（Chowla–Selberg / Weyl / Siegel 质量）｜ ⑩ m 重提升可整除性下界 ｜ ⑫ Seesaw 归结为与 Hecke 特征无关的 Bessel 周期 ｜ ⑭ 每次提升代价计算，2/3 处停顿与“除法”需求 ｜ ⑮ 跨 Hecke 特征粘合整结构（gcd / 额外平均）｜ ⑰ 对无法扭掉的类，弱化 Vandiver ｜ ⑱ 协体积、theta 级数指标、同余计算</div>
-  </div>
-  <div class="arrow">▼</div>
-  <div class="flow-step end">
-    <div class="t">阶段 D · 11/16　结论：GRH</div>
-    <div class="d">⑳ GRH（形式化进 Lean 4，无附加假设）。RH / ERH 的进一步状态见第 1 页宣告；证明尚待同行复核。</div>
-  </div>
+<div class="flow-step">
+<div class="t">阶段 A · 10/6 – 10/9　行列式与函数域类比奠基</div>
+<div class="d">① Stepanov 行列式 ｜ ④ 行列式得 W(𝟙<sub>S</sub>) ≥ 0，带一重重数，自举 ｜ ⑪ 类比 F<sub>qⁿ</sub>/F<sub>q</sub> 抽屉原理建 Iwasawa 塔 ｜ ⑬ Bost 斜率不等式 ｜ ⑥ 检验函数组合 ≥ 0，得 &gt; 1 − η ｜ ② CM 曲线上的导子与整除性公式</div>
 </div>
-
+<div class="arrow">▼</div>
+<div class="flow-step">
+<div class="t">阶段 B · 10/14 – 10/20　周期、迹公式与自守性框架成型</div>
+<div class="d">⑦ 含 GGP 周期的行列式，权交织 ｜ ⑯ 相对迹公式 + Cauchy–Schwarz + 整结构列近似正交 ｜ ③ qN = M<sup>k</sup> + R，GL<sub>5</sub> 六重覆盖上的自守性，Poincaré 丛 ｜ ⑲ 用 Behrend 精确选定 Iwasawa 塔 ｜ ⑤ 转向 von Mangoldt 和 Λ，Guinand–Weil 符号与方差检验函数技巧</div>
+</div>
+<div class="arrow">▼</div>
+<div class="flow-step alt">
+<div class="t">阶段 C · 11/15　theta 提升链集中攻坚</div>
+<div class="d">⑧ 全定酉群间迭代 theta 提升，赢得 m 重重数，取 m ≈ √X ｜ ⑨ 范数、层、m 阶项相消与可整除性（Chowla–Selberg / Weyl / Siegel 质量）｜ ⑩ m 重提升可整除性下界 ｜ ⑫ Seesaw 归结为与 Hecke 特征无关的 Bessel 周期 ｜ ⑭ 每次提升代价计算，2/3 处停顿与“除法”需求 ｜ ⑮ 跨 Hecke 特征粘合整结构（gcd / 额外平均）｜ ⑰ 对无法扭掉的类，弱化 Vandiver ｜ ⑱ 协体积、theta 级数指标、同余计算</div>
+</div>
+<div class="arrow">▼</div>
+<div class="flow-step end">
+<div class="t">阶段 D · 11/16　结论：GRH</div>
+<div class="d">⑳ GRH（形式化进 Lean 4，无附加假设）。RH / ERH 的进一步状态见第 1 页宣告；证明尚待同行复核。</div>
+</div>
+</div>
 <!-- ============ 5. 术语表 ============ -->
 <h1 id="c8">第 8 章　关键术语小词典</h1>
 <div class="tw"><table class="gloss">
-  <thead><tr><th>术语</th><th>简要解释（导读用，非严格定义）</th></tr></thead>
-  <tr><td class="term">RH / GRH / ERH</td><td>黎曼猜想（Riemann Hypothesis）：zeta 函数非平凡零点都在临界线 Re(s)=1/2 上；广义黎曼猜想（GRH）：对 Dirichlet L-函数的同一断言；扩展黎曼猜想（ERH）：进一步推广到数域的 Dedekind zeta 函数。</td></tr>
-  <tr><td class="term">von Mangoldt 函数 Λ(n)</td><td>n 为素数幂 p<sup>k</sup> 时取 log p，否则取 0；其和与素数分布、显式公式直接相关。时间线第 5 条即其截断加权和。</td></tr>
-  <tr><td class="term">theta 提升（theta lift）</td><td>自守表示之间的一种构造映射：从一个群上的表示，经 theta 级数（周期积分）提升到另一个群上的表示。文中把多次提升串成链条，每“提升一次”算作叠加一重重数。</td></tr>
-  <tr><td class="term">重数 multiplicity</td><td>Stepanov 函数域方法中靠除子的重数（零点被计多少次）换取估计余量；搬到整数域后没有直接对应物，是本论证要克服的核心障碍。</td></tr>
-  <tr><td class="term">Stepanov 方法</td><td>S. A. Stepanov 开创的初等式代数方法，用于函数域上素数分布 / Weil 型界的证明；本论证被作者称为其“后裔”。</td></tr>
-  <tr><td class="term">函数域 / 数域（整数）</td><td>函数域（如有限域上多项式的域）有几何对象（曲线、除子、导子）可用；数域（有理数及其扩张）对应整数环，缺少几何微分式工具，类比迁移是难点。</td></tr>
-  <tr><td class="term">自守形式 / 高秩群 / 酉群</td><td>自守形式是李群 / 代数群上满足变换规律与解析条件的函数；高秩群指秩 ≥ 2 的群；全定酉群（totally definite unitary group）是 theta 提升链两端的群。作者自述对高秩群自守形式掌握有限。</td></tr>
-  <tr><td class="term">GGP 周期 / Bessel 周期 / Seesaw</td><td>GGP（Ginzburg–Gross–Prasad）周期与 Bessel 周期是自守表示的特殊线性泛函；Seesaw（跷跷板）对偶是一对群与其表示之间互换周期估计的技巧（Rallis 等人发展）。</td></tr>
-  <tr><td class="term">Poincaré 丛 / CM 曲线 / Weil</td><td>Poincaré 丛是椭圆曲线族上的泛 line bundle，用于生成 theta 级数；CM 曲线指带复乘法的曲线；Weil 在此指相关的几何对应 / 配对解释。</td></tr>
-  <tr><td class="term">Iwasawa 塔 / Vandiver 猜想 / K-群</td><td>Iwasawa 理论通过一列扩张塔研究类群与 Galois 模；Vandiver 猜想是关于正则素数 / 类数的命题；脚注 6 称论证附带推出若干 K-群消失与弱循环性。</td></tr>
-  <tr><td class="term">Chowla–Selberg / Weyl / Siegel 质量</td><td>三类用于估计周期、格点质量与解析余量的经典工具：Chowla–Selberg 公式联系周期与特殊值；Weyl 用于振荡估计；Siegel 质量公式计数格点 / 尖点形式。</td></tr>
-  <tr><td class="term">迹公式 / 相对迹公式</td><td>迹公式把自守表示的谱侧信息与群上轨道 / 共轭类的几何侧信息对等起来；相对迹公式用于带周期 / 子群的情形。</td></tr>
-  <tr><td class="term">扭元 twisting</td><td>用特征（如 Dirichlet 特征、Hecke 特征）去扭曲表示 / 和式，以消去不需要的项或分离主项；无法扭掉的类另作处理（第 17 条）。</td></tr>
-  <tr><td class="term">Parseval 等式 / Bertini / Gabber 超曲面</td><td>Parseval：傅里叶变换下范数守恒，反复使用可换得相消精度；Bertini：一般超平面截面保持上同调性质；Gabber 超曲面是 Katz 某论证中的几何构造，脚注 3 将其与二次型类比。</td></tr>
-  <tr><td class="term">高斯和 / 互反律</td><td>正规化高斯和是有限域 / 局部域上的指数和；其互反律比较 y(c·c') 与 y(c)·y(c')，脚注 3 中对应完全图结构简化为路径二次型。</td></tr>
-  <tr><td class="term">Lean 4 形式化</td><td>交互式定理证明器 Lean 的第四版；形式化证明把数学推导写成机器可逐行检查的代码。本宣告的正式产物即约 1700 万行 Lean 代码。</td></tr>
+<thead><tr><th>术语</th><th>简要解释（导读用，非严格定义）</th></tr></thead>
+<tr><td class="term">RH / GRH / ERH</td><td>黎曼猜想（Riemann Hypothesis）：zeta 函数非平凡零点都在临界线 Re(s)=1/2 上；广义黎曼猜想（GRH）：对 Dirichlet L-函数的同一断言；扩展黎曼猜想（ERH）：进一步推广到数域的 Dedekind zeta 函数。</td></tr>
+<tr><td class="term">von Mangoldt 函数 Λ(n)</td><td>n 为素数幂 p<sup>k</sup> 时取 log p，否则取 0；其和与素数分布、显式公式直接相关。时间线第 5 条即其截断加权和。</td></tr>
+<tr><td class="term">theta 提升（theta lift）</td><td>自守表示之间的一种构造映射：从一个群上的表示，经 theta 级数（周期积分）提升到另一个群上的表示。文中把多次提升串成链条，每“提升一次”算作叠加一重重数。</td></tr>
+<tr><td class="term">重数 multiplicity</td><td>Stepanov 函数域方法中靠除子的重数（零点被计多少次）换取估计余量；搬到整数域后没有直接对应物，是本论证要克服的核心障碍。</td></tr>
+<tr><td class="term">Stepanov 方法</td><td>S. A. Stepanov 开创的初等式代数方法，用于函数域上素数分布 / Weil 型界的证明；本论证被作者称为其“后裔”。</td></tr>
+<tr><td class="term">函数域 / 数域（整数）</td><td>函数域（如有限域上多项式的域）有几何对象（曲线、除子、导子）可用；数域（有理数及其扩张）对应整数环，缺少几何微分式工具，类比迁移是难点。</td></tr>
+<tr><td class="term">自守形式 / 高秩群 / 酉群</td><td>自守形式是李群 / 代数群上满足变换规律与解析条件的函数；高秩群指秩 ≥ 2 的群；全定酉群（totally definite unitary group）是 theta 提升链两端的群。作者自述对高秩群自守形式掌握有限。</td></tr>
+<tr><td class="term">GGP 周期 / Bessel 周期 / Seesaw</td><td>GGP（Ginzburg–Gross–Prasad）周期与 Bessel 周期是自守表示的特殊线性泛函；Seesaw（跷跷板）对偶是一对群与其表示之间互换周期估计的技巧（Rallis 等人发展）。</td></tr>
+<tr><td class="term">Poincaré 丛 / CM 曲线 / Weil</td><td>Poincaré 丛是椭圆曲线族上的泛 line bundle，用于生成 theta 级数；CM 曲线指带复乘法的曲线；Weil 在此指相关的几何对应 / 配对解释。</td></tr>
+<tr><td class="term">Iwasawa 塔 / Vandiver 猜想 / K-群</td><td>Iwasawa 理论通过一列扩张塔研究类群与 Galois 模；Vandiver 猜想是关于正则素数 / 类数的命题；脚注 6 称论证附带推出若干 K-群消失与弱循环性。</td></tr>
+<tr><td class="term">Chowla–Selberg / Weyl / Siegel 质量</td><td>三类用于估计周期、格点质量与解析余量的经典工具：Chowla–Selberg 公式联系周期与特殊值；Weyl 用于振荡估计；Siegel 质量公式计数格点 / 尖点形式。</td></tr>
+<tr><td class="term">迹公式 / 相对迹公式</td><td>迹公式把自守表示的谱侧信息与群上轨道 / 共轭类的几何侧信息对等起来；相对迹公式用于带周期 / 子群的情形。</td></tr>
+<tr><td class="term">扭元 twisting</td><td>用特征（如 Dirichlet 特征、Hecke 特征）去扭曲表示 / 和式，以消去不需要的项或分离主项；无法扭掉的类另作处理（第 17 条）。</td></tr>
+<tr><td class="term">Parseval 等式 / Bertini / Gabber 超曲面</td><td>Parseval：傅里叶变换下范数守恒，反复使用可换得相消精度；Bertini：一般超平面截面保持上同调性质；Gabber 超曲面是 Katz 某论证中的几何构造，脚注 3 将其与二次型类比。</td></tr>
+<tr><td class="term">高斯和 / 互反律</td><td>正规化高斯和是有限域 / 局部域上的指数和；其互反律比较 y(c·c') 与 y(c)·y(c')，脚注 3 中对应完全图结构简化为路径二次型。</td></tr>
+<tr><td class="term">Lean 4 形式化</td><td>交互式定理证明器 Lean 的第四版；形式化证明把数学推导写成机器可逐行检查的代码。本宣告的正式产物即约 1700 万行 Lean 代码。</td></tr>
 </table></div>
-
 <!-- ============ 6. 脚注 ============ -->
 <h1 id="c9">第 9 章　脚注原文与译注</h1>
-
-<div class="footnote"><b>脚注 1</b>（第 1 页，证明出处）<br>
-原文：https://alpo.ge/lean.tar.gz.part01, . . . , https://alpo.ge/lean.tar.gz.part14.<br>
+<div class="footnote"><b>脚注 1</b>（第 1 页，证明出处）<br/>
+原文：https://alpo.ge/lean.tar.gz.part01, . . . , https://alpo.ge/lean.tar.gz.part14.<br/>
 <b>译：</b>证明的形式化代码分为 14 个分卷压缩包，链接如上；全部下载后合并解压，用 Lean 4 编译核验。</div>
-
-<div class="footnote"><b>脚注 2</b>（第 2 页，"slop" 调侃）<br>
-原文：I of course amused myself, and hit 250,000+ pages. Claude cutely called it the GRH . . . "book" — I looked at Theorem 1 and it began by noting that because the reals are totally ordered if σ ≠ 1/2 then σ &gt; 1/2 or σ &lt; 1/2.<br>
-<b>译：</b>我当然也自娱自乐了一下，搞出了 25 万多页。Claude 俏皮地称之为 GRH 的……“书”。我翻到定理 1，开头先写：由于实数是全序的，若 σ ≠ 1/2，则 σ &gt; 1/2 或 σ &lt; 1/2。<br>
+<div class="footnote"><b>脚注 2</b>（第 2 页，"slop" 调侃）<br/>
+原文：I of course amused myself, and hit 250,000+ pages. Claude cutely called it the GRH . . . "book" — I looked at Theorem 1 and it began by noting that because the reals are totally ordered if σ ≠ 1/2 then σ &gt; 1/2 or σ &lt; 1/2.<br/>
+<b>译：</b>我当然也自娱自乐了一下，搞出了 25 万多页。Claude 俏皮地称之为 GRH 的……“书”。我翻到定理 1，开头先写：由于实数是全序的，若 σ ≠ 1/2，则 σ &gt; 1/2 或 σ &lt; 1/2。<br/>
 <b>译注：</b>这是作者自嘲：自然语言展开稿体量巨大，而形式化证明的第一步只是实数全序这种最平凡的事实；25 万页稿未公开。</div>
-
-<div class="footnote"><b>脚注 3</b>（第 3 页，qN = M<sup>k</sup> + R 左端定号性的傅里叶解释）<br>
-原文：∑<sub>h,x₁,…,xₖ</sub> t(x₁)···t(xₖ)·e<sub>q</sub>(h(x₁·x₂ + ··· + x<sub>k−1</sub>·x<sub>k</sub>))，sum over h first for the left-hand side, with e.g. quadric coefficients too; Bertini gives a definite sign from middle cohomology, one off the one on M<sup>k</sup>, which is the zero-mode on the right-hand side with R square-root-quality up to an inch or so as Katz would say by iterating Parseval k times, opposite signs meaning no cancellation of inverse roots, QED; vectorize to go up dimensions. Gabber's hypersurface in one of Katz's arguments reminds one of the quadric, which comes from looking for a simplification of averaging over the family χ ↦ χ(disc), corresponding to a ↦ y(·)<sup>a</sup> with y the normalized Gauss sum of order #|μ<sub>K</sub>| who lives via θ on the #|μ<sub>K</sub>|-fold cover of GL<sub>2</sub>, the reciprocity law of y(c·c′) vs. y(c)·y(c′) showing some sort of complete graph, simplifying to the above "path" quadric, Gauss sum cancellation replaced by iterated Parseval.<br>
+<div class="footnote"><b>脚注 3</b>（第 3 页，qN = M<sup>k</sup> + R 左端定号性的傅里叶解释）<br/>
+原文：∑<sub>h,x₁,…,xₖ</sub> t(x₁)···t(xₖ)·e<sub>q</sub>(h(x₁·x₂ + ··· + x<sub>k−1</sub>·x<sub>k</sub>))，sum over h first for the left-hand side, with e.g. quadric coefficients too; Bertini gives a definite sign from middle cohomology, one off the one on M<sup>k</sup>, which is the zero-mode on the right-hand side with R square-root-quality up to an inch or so as Katz would say by iterating Parseval k times, opposite signs meaning no cancellation of inverse roots, QED; vectorize to go up dimensions. Gabber's hypersurface in one of Katz's arguments reminds one of the quadric, which comes from looking for a simplification of averaging over the family χ ↦ χ(disc), corresponding to a ↦ y(·)<sup>a</sup> with y the normalized Gauss sum of order #|μ<sub>K</sub>| who lives via θ on the #|μ<sub>K</sub>|-fold cover of GL<sub>2</sub>, the reciprocity law of y(c·c′) vs. y(c)·y(c′) showing some sort of complete graph, simplifying to the above "path" quadric, Gauss sum cancellation replaced by iterated Parseval.<br/>
 <b>译：</b>先对左端的 h 求和（二次型系数亦同）；Bertini 从中上同调取定号，比 M<sup>k</sup> 上那个零模（右端零模）少一维；R 达到平方根级别的精度——用 Katz 的话说“差一英寸左右”——方法是反复做 k 次 Parseval；符号相反意味着逆根不相消，证毕（QED）；向高维推广则向量化。Katz 某一论证中的 Gabber 超曲面让人联想到该二次型，它来自对族 χ ↦ χ(disc) 平均的简化寻找，对应 a ↦ y(·)<sup>a</sup>，其中 y 是阶为 #|μ<sub>K</sub>| 的正规化高斯和，经由 theta 生活在 GL<sub>2</sub> 的 #|μ<sub>K</sub>| 重覆盖上；y(c·c′) 与 y(c)·y(c′) 的互反律显示出某种完全图结构，简化为上述“路径”二次型，高斯和相消被反复 Parseval 替代。</div>
-
-<div class="footnote"><b>脚注 4</b>（第 3 页，时间线可靠性免责）<br>
-原文：The parts in which my vague intuition worked out due to Claude's technical mastery are of course less familiar to me today, and probably I'll have to edit some of these descriptions on reflection. The parts in which Claude is the expert and not me I am sort of paraphrasing a "slop" summary, which might make zero sense, and I apologize, though the Lean should suffice to clarify everything. I'm just too inexpert in the relevant stuff at the moment, I hope the reader sees the breadth of this argument!<br>
+<div class="footnote"><b>脚注 4</b>（第 3 页，时间线可靠性免责）<br/>
+原文：The parts in which my vague intuition worked out due to Claude's technical mastery are of course less familiar to me today, and probably I'll have to edit some of these descriptions on reflection. The parts in which Claude is the expert and not me I am sort of paraphrasing a "slop" summary, which might make zero sense, and I apologize, though the Lean should suffice to clarify everything. I'm just too inexpert in the relevant stuff at the moment, I hope the reader sees the breadth of this argument!<br/>
 <b>译：</b>那些靠 Claude 的技术功底把我模糊直觉落实的部分，我今天当然也不太熟悉，反思之后可能还得修改部分描述。Claude 是专家而我不是的部分，我只是在复述一份“废料”摘要，可能毫无意义，在此致歉；不过 Lean 应足以澄清一切。我目前在相关内容上确实太外行，希望读者能看出这个论证的广度！</div>
-
-<div class="footnote"><b>脚注 5</b>（第 3 页，有损压缩与 Bałaban 归纳）<br>
-原文：A lot is obviously being lossily compressed here, but especially after gritting with Sussman through Bałaban's fantastic induction I had to think to myself about how hard fighting for some sort of F<sub>1</sub> à la e.g. Borger would be.<br>
+<div class="footnote"><b>脚注 5</b>（第 3 页，有损压缩与 Bałaban 归纳）<br/>
+原文：A lot is obviously being lossily compressed here, but especially after gritting with Sussman through Bałaban's fantastic induction I had to think to myself about how hard fighting for some sort of F<sub>1</sub> à la e.g. Borger would be.<br/>
 <b>译：</b>这里显然做了大量有损压缩；尤其是和 Sussman 一起啃完 Bałaban 精彩的归纳证明后，我不禁想，要争取出某种 Borger 式的 F<sub>1</sub>（“一元域”）会有多难。</div>
-
-<div class="footnote"><b>脚注 6</b>（第 4 页，附带推论强度）<br>
-原文：This is still pretty strong!! I believe vanishing of a number of K-groups of Z follows, and cyclicity up to 100ish maybe? I had Lichtenbaum, so I knew we would have a lot of slack in fighting these K's.<br>
+<div class="footnote"><b>脚注 6</b>（第 4 页，附带推论强度）<br/>
+原文：This is still pretty strong!! I believe vanishing of a number of K-groups of Z follows, and cyclicity up to 100ish maybe? I had Lichtenbaum, so I knew we would have a lot of slack in fighting these K's.<br/>
 <b>译：</b>这仍然相当强！！我相信可推出 Z 的若干 K-群消失，以及（类群）循环性到 100 左右？我有 Lichtenbaum 理论打底，所以知道打这些 K-群会有不少余量。</div>
-
-<div class="footnote"><b>脚注 7</b>（第 4 页，Behrend 技巧的未来评价）<br>
-原文：This is the sort of trick that intuitively to me is obviously going to be unnecessary.<br>
+<div class="footnote"><b>脚注 7</b>（第 4 页，Behrend 技巧的未来评价）<br/>
+原文：This is the sort of trick that intuitively to me is obviously going to be unnecessary.<br/>
 <b>译：</b>这种技巧，凭直觉我显然认为将来是不必要的（预计简化后会被去掉）。</div>
-
 <p class="closing"><b>再次提示：</b>本导读仅基于公开的 4 页短文；文中数学断言（GRH 成立、附带 K-群结论等）均为作者单方宣告，在同行复核与可读论证出现前不应视为已确立结论。</p>
-
-
-
 <!-- 第二部 -->
 <div class="part">
-  <div class="bar">
-    <div class="p">PART II</div>
-    <div class="h" >第二部　2178 页重构稿可信度评估</div>
-    <div class="s">239 MB Lean 源码 · 17,374,215 行 · 175,187 个文件<br>源码核对 · 引用审计 · 自洽性检查 · 分层评级</div>
-  </div>
-  <div class="abs">这一部的主体是核查，不是复述。它不问“黎曼猜想对不对”，只问三件可以查的事：重构稿引用的东西是否真实存在、它说的缺口是否真是缺口、它承认了什么又隐瞒了什么。结论是一句不太好听的话——可信到可以据它去找代码，不可信到可以据它相信定理。</div>
-  <ul><li>第 10 章　结论先行</li><li>第 11 章　评估边界</li><li>第 12 章　源码本体</li><li>第 13 章　主链与语句</li><li>第 14 章　literature 之谜</li><li>第 15 章　引用审计</li><li>第 16 章　循环性检查</li><li>第 17 章　自述与量化画像</li><li>第 18 章　三层文本的关系</li><li>第 19 章　怎么验、怎么用</li><li>第 20 章　评级与最终判断</li></ul>
-  <div class="kv"><div><span class="n">17,374,215</span><span class="t">源码行数</span></div><div><span class="n">175,187</span><span class="t">.lean 文件</span></div><div><span class="n">0</span><span class="t">sorry / axiom</span></div><div><span class="n">5,595</span><span class="t">形如 *_holds 的定理</span></div><div><span class="n">66,171</span><span class="t">Row0b 闭包模块</span></div><div><span class="n">41</span><span class="t">可核对的引用</span></div></div>
-  <p class="small">说明：第二部的章节编号由原报告的“一、二、三”改写为本书的第 10–20 章，图表编号顺延为图 3–5；正文中的交叉引用已同步改号。</p>
+<div class="bar">
+<div class="p">PART II</div>
+<div class="h">第二部　2178 页重构稿可信度评估</div>
+<div class="s">239 MB Lean 源码 · 17,374,215 行 · 175,187 个文件<br/>源码核对 · 引用审计 · 自洽性检查 · 分层评级</div>
 </div>
-
+<div class="abs">这一部的主体是核查，不是复述。它不问“黎曼猜想对不对”，只问三件可以查的事：重构稿引用的东西是否真实存在、它说的缺口是否真是缺口、它承认了什么又隐瞒了什么。结论是一句不太好听的话——可信到可以据它去找代码，不可信到可以据它相信定理。</div>
+<ul><li>第 10 章　结论先行</li><li>第 11 章　评估边界</li><li>第 12 章　源码本体</li><li>第 13 章　主链与语句</li><li>第 14 章　literature 之谜</li><li>第 15 章　引用审计</li><li>第 16 章　循环性检查</li><li>第 17 章　自述与量化画像</li><li>第 18 章　三层文本的关系</li><li>第 19 章　怎么验、怎么用</li><li>第 20 章　评级与最终判断</li></ul>
+<div class="kv"><div><span class="n">17,374,215</span><span class="t">源码行数</span></div><div><span class="n">175,187</span><span class="t">.lean 文件</span></div><div><span class="n">0</span><span class="t">sorry / axiom</span></div><div><span class="n">5,595</span><span class="t">形如 *_holds 的定理</span></div><div><span class="n">66,171</span><span class="t">Row0b 闭包模块</span></div><div><span class="n">41</span><span class="t">可核对的引用</span></div></div>
+<p class="small">说明：第二部的章节编号由原报告的“一、二、三”改写为本书的第 10–20 章，图表编号顺延为图 3–5；正文中的交叉引用已同步改号。</p>
+</div>
 <!-- 第二部正文 -->
 <h1 id="c10">第 10 章　结论先行</h1>
-
 <p class="lead">这份 2178 页的中文文档不是伪造品，也不是证明。它是对一份真实存在的、体量异常庞大的 Lean 源码所作的人类可读映射，并且在文中主动标注了自己“尚不能无条件推出黎曼猜想”。真正决定可信度的不是这份 PDF，而是它背后那 1,737 万行代码能否编译通过。</p>
-
 <div class="verdict avoid">
 <h3>三句话结论</h3>
 <p><span class="badge">1</span><b>源码是真的，而且大得不合常理。</b>14 个分卷合并后 229 MB，解包 1.4 GB，175,187 个 <code>.lean</code> 文件、17,374,215 行、12 个库，锁定 Lean 4.33.1 与 mathlib4 某一固定提交。全库 <code>sorry</code>=0、<code>axiom</code>=0、<code>constant</code>=0、<code>native_decide</code>=0——没有任何显式留洞。</p>
 <p><span class="badge">2</span><b>重构稿是“索引”，不是“证据”。</b>全文 3,584,353 字符，“源码定位”出现 4,454 次，其中只有 41 次带 <code>.lean</code> 文件名（0.9%）、10 次带行号（0.2%）、0 次能机器解析到具体声明。它自己写明：作为人类可读稿件，本书尚不能无条件推出黎曼猜想。</p>
 <p><span class="badge">3</span><b>“它成立吗”这个问题，本环境回答不了，任何阅读也回答不了。</b>唯一的判定路径是 <code>lake build</code> 全量编译，再执行 <code>#print axioms riemannHypothesis</code>。17.4M 行、默认 400 万心跳的工程，不是一台机器一晚上的事。</p>
 </div>
-
 <h3>评级（五维打分，满分 A）</h3>
 <div class="tw"><table class="avoid">
 <thead><tr><th style="width:22%">维度</th><th style="width:12%">评级</th><th>依据</th></tr></thead>
@@ -749,14 +660,10 @@ figcaption{font:12.5px/1.7 "PingFang SC",sans-serif;color:#444;margin-top:10px;b
 <tr><td>自洽性</td><td class="warn">B−</td><td>目录 12/12 命中、句级重复 0.02%、逻辑链可读；但标记体系名存实亡（“待接齐”全稿仅 1 次），且对 <code>literature</code> 的核心指控属误读</td></tr>
 <tr><td>数学有效性</td><td class="bad">未定</td><td>本环境未编译、作者亦声明“未运行 Lean”；无法确认任何一条定理的语义真值</td></tr>
 </table></div>
-
 <p>把五维压成一句话：<b>它是一份可信度高于普通 AI 生成物、但仍不可当作证据使用的源码导读。</b>把它当“证明黎曼猜想的论文”读，是用错了对象；把它当“17.4M 行代码的索引与缺口清单”用，它有实际价值。</p>
-
 <!-- ============ 二 ============ -->
 <h1 id="c11">第 11 章　评估边界：能查什么，不能查什么</h1>
-
 <p>可信度评估最容易犯的错误，是把“我查不到问题”说成“它没问题”。因此先把边界划清。下表左列是本报告实际执行的核查，右列是本报告<b>不能</b>回答的问题。</p>
-
 <div class="tw"><table>
 <thead><tr><th style="width:50%">已执行（有数据支撑）</th><th>未执行（本环境不可行）</th></tr></thead>
 <tr><td>源码下载、合并、解包、文件与行数统计</td><td>全量 <code>lake build</code> 编译（估算需数十至数百 CPU 小时）</td></tr>
@@ -766,43 +673,31 @@ figcaption{font:12.5px/1.7 "PingFang SC",sans-serif;color:#444;margin-top:10px;b
 <tr><td>重构稿 41 处文件引用逐条比对存在性与行号</td><td>重构稿所述每一步推导是否与源码 term 等价</td></tr>
 <tr><td>全文量化（字符、页、定理数、重复率、目录一致性）</td><td>与 4 页原文的技术路线是否真的一致（只能做术语重叠度）</td></tr>
 </table></div>
-
 <p>还有一条边界必须说清：<b>import 图无环，不等于逻辑无环。</b>Lean 允许通过参数、类型类、<code>Nonempty</code> 实例把依赖藏在项里。本报告能证明的只是“文件级没有自引用”，不能证明“证明项级没有循环”。同理，<code>sorry</code>=0 只证明“没有显式留洞”，不证明“每条证明都对”——一个把结论写进 <code>def</code> 的工程同样可以做到零 <code>sorry</code>。</p>
-
 <!-- ============ 三 ============ -->
 <h1 id="c12">第 12 章　源码本体：这是一件什么规模的东西</h1>
-
 <p>先把体量摆出来，因为它本身就是一条证据。一个由人类数学家手写的形式化工程，目前的世界纪录在百万行量级（mathlib 全库约 150 万至 200 万行，历时十余年、数百人贡献）。这份源码是 1,737 万行，单库 <code>Development</code> 就有 141,928 个文件。</p>
-
 <div class="kv avoid">
-  <div><span class="n">175,187</span><span class="t">.lean 文件</span></div>
-  <div><span class="n">17,374,215</span><span class="t">总行数</span></div>
-  <div><span class="n">1.4 GB</span><span class="t">解包后体积</span></div>
-  <div><span class="n">12</span><span class="t">lakefile 声明的库</span></div>
-  <div><span class="n">0</span><span class="t">sorry / axiom / constant</span></div>
-  <div><span class="n">5,595</span><span class="t">形如 *_holds 的定理</span></div>
+<div><span class="n">175,187</span><span class="t">.lean 文件</span></div>
+<div><span class="n">17,374,215</span><span class="t">总行数</span></div>
+<div><span class="n">1.4 GB</span><span class="t">解包后体积</span></div>
+<div><span class="n">12</span><span class="t">lakefile 声明的库</span></div>
+<div><span class="n">0</span><span class="t">sorry / axiom / constant</span></div>
+<div><span class="n">5,595</span><span class="t">形如 *_holds 的定理</span></div>
 </div>
-
 <figure>
-  <img src="assets/fig_scale.png">
-  <figcaption><b>图 3</b>　源码工程的库级规模分布（横轴对数）。<code>Development</code> 一个库占全库 81%；<code>GroundTheoryFields</code> 在 lakefile 中被声明为默认构建目标，却<b>没有任何源文件</b>——这类不一致是“自动生成 + 少量人工拼装”工程的典型残留。</figcaption>
+<img src="assets/fig_scale.png"/>
+<figcaption><b>图 3</b>　源码工程的库级规模分布（横轴对数）。<code>Development</code> 一个库占全库 81%；<code>GroundTheoryFields</code> 在 lakefile 中被声明为默认构建目标，却<b>没有任何源文件</b>——这类不一致是“自动生成 + 少量人工拼装”工程的典型残留。</figcaption>
 </figure>
-
 <h2>12.1　零空洞，但要读懂“零”的含义</h2>
-
 <p>全库检索结果：<code>sorry</code> 0 次、<code>admit</code> 0 次、<code>axiom</code> 声明 0 条、<code>constant</code> 声明 0 条、<code>native_decide</code> 0 次、<code>ofReduceBool</code> 0 次。最后两项尤其值得记一笔：<code>native_decide</code> 会把 <code>Lean.ofReduceBool</code> 引入为可信公理，是形式化工程里常见的“隐性逃逸”通道，这里完全没用。</p>
-
 <p>但“零空洞”只说明<b>没有留下显式的 <code>sorry</code> 补丁</b>，不说明证明有效。真正会暴露问题的两个地方，反而在工程的编译设置里：</p>
-
 <ul>
-  <li><code>moreLeanArgs = ["--tstack=400000"]</code>：把类型推导栈放大到 40 万层。正常工程极少需要这个量级。</li>
-  <li><code>maxHeartbeats = 4000000</code>：全局把单条声明的心跳上限提到 400 万（Lean 默认 20 万）。并且有 56,646 个文件（占 32%）单独再调 <code>maxHeartbeats</code>。</li>
+<li><code>moreLeanArgs = ["--tstack=400000"]</code>：把类型推导栈放大到 40 万层。正常工程极少需要这个量级。</li>
+<li><code>maxHeartbeats = 4000000</code>：全局把单条声明的心跳上限提到 400 万（Lean 默认 20 万）。并且有 56,646 个文件（占 32%）单独再调 <code>maxHeartbeats</code>。</li>
 </ul>
-
 <p>这两项合起来说明：这个工程的 elaboration（类型推导与实例搜索）成本极高，高到必须靠放宽资源上限才能跑完。它既可能是“数学本身极重”的证据，也可能是“实例搜索退化成组合爆炸”的症状。二者在代码里长得一样，只有编译日志能区分。</p>
-
 <h2>12.2　工程元信息</h2>
-
 <div class="tw"><table class="avoid">
 <thead><tr><th style="width:26%">项</th><th>值</th><th style="width:22%">备注</th></tr></thead>
 <tr><td>Lean 版本</td><td><code>leanprover/lean4:v4.33.1</code></td><td>2026 年的工具链</td></tr>
@@ -811,19 +706,14 @@ figcaption{font:12.5px/1.7 "PingFang SC",sans-serif;color:#444;margin-top:10px;b
 <tr><td>默认目标</td><td>12 个库，含空的 <code>GroundTheoryFields</code></td><td>一致性瑕疵</td></tr>
 <tr><td>分卷</td><td>14 段，前 13 段各 18,000,000 B，末段 5,275,554 B</td><td>合计 239 MB</td></tr>
 </table></div>
-
 <!-- ============ 四 ============ -->
 <h1 id="c13">第 13 章　主链与语句：它到底声称了什么</h1>
-
 <p>这是全篇最需要精确的地方。重构稿用 2178 页描述“主链”，但主链在源码里其实只有 <b>6 层、约 40 行</b>。把原文摊开，可以一眼看清它声称了什么、没声称什么。</p>
-
 <figure>
-  <img src="assets/fig_chain.png">
-  <figcaption><b>图 4</b>　从顶层定理到唯一硬输入的六层搬运。每条均为源码原文（仅将数学角括号〈〉作排版替换）。蓝层是“搬运”，灰层是 literature 中转，红层才是真正的输入命题 <code>Row0b</code> 及其几何来源。</figcaption>
+<img src="assets/fig_chain.png"/>
+<figcaption><b>图 4</b>　从顶层定理到唯一硬输入的六层搬运。每条均为源码原文（仅将数学角括号〈〉作排版替换）。蓝层是“搬运”，灰层是 literature 中转，红层才是真正的输入命题 <code>Row0b</code> 及其几何来源。</figcaption>
 </figure>
-
 <h2>13.1　顶层五条定理</h2>
-
 <div class="code">-- src/Main.lean（全文 12 行）
 import Statements
 import Supplements.Kernels.MainTheoremsAll
@@ -833,32 +723,23 @@ theorem riemannZeta_eq_zero_re : RiemannZetaZerosOnLine := rhOfAll
 theorem LFunction_ne_zero_of_half_lt_re : DirichletLNonvanishingRightOfHalf := allChi
 theorem LFunction_eq_zero_re : DirichletLZerosOnLine := claimAll.2.1
 theorem LFunction_eq_zero_re_of_isPrimitive : PrimitiveDirichletLZerosOnLine := critAll</div>
-
 <p>注意：这里<b>没有任何条件参数</b>。<code>riemannHypothesis</code> 的类型就是 <code>RiemannHypothesis</code>，不是 <code>(H) → RiemannHypothesis</code>。也就是说，源码声称的是无条件结论，而不是“若某假设成立则 RH 成立”。</p>
-
 <h2>13.2　这些命题是不是“真命题”</h2>
-
 <p>自动生成的形式化最常见的作弊方式是“把结论定义成 <code>True</code>”。这里不是。四条定义都在 <code>Statements.lean</code> 里，写得很老实：</p>
-
 <div class="code">def RiemannZetaZerosOnLine : Prop :=
   ∀ s : ℂ, riemannZeta s = 0 → (¬∃ n : ℕ, s = -2 * ((n : ℂ) + 1)) → s ≠ 1 → s.re = 1 / 2
 
 def DirichletLNonvanishingRightOfHalf : Prop :=
   ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N) (s : ℂ),
-    1 / 2 < s.re → (χ ≠ 1 ∨ s ≠ 1) → DirichletCharacter.LFunction χ s ≠ 0
+    1 / 2 &lt; s.re → (χ ≠ 1 ∨ s ≠ 1) → DirichletCharacter.LFunction χ s ≠ 0
 
 def DirichletLZerosOnLine : Prop :=
   ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N) (s : ℂ),
-    0 < s.re → s.re < 1 → DirichletCharacter.LFunction χ s = 0 → s.re = 1 / 2</div>
-
+    0 &lt; s.re → s.re &lt; 1 → DirichletCharacter.LFunction χ s = 0 → s.re = 1 / 2</div>
 <p>第一条就是黎曼猜想的标准陈述：<code>riemannZeta</code> 用的是 mathlib 的原生函数，排除平凡零点（负偶整数）与 <code>s = 1</code> 的极点后，实部必须等于 1/2。第二条是广义黎曼猜想的“半平面无零点”形式，第三条是它的“临界带零点在临界线”形式——两者等价，源码分开陈述。<code>RiemannHypothesis</code> 本身在 <code>ClaimStrip.lean:102</code> 有 <code>theorem zeta_iff : Zeta ↔ RiemannHypothesis := Iff.rfl</code>，即两者按定义相等（<code>Iff.rfl</code> 说明不是证出来的等价，是同一个 Prop）。</p>
-
 <p>结论：<b>语句层没有作弊。</b>它写的确实是黎曼猜想与广义黎曼猜想，不是同义反复、不是空真、不是弱化版。</p>
-
 <h2>13.3　唯一硬输入：Row0b</h2>
-
 <p>沿主链往下，<code>allChi</code> 的实际内容来自 <code>UpperTheory.EveryCharacter</code>，其定义与上面第二条 GRH 形式逐字相同。再往下就落到 <code>Row0b</code>——重构稿反复称之为“唯一硬输入”的那个东西。它的定义（<code>WeightsConjBis.lean:69</code>）如下（节选）：</p>
-
 <div class="code">def Row0b : Prop :=
   ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] ... (l : ℕ) [Fact l.Prime]
     (ι : Qbar l ≃+* ℂ) (a : ℕ), 1 ≤ a →
@@ -866,68 +747,45 @@ def DirichletLZerosOnLine : Prop :=
       (CG.mk π).IsRegAlg → GlobalTheory.ContraPair.PolarizedPair π χ →
       ∃ (r : G E Ω →* GL (Fin a) (Qbar l)) (wt : ℤ) (HT : (E →+* Qbar l) → Multiset ℤ),
         PropsB Rc π ι r wt HT</div>
-
 <p>翻成人话：<b>对任意 CM 域、任意正则代数尖点自守表示 π、任意极化配对，都存在一个 Galois 表示 r，其权、Hodge–Tate 权集满足晶体性（crys）、de Rham 性、潜在半稳定性、权共轭关系与局部–整体相容。</b>这是 Langlands 纲领里最重的一类定理（自守表示到 Galois 表示的对应），不是随手可证的引理，也不是空结构。</p>
-
 <p>这里就是全篇的分水岭：<b>如果 <code>Row0b</code> 真被证出来了，那么 RH 与 GRH 确实随之成立；如果没被证出来，整条链就断在这一层。</b>源码声称它由几何路线给出（<code>RowSrc.lean:6</code> → <code>galoisRepresentations_of_thetaLift</code> → <code>galoisLocalGlobalStrong_of_geometry_lift</code>），输入是 <code>GeoOne</code> 与 <code>TLiftK</code>。本报告无法判定这条几何路线的证明是否正确，只能确认它存在、且没有留 <code>sorry</code>。</p>
-
 <!-- ============ 五 ============ -->
 <h1 id="c14">第 14 章　literature 之谜：重构稿的核心指控成立吗</h1>
-
 <p>重构稿第 349–352 页（卷 XV 第 103 章）是全书的“自我批评”章节，也是它最值得读的部分。它在那里说：Lean 源码里有一个结构字面命名为 <code>literature</code>，这个名称没有告诉读者适用的域、权、归一化，以及哪条已发表定理真正给出所需的形式。言下之意：源码把已发表结果当黑箱塞进去了，所以存在缺口。</p>
-
 <p>这条指控必须逐字核查，因为它是整份重构稿“可信度论证”的核心。</p>
-
 <h2>14.1　结构确实存在，但只有 3 个字段</h2>
-
 <div class="code">-- Development/.../ThirdPlaceSeries/EveryCharacterOfLiteratureOfVWin.lean:215
 structure UpperTheory.LiteratureTheorems.OpenLiteratureStatements : Prop where
   caraianiLocalGlobalDual : _root_.UpperTheory.One.M.Row
   localLanglandsExists : _root_.UpperTheory.Zero.LLC.RecTExists
   galoisRepOfPolarizedPairLit : _root_.UpperTheory.One.M.Row</div>
-
 <p>三个字段，全部指向 <code>Row0b</code> 类型的命题与“局部 Langlands 对应存在性”。它不是一张“已发表定理清单”，而是把两三个待证命题打包成一个结构，便于顶层一次传入。</p>
-
 <h2>14.2　200 条 literature 引理，全部忽略这个参数</h2>
-
 <p>同一文件共 814 行，从第 219 行起密集排列形如 <code>X_of_literature (O : OpenLiteratureStatements) : 某命题 := 某_holds</code> 的引理。抽看前 30 条，<b>没有一条在证明项里使用 <code>O</code></b>：</p>
-
 <div class="code">theorem ...logDerivOne (O : OpenLiteratureStatements) : GlobalTheory.Mem.An.LogDerOne :=
   GlobalTheory.LogDerOneProof.logDerOne_holds                      -- O 未出现
 theorem ...ellipticMainTheoremCM' (O : ...) : ...EllipticMainTheoremCM :=
   PositivityTheory.Prw.ellipticMainTheoremCM_holds                 -- O 未出现
 theorem ...heckeTateFunctionalEquation' (O : ...) : ...HeckeTateFunctionalEquation :=
   GlobalTheory.Top.heckeTateFE                                     -- O 未出现</div>
-
 <p>也就是说，<code>literature</code> 是<b>标注层</b>，不是<b>依赖层</b>。真正的证明在别处：全库有 5,595 条形如 <code>*_holds</code> 的定理，每一条都在某个命名空间里把“已发表结果”重新证了一遍，<code>*_of_literature</code> 只是给它们贴了一个“文献”标签再转手。</p>
-
 <p>于是结论分两半，两半都要说：</p>
-
 <ul>
-  <li><b>重构稿的批评有一半是对的：命名确实没有说明适用域、权与归一化。</b>一个叫 <code>OpenLiteratureStatements</code> 的结构只装三个字段，名字与内容严重不符，这是源码可读性的真实缺陷。</li>
-  <li><b>但“因此存在逻辑缺口”的推论是错的。</b>顶层传入 <code>〈h, recTExists, h〉</code> 时，三个字段都由 <code>Row0b</code> 的证明与局部 Langlands 的证明填满，<code>O</code> 在项里根本不参与计算。缺口不在 <code>literature</code>，缺口在 <code>Row0b</code> 本身是否被真证。</li>
+<li><b>重构稿的批评有一半是对的：命名确实没有说明适用域、权与归一化。</b>一个叫 <code>OpenLiteratureStatements</code> 的结构只装三个字段，名字与内容严重不符，这是源码可读性的真实缺陷。</li>
+<li><b>但“因此存在逻辑缺口”的推论是错的。</b>顶层传入 <code>〈h, recTExists, h〉</code> 时，三个字段都由 <code>Row0b</code> 的证明与局部 Langlands 的证明填满，<code>O</code> 在项里根本不参与计算。缺口不在 <code>literature</code>，缺口在 <code>Row0b</code> 本身是否被真证。</li>
 </ul>
-
 <p>这条误读很有诊断价值：<b>它证明重构稿是“按名字读源码”，而不是“按项读源码”。</b>只有把 <code>O</code> 当成真实假设的人，才会得出“文献黑箱”的结论；真正展开过 term 的人会看到 <code>O</code> 是空的。</p>
-
 <!-- ============ 六 ============ -->
 <h1 id="c15">第 15 章　引用审计：4454 次“源码定位”能落到哪</h1>
-
 <p>重构稿最硬的承诺是“可回溯到源码”。它用了 4,454 次“源码定位”这样的标记。逐条统计的结果是一条陡峭的漏斗。</p>
-
 <figure>
-  <img src="assets/fig_cite.png">
-  <figcaption><b>图 5</b>　“源码定位”的可解析程度。<b>4,454 次标记中，只有 10 次带行号，0 次能被机器解析为具体的 Lean 声明。</b>0.9% 与 24.4% 是两个相邻转化率；最后一档不是“少”，而是“零”。</figcaption>
+<img src="assets/fig_cite.png"/>
+<figcaption><b>图 5</b>　“源码定位”的可解析程度。<b>4,454 次标记中，只有 10 次带行号，0 次能被机器解析为具体的 Lean 声明。</b>0.9% 与 24.4% 是两个相邻转化率；最后一档不是“少”，而是“零”。</figcaption>
 </figure>
-
 <h2>15.1　文件级：34/34 全部命中</h2>
-
 <p>这是本次核查中<b>最正面的结果</b>。全文出现的 <code>.lean</code> 文件名共 34 个不同名字，逐一在源码树中检索：34 个全部存在。其中 3 个在文本里被写作 <code>NormAndReciprocity.lean</code>、<code>RegularCharsProof.lean</code>、<code>Proof.lean</code>，看似不存在，实际是 PDF 换行把长文件名截断所致，还原为 <code>GelfandGraevCharacterGLnNormAndReciprocity.lean</code> 与 <code>GreenCuspidalCharsByRegularCharsProof.lean</code> 后全部命中。</p>
-
 <p>这一点很关键：<b>它没有编造文件名。</b>普通 AI 幻觉在这类任务上通常会凭空造出“看起来很像”的路径，而这里 34 个名字都能在 17 万个文件里找到对应实体。</p>
-
 <h2>15.2　声明级：10 处行号，6 处命中，2 处指向“同名副本”</h2>
-
 <div class="tw"><table>
 <thead><tr><th style="width:34%">引用</th><th style="width:12%">判定</th><th>实际情况</th></tr></thead>
 <tr><td><code>Counts.lean:60--67</code></td><td class="ok">命中</td><td>第 60 行起为 <code>def CountShape ... : Prop</code>，与文中“定义”一词吻合</td></tr>
@@ -940,47 +798,29 @@ theorem ...heckeTateFunctionalEquation' (O : ...) : ...HeckeTateFunctionalEquati
 <tr><td><code>FrobeniusTraceCountBoundOfRat...:451--588</code></td><td class="warn">指向副本</td><td>同名文件 2 份（70 / 592 行）。451 只在 592 行那份里成立</td></tr>
 <tr><td><code>LatSix.lean</code> / <code>LinkedUnlE.lean:57</code></td><td class="warn">部分</td><td>文件存在；<code>LinkedUnlE</code> 的 57 行确在 <code>unlEnd3E</code> 附近；<code>LatSix</code> 只给文件名未给行号</td></tr>
 </table></div>
-
 <p>两个“指向副本”的案例恰好暴露了源码工程的一个结构问题：<b>同名文件大量重复。</b><code>Bridge.lean</code> 有 52 份，<code>ConductorAtMapInjectiveCoeff.lean</code> 有 3 份，<code>Counts.lean</code> 有 2 份，内容与行数各不相同。在这种工程里，只写 basename 的引用<b>天然不可唯一解析</b>。重构稿的做法（只写文件名）因此既不是撒谎，也不是可复现的引用。</p>
-
 <h2>15.3　还有 84 个“锚点”没填</h2>
-
 <p>比行号更值得警惕的是模板残留。全文出现“锚点”84 处、“见总表”22 处、“源命题”20 处，典型样例如下：</p>
-
 <div class="quote">源码定位：对应的固定源码：锚点1；锚点2；锚点3。其余各项见总表。<span class="src">重构稿 p230 原文，原文如此</span></div>
-
 <p>这是<b>没有填完的模板</b>。它说明作者（或生成流程）在设计上准备了三层定位：文件名、行号区间、声明锚点。实际交付时，前两层只落在 41 处与 10 处，第三层大面积空缺，最后退化成“叙述性定位”——读者能大致知道该去哪个章节找，但无法据此复现。</p>
-
 <!-- ============ 七 ============ -->
 <h1 id="c16">第 16 章　循环性检查：有没有自己证明自己</h1>
-
 <p>证明黎曼猜想最常见的失败模式是循环：用 RH 的某个等价形式去证 RH。本报告用 import 图闭包做了一次文件级检查。</p>
-
 <div class="tw"><table>
 <thead><tr><th style="width:26%">起点</th><th style="width:18%">闭包规模</th><th>是否包含主结论模块</th></tr></thead>
-<tr><td><code>IntegralStructures/RowSrc.lean</code><br><span class="small">（证明 Row0b 的文件）</span></td><td>66,171 模块<br><span class="small">占全库 37.8%</span></td><td class="ok">不含 <code>CharacterBoxes/EveryCharacter.lean</code>、<code>MainConclusion.lean</code>、<code>ClaimStrip.lean</code>、<code>Main.lean</code>。<br>含 5 个 CharacterBoxes 底层模块（<code>ExS</code>、<code>ExistsPageN</code>、<code>Supply</code>、<code>TwistForm</code>、<code>PairGood</code>）</td></tr>
-<tr><td><code>Formalism/GammaFactorNonvanishing/CritLine.lean</code><br><span class="small">（EveryCharacter → RH 的转换）</span></td><td>14,301 模块</td><td class="warn">包含 <code>CharacterBoxes.EveryCharacter</code> 等 30 个模块——这是正常的，它要把 EveryCharacter 当假设类型引用</td></tr>
+<tr><td><code>IntegralStructures/RowSrc.lean</code><br/><span class="small">（证明 Row0b 的文件）</span></td><td>66,171 模块<br/><span class="small">占全库 37.8%</span></td><td class="ok">不含 <code>CharacterBoxes/EveryCharacter.lean</code>、<code>MainConclusion.lean</code>、<code>ClaimStrip.lean</code>、<code>Main.lean</code>。<br/>含 5 个 CharacterBoxes 底层模块（<code>ExS</code>、<code>ExistsPageN</code>、<code>Supply</code>、<code>TwistForm</code>、<code>PairGood</code>）</td></tr>
+<tr><td><code>Formalism/GammaFactorNonvanishing/CritLine.lean</code><br/><span class="small">（EveryCharacter → RH 的转换）</span></td><td>14,301 模块</td><td class="warn">包含 <code>CharacterBoxes.EveryCharacter</code> 等 30 个模块——这是正常的，它要把 EveryCharacter 当假设类型引用</td></tr>
 </table></div>
-
 <p>判定：<b>文件级没有自环。</b>证明 <code>Row0b</code> 的那条链没有反向依赖“EveryCharacter 已成立”这件事，也就没有“用 RH 证 RH”的结构性循环。</p>
-
 <p>但这次闭包计算暴露了另一件事，比循环更值得注意：<b><code>Row0b</code> 的证明闭包吃掉了全库 37.8% 的模块（66,171 个）。</b>重构稿把 <code>Row0b</code> 描述为“唯一硬输入”，语气上像是一个孤立的、待补的假设；实际上它是一个吞掉三分之一代码库的巨型工程。这两者的差别，决定了读者对“缺口有多大”的判断。</p>
-
 <p>仍需重复第 11 章的边界：import 闭包只能证明“文件之间没有自引用”。Lean 的依赖可以藏在类型类实例、<code>Nonempty</code> 见证、以及参数化的结构中。要证明项级无环，只有编译后执行 <code>#print axioms</code> 并检查依赖树。</p>
-
 <!-- ============ 八 ============ -->
 <h1 id="c17">第 17 章　重构稿的自述与量化画像</h1>
-
 <h2>17.1　它自己承认了什么</h2>
-
 <p>第 349–352 页定义了三种状态标记：“已写”、“以…为输入”、“待接齐”，并声称全书按此标注。第 352 页的结论段落是整份文档最重要的一段：</p>
-
 <div class="quote">因此可独立读出的结论是：式(A) 一旦有了正确输入便排除零点；若干过去在本文中仅作输入的定量命题已经补上；<b>作为一份人类可读的稿件，本书尚不能无条件推出黎曼猜想。</b>这是关于当前手稿的陈述，不是已经发现原仓库存在反例或循环。<span class="src">重构稿 p352</span></div>
-
 <p>这段话的措辞相当克制，且明确区分了“手稿不闭合”与“源码有反例/循环”两件事。就文本态度而言，它比多数“AI 宣称解决世纪难题”的产物诚实得多。</p>
-
 <p>但标记体系实际没有执行。全稿统计：</p>
-
 <div class="tw"><table class="avoid">
 <thead><tr><th style="width:24%">标记</th><th style="width:16%">出现次数</th><th>说明</th></tr></thead>
 <tr><td>待接齐</td><td class="bad">1</td><td>只有定义处那一次。全书 2178 页，只有 1 处标注“待接齐”</td></tr>
@@ -988,30 +828,23 @@ theorem ...heckeTateFunctionalEquation' (O : ...) : ...HeckeTateFunctionalEquati
 <tr><td>已写</td><td>9</td><td>同上</td></tr>
 <tr><td>缺口</td><td>22</td><td>集中在卷 XV 与卷末两页</td></tr>
 </table></div>
-
 <p>结论：<b>它设计了缺口标注体系，但没有系统使用。</b>于是“哪些是假设”这个问题，无法靠标记检索回答，只能靠通读——这对一份 2178 页的文档是致命的可用性缺陷。</p>
-
 <h2>17.2　量化画像</h2>
-
 <div class="kv avoid">
-  <div><span class="n">2,178</span><span class="t">页（文件名写“2000 页”）</span></div>
-  <div><span class="n">3,584,353</span><span class="t">字符</span></div>
-  <div><span class="n">1,645</span><span class="t">字符 / 页</span></div>
-  <div><span class="n">1,784</span><span class="t">“定理”标记</span></div>
-  <div><span class="n">840</span><span class="t">“假设”标记</span></div>
-  <div><span class="n">139</span><span class="t">“文献”标记</span></div>
+<div><span class="n">2,178</span><span class="t">页（文件名写“2000 页”）</span></div>
+<div><span class="n">3,584,353</span><span class="t">字符</span></div>
+<div><span class="n">1,645</span><span class="t">字符 / 页</span></div>
+<div><span class="n">1,784</span><span class="t">“定理”标记</span></div>
+<div><span class="n">840</span><span class="t">“假设”标记</span></div>
+<div><span class="n">139</span><span class="t">“文献”标记</span></div>
 </div>
-
 <p>结构一致性方面有三项正面数据：</p>
-
 <ul>
-  <li><b>目录与正文一致。</b>随机抽 12 条目录条目（章号 + 标题 + 页码）核对正文标题页，12/12 命中，误差在 ±2 页内。</li>
-  <li><b>不是模板堆砌。</b>67,131 个 18 字以上长句中，仅 11 句重复（0.016%）；2,179 个段落零重复。这排除了“同一段话换个名词复制 2000 页”的低质生成模式。</li>
-  <li><b>章号体系连续。</b>目录条目至少排到第 299 章，卷首“先读什么”导读标记 59 处，结构上是完整的书，不是散乱笔记。</li>
+<li><b>目录与正文一致。</b>随机抽 12 条目录条目（章号 + 标题 + 页码）核对正文标题页，12/12 命中，误差在 ±2 页内。</li>
+<li><b>不是模板堆砌。</b>67,131 个 18 字以上长句中，仅 11 句重复（0.016%）；2,179 个段落零重复。这排除了“同一段话换个名词复制 2000 页”的低质生成模式。</li>
+<li><b>章号体系连续。</b>目录条目至少排到第 299 章，卷首“先读什么”导读标记 59 处，结构上是完整的书，不是散乱笔记。</li>
 </ul>
-
 <p>但有一项数据很难解释：<b>它与 4 页原文的术语几乎不重叠。</b>原文给出的技术线索——Stepanov 带重数除子、theta 提升链长 √X、GL₅ 六重覆盖、Behrend 选 Iwasawa 塔、Vandiver 弱化、GGP 周期、Seesaw——在 2178 页里的出现次数：</p>
-
 <div class="tw"><table class="avoid">
 <thead><tr><th>术语</th><th style="width:14%">次数</th><th>术语</th><th style="width:14%">次数</th></tr></thead>
 <tr><td>Stepanov / 斯捷潘诺夫</td><td class="bad">0 / 0</td><td>GGP / 格罗斯 / 普拉萨德</td><td class="bad">0 / 0 / 0</td></tr>
@@ -1020,33 +853,24 @@ theorem ...heckeTateFunctionalEquation' (O : ...) : ...HeckeTateFunctionalEquati
 <tr><td>theta</td><td>373</td><td>Iwasawa</td><td>48</td></tr>
 <tr><td>Selmer</td><td>197</td><td>ζ</td><td>886</td></tr>
 </table></div>
-
 <p>这份对照说明两件事：一是重构稿确实覆盖了源码的宏观结构（theta、Selmer、Iwasawa 都在），二是<b>它完全没有承接原文作者自己给出的“技术线索”。</b>4 页 Remark 是作者写给同行看的路线摘要，2178 页重构稿是沿源码目录展开的逐章复述——两者不在同一个描述层面上。因此不能用重构稿去“印证”原文，也不能用原文去“校验”重构稿。</p>
-
 <!-- ============ 九 ============ -->
 <h1 id="c18">第 18 章　三层文本的关系</h1>
-
 <div class="tw"><table>
 <thead><tr><th style="width:16%">层</th><th style="width:22%">体量</th><th style="width:20%">它是什么</th><th>谁能验证谁</th></tr></thead>
 <tr><td><b>4 页 Remark</b></td><td>约 4 页 / 2 个 URL</td><td>作者自述：宣告结果、点名合作者、给出技术线索与形式化完成声明</td><td>只能被源码验证。它不含证明，只有路线与断言</td></tr>
 <tr><td><b>Lean 源码</b></td><td>239 MB / 17.4M 行 / 175k 文件</td><td>对象本身。声称无条件证明 RH 与 GRH</td><td>唯一可判定层：编译 + <code>#print axioms</code></td></tr>
 <tr><td><b>2178 页重构稿</b></td><td>15.7 MB / 3.58M 字符</td><td>对源码的逐章中文复述 + 缺口自述</td><td>只能验证“文件是否存在”，不能验证“定理是否成立”</td></tr>
 </table></div>
-
 <p>三层之间的覆盖关系可以用一个粗糙但有用的比例说明：<b>源码 17,374,215 行，重构稿 3,584,353 字符，平均每 1 个字符对应约 4.85 行源码。</b>任何“逐行复述”的承诺在这个比例下都不成立；它能做到的是“逐节复述”，把每个文件的数学意图讲一遍，而不是把每个证明项讲一遍。</p>
-
 <p>这也解释了为什么会出现第 14 章那个误读：在 1:4.85 的压缩下，读者（和生成流程）只能看到声明名、结构名、参数名，看不到 term。看到 <code>(O : OpenLiteratureStatements)</code> 就以为 <code>O</code> 是假设，是最自然、也最容易被压缩放大的错误。</p>
-
 <!-- ============ 十 ============ -->
 <h1 id="c19">第 19 章　怎么验、怎么用</h1>
-
 <h2>19.1　如果你要判定它到底成不成立</h2>
-
 <p>只有一条路，且必须做完整，不能抽样：</p>
-
 <div class="code"># 1. 取源码（14 段顺序拼接，注意不要漏末段）
 for i in $(seq -w 1 14); do curl -O https://alpo.ge/lean.tar.gz.part$i; done
-cat lean.tar.gz.part* > lean.tar.gz &amp;&amp; tar xzf lean.tar.gz &amp;&amp; cd lean
+cat lean.tar.gz.part* &gt; lean.tar.gz &amp;&amp; tar xzf lean.tar.gz &amp;&amp; cd lean
 
 # 2. 取依赖并编译（这一步是全部成本所在）
 lake exe cache get          # 拉 mathlib 预编译缓存，能省掉数小时
@@ -1059,33 +883,24 @@ import Main
 #print axioms LFunction_eq_zero_re
 EOF
 lake env lean Check.lean</div>
-
 <p>判定标准很明确：如果 <code>#print axioms</code> 只输出 <code>[propext, Classical.choice, Quot.sound]</code>（Lean 三条标准公理），那么在这个工具链与这个 mathlib 提交下，源码确实给出了一个无条件的机器验证证明；如果输出里出现 <code>sorryAx</code>、<code>Lean.ofReduceBool</code> 或任何自定义公理名，则不是。若 <code>lake build</code> 直接失败，则源码不构成证明，重构稿的 2178 页也随之失去对象。</p>
-
 <p>诚实提示：以本工程的规模（1,737 万行、全局 400 万心跳、3.2 万文件单独调参），全量编译大概率是<b>数十至数百 CPU 小时</b>量级，且对内存与栈深度有额外要求。这不是一次“跑一下看看”的操作。</p>
-
 <h2>19.2　如果你只是要读它</h2>
-
 <p>建议的阅读顺序是<b>倒着读</b>，不要从第 1 页开始：</p>
-
 <ol>
-  <li>先读第 2178 页“一页主链进度：从零点结论向上倒查”（6 步），拿到全局骨架；</li>
-  <li>再读第 2177 页“第二百二十卷后的依赖边界”，看清它承认的边界在哪；</li>
-  <li>然后读卷 XV 第 103 章（p349–352），这是全书唯一系统讨论“缺口”的地方；</li>
-  <li>最后按需查阅具体卷章，把它当索引使用。</li>
+<li>先读第 2178 页“一页主链进度：从零点结论向上倒查”（6 步），拿到全局骨架；</li>
+<li>再读第 2177 页“第二百二十卷后的依赖边界”，看清它承认的边界在哪；</li>
+<li>然后读卷 XV 第 103 章（p349–352），这是全书唯一系统讨论“缺口”的地方；</li>
+<li>最后按需查阅具体卷章，把它当索引使用。</li>
 </ol>
-
 <h2>19.3　三条误用警告</h2>
-
 <ul>
-  <li><b>不要把“重构稿说 X”当成“源码证了 X”。</b>前者是中文复述，后者是 term。二者之间隔着 1:4.85 的压缩和一层语言转换。</li>
-  <li><b>不要把“零 sorry”当成“已验证”。</b>零 <code>sorry</code> 只说明没有显式补丁；未见编译日志之前，它连“能编译”都不算。</li>
-  <li><b>不要把“文件都存在”当成“引用都可信”。</b>34/34 的文件命中说明没编造路径，但 99% 的定位无法解析到声明，仍不足以复现任何一步。</li>
+<li><b>不要把“重构稿说 X”当成“源码证了 X”。</b>前者是中文复述，后者是 term。二者之间隔着 1:4.85 的压缩和一层语言转换。</li>
+<li><b>不要把“零 sorry”当成“已验证”。</b>零 <code>sorry</code> 只说明没有显式补丁；未见编译日志之前，它连“能编译”都不算。</li>
+<li><b>不要把“文件都存在”当成“引用都可信”。</b>34/34 的文件命中说明没编造路径，但 99% 的定位无法解析到声明，仍不足以复现任何一步。</li>
 </ul>
-
 <!-- ============ 十一 ============ -->
 <h1 id="c20">第 20 章　评级与最终判断</h1>
-
 <div class="tw"><table class="avoid">
 <thead><tr><th style="width:24%">问题</th><th style="width:16%">答案</th><th>依据</th></tr></thead>
 <tr><td>它是伪造的吗</td><td class="ok">不是</td><td>底层源码可下载、可解包、结构自洽、无悬空 import；34 个引用文件名全部真实存在</td></tr>
@@ -1095,50 +910,39 @@ lake env lean Check.lean</div>
 <tr><td>哪些能外部验证</td><td class="ok">可枚举</td><td>文件存在性、import 完整性、零 <code>sorry</code>/<code>axiom</code>、主链语句形式、目录一致性、重复率</td></tr>
 <tr><td>RH 成立吗</td><td class="bad">本环境无法判定</td><td>需 <code>lake build</code> + <code>#print axioms</code>；作者亦未提供编译记录</td></tr>
 </table></div>
-
 <div class="verdict">
 <h3>最终判断</h3>
 <p><b>作为“源码导读”：可用，且质量高于一般 AI 生成物。</b>它有真实对象、真实文件名、可核对的目录结构、克制的自我声明，以及一段明确写出“本书尚不能无条件推出黎曼猜想”的结论。这些都不是伪造品会做的事。</p>
 <p><b>作为“证明”：不可用，且不应用来支持任何数学断言。</b>它没有证明项、没有编译记录、没有可复现的引用，并且在一处关键判断上（<code>literature</code> 是否构成缺口）给出了与源码 term 相反的结论。</p>
 <p><b>作为“缺口清单”：有独特价值。</b>它把源码里“哪些结论被反复搬运、哪一层才是真输入”这件事讲清楚了——尽管它把 <code>Row0b</code> 说成“唯一硬输入”时，低估了这个输入背后 37.8% 的代码体量。</p>
 </div>
-
 <p>如果需要一句可引用的判断：<b>这份 2178 页文档可信到“可以据它去找代码”，不可信到“可以据它相信定理”。</b>两者的差别不在文风，而在它是否愿意把每一个“源码定位”落到一个能被 <code>grep</code> 找到的声明上——目前这个比例是 0/4454。</p>
-
 <!-- ============ 附录 A ============ -->
 <h1 id="a1">附录 A　核查清单与数据来源</h1>
-
-<div class="tw"><table>
+<div class="tw"><table class="stack">
 <thead><tr><th style="width:26%">核查项</th><th style="width:34%">方法与命令</th><th>结果</th></tr></thead>
-<tr><td>源码完整性</td><td>14 段 <code>cat</code> 拼接后 <code>tar tzf</code></td><td>175,190 个条目，解包 1.4 GB，无损坏</td></tr>
-<tr><td>规模统计</td><td><code>find src -name "*.lean" | wc -l</code>；<code>xargs cat | wc -l</code></td><td>175,187 文件；17,374,215 行</td></tr>
-<tr><td>空洞检索</td><td><code>grep -rnw "sorry"</code>；<code>axiom|constant</code>；<code>native_decide</code>；<code>ofReduceBool</code></td><td>全部为 0</td></tr>
-<tr><td>主链读取</td><td>逐文件 <code>Read</code>：<code>Main.lean</code>、<code>MainTheorems.lean</code>、<code>MainConclusion.lean</code>、<code>RowSrc.lean</code></td><td>6 层闭合，见第 13 章</td></tr>
-<tr><td>语句核验</td><td><code>Statements.lean</code>、<code>EveryCharacter.lean</code>、<code>WeightsConjBis.lean</code>、<code>ClaimStrip.lean:102</code></td><td>均为真命题，非同义反复</td></tr>
-<tr><td>literature 结构</td><td><code>EveryCharacterOfLiteratureOfVWin.lean:215--228</code> 及全库 <code>*Literature*</code> 结构检索</td><td>7 个同族结构；<code>O</code> 参数未被使用</td></tr>
-<tr><td>import 闭包</td><td>自 <code>RowSrc</code> / <code>CritLine</code> 做 BFS，过滤 Mathlib 外部模块</td><td>66,171 / 14,301 模块；无主结论模块自环</td></tr>
-<tr><td>引用审计</td><td>正则提取 41 处 <code>.lean</code> 引用，逐一 <code>find</code> + 读取行号上下文</td><td>34/34 存在；6 命中 / 2 指向副本 / 2 部分</td></tr>
-<tr><td>重构稿量化</td><td>PyMuPDF 逐页抽取 + 正则统计</td><td>2,178 页 / 3,584,353 字符；重复率 0.016%</td></tr>
+<tr><td data-label="核查项">源码完整性</td><td data-label="方法与命令">14 段 <code>cat</code> 拼接后 <code>tar tzf</code></td><td data-label="结果">175,190 个条目，解包 1.4 GB，无损坏</td></tr>
+<tr><td data-label="核查项">规模统计</td><td data-label="方法与命令"><code>find src -name "*.lean" | wc -l</code>；<code>xargs cat | wc -l</code></td><td data-label="结果">175,187 文件；17,374,215 行</td></tr>
+<tr><td data-label="核查项">空洞检索</td><td data-label="方法与命令"><code>grep -rnw "sorry"</code>；<code>axiom|constant</code>；<code>native_decide</code>；<code>ofReduceBool</code></td><td data-label="结果">全部为 0</td></tr>
+<tr><td data-label="核查项">主链读取</td><td data-label="方法与命令">逐文件 <code>Read</code>：<code>Main.lean</code>、<code>MainTheorems.lean</code>、<code>MainConclusion.lean</code>、<code>RowSrc.lean</code></td><td data-label="结果">6 层闭合，见第 13 章</td></tr>
+<tr><td data-label="核查项">语句核验</td><td data-label="方法与命令"><code>Statements.lean</code>、<code>EveryCharacter.lean</code>、<code>WeightsConjBis.lean</code>、<code>ClaimStrip.lean:102</code></td><td data-label="结果">均为真命题，非同义反复</td></tr>
+<tr><td data-label="核查项">literature 结构</td><td data-label="方法与命令"><code>EveryCharacterOfLiteratureOfVWin.lean:215--228</code> 及全库 <code>*Literature*</code> 结构检索</td><td data-label="结果">7 个同族结构；<code>O</code> 参数未被使用</td></tr>
+<tr><td data-label="核查项">import 闭包</td><td data-label="方法与命令">自 <code>RowSrc</code> / <code>CritLine</code> 做 BFS，过滤 Mathlib 外部模块</td><td data-label="结果">66,171 / 14,301 模块；无主结论模块自环</td></tr>
+<tr><td data-label="核查项">引用审计</td><td data-label="方法与命令">正则提取 41 处 <code>.lean</code> 引用，逐一 <code>find</code> + 读取行号上下文</td><td data-label="结果">34/34 存在；6 命中 / 2 指向副本 / 2 部分</td></tr>
+<tr><td data-label="核查项">重构稿量化</td><td data-label="方法与命令">PyMuPDF 逐页抽取 + 正则统计</td><td data-label="结果">2,178 页 / 3,584,353 字符；重复率 0.016%</td></tr>
 </table></div>
-
 <p class="small">工作目录：<code>/home/user/Doubao/chats/38456001924988418/gjrm_report/</code>（<code>pages.json</code> 为 2178 页文本数组）；源码目录：<code>.../lean_src/lean/</code>。本报告所有数字均由上述脚本在本机实算，未引用二手描述。</p>
-
 <!-- ============ 附录 B ============ -->
 <h1 id="a2">附录 B　本报告未能核实的项目</h1>
-
 <ol>
-  <li><b>编译。</b>未运行 <code>lake build</code>，因此“源码能通过内核检查”这一最关键的事实处于未知状态。</li>
-  <li><b>公理依赖。</b>未执行 <code>#print axioms</code>，无法确认顶层定理是否只依赖 Lean 三条标准公理。</li>
-  <li><b>数学正确性。</b>即使编译通过，也只证明“形式化与所陈述命题一致”，不证明“所陈述命题符合通常意义的黎曼猜想”——后者需要人工核对定义与文献陈述。</li>
-  <li><b>Row0b 的证明。</b>其几何来源（<code>GeoOne</code>、<code>TLiftK</code>）在 66,171 个模块的闭包内，本报告只确认存在，未逐层审读。</li>
-  <li><b>重构稿的逐段正确性。</b>只做了量化与抽样（重构稿第 1 章 p63–66、第 1000 页），未逐章比对。</li>
-  <li><b>4 页原文的完整译文对应。</b>只做了术语重叠统计，未做逐句语义比对。</li>
+<li><b>编译。</b>未运行 <code>lake build</code>，因此“源码能通过内核检查”这一最关键的事实处于未知状态。</li>
+<li><b>公理依赖。</b>未执行 <code>#print axioms</code>，无法确认顶层定理是否只依赖 Lean 三条标准公理。</li>
+<li><b>数学正确性。</b>即使编译通过，也只证明“形式化与所陈述命题一致”，不证明“所陈述命题符合通常意义的黎曼猜想”——后者需要人工核对定义与文献陈述。</li>
+<li><b>Row0b 的证明。</b>其几何来源（<code>GeoOne</code>、<code>TLiftK</code>）在 66,171 个模块的闭包内，本报告只确认存在，未逐层审读。</li>
+<li><b>重构稿的逐段正确性。</b>只做了量化与抽样（重构稿第 1 章 p63–66、第 1000 页），未逐章比对。</li>
+<li><b>4 页原文的完整译文对应。</b>只做了术语重叠统计，未做逐句语义比对。</li>
 </ol>
-
 <p class="small" style="margin-top:6mm">— 报告完 —</p>
-
-
-
 <h1 id="a3">附录 C　图表索引与复现信息</h1>
 <div class="tw"><table>
 <tr><th style="width:18mm">编号</th><th style="width:46mm">标题</th><th style="width:14mm">页码</th><th>说明</th></tr>
@@ -1149,7 +953,6 @@ lake env lean Check.lean</div>
 <tr><td>图 5</td><td>“源码定位”可解析漏斗</td><td>34</td><td>4,454 次标记 → 41 个文件名 → 10 个行号 → 0 个可解析声明</td></tr>
 </table></div>
 <p class="small">另：第一部含公式图片 5 张（欧拉乘积、函数方程、显式公式、冯·科赫等价式、零点计数），随文排入，未单独编号。</p>
-
 <h2>复现信息</h2>
 <div class="tw"><table>
 <tr><th style="width:38mm">项</th><th>值</th></tr>
@@ -1160,7 +963,6 @@ lake env lean Check.lean</div>
 <tr><td>排版</td><td>HTML + CSS → WeasyPrint；正文 Noto Serif CJK SC，标题 Noto Sans CJK SC；图由 matplotlib 生成</td></tr>
 <tr><td>生成命令</td><td><code>python3 build.py</code> → <code>weasyprint book.html book.pdf</code></td></tr>
 </table></div>
-
 
 
 <h1 id="p3">第三部　重构稿原文（影印）</h1>
