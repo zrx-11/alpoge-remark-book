@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>一纸宣告与两千页重构 · Alpöge《Remark》译注与重构稿审计</title>
+<style>
+:root{--ink:#1c1c1c;--navy:#1c2b3a;--blue:#2e5f8a;--line:#d8dee5;--grey:#6b7280;--wash:#f1f4f8}
+*{box-sizing:border-box}
+body{margin:0;background:#fbfbf9;color:var(--ink);font-family:"Songti SC","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif;line-height:1.75;-webkit-font-smoothing:antialiased}
+.band{background:var(--navy);color:#fff;padding:64px 0 56px}
+.wrap{max-width:860px;margin:0 auto;padding:0 24px}
+.kicker{font-family:"PingFang SC","Noto Sans CJK SC",sans-serif;font-size:11px;letter-spacing:3px;opacity:.75}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.3;margin:18px 0 14px;letter-spacing:1px}
+.sub{font-size:15px;opacity:.9;line-height:1.9}
+.sub em{font-style:normal;color:#b9c7d6}
+.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;font-family:"PingFang SC","Noto Sans CJK SC",sans-serif;font-size:12px}
+.meta span{border:1px solid rgba(255,255,255,.28);padding:5px 11px;border-radius:2px}
+section{max-width:860px;margin:0 auto;padding:38px 24px 0}
+.quote{border-left:3px solid #a63d33;background:#faf5f4;padding:18px 22px;margin:34px auto 0;max-width:860px;font-size:17px;line-height:2}
+.quote .src{display:block;margin-top:8px;font-family:"PingFang SC",sans-serif;font-size:12px;color:var(--grey)}
+h2{font-family:"PingFang SC","Noto Sans CJK SC",sans-serif;font-size:15px;letter-spacing:1px;color:var(--navy);border-bottom:1.5px solid var(--navy);padding-bottom:10px;margin:44px 0 18px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{border:1px solid var(--line);background:#fff;padding:18px 18px 16px}
+.card .n{font-family:"PingFang SC",sans-serif;font-size:11px;color:var(--blue);letter-spacing:2px}
+.card h3{font-size:16px;margin:8px 0 6px;font-weight:600}
+.card p{font-size:13px;color:#444;margin:0;line-height:1.8}
+.card .pg{font-family:"PingFang SC",sans-serif;font-size:11px;color:var(--grey);margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:14px;background:#fff}
+th{font-family:"PingFang SC",sans-serif;font-size:11px;letter-spacing:1px;text-align:left;color:var(--grey);border-bottom:1px solid var(--navy);padding:9px 10px}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+td.num{font-family:"PingFang SC",sans-serif;font-size:12px;color:var(--blue);white-space:nowrap}
+p.body{font-size:14.5px;color:#333;margin:0 0 12px}
+.btn{display:inline-block;background:var(--navy);color:#fff;text-decoration:none;padding:13px 26px;font-family:"PingFang SC",sans-serif;font-size:14px;letter-spacing:1px;margin:6px 10px 6px 0}
+.btn.ghost{background:transparent;color:var(--navy);border:1px solid var(--navy)}
+.note{font-size:12.5px;color:var(--grey);margin-top:10px}
+footer{border-top:1px solid var(--line);margin-top:56px;padding:24px;text-align:center;font-family:"PingFang SC",sans-serif;font-size:12px;color:var(--grey)}
+footer a{color:var(--blue);text-decoration:none}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.band{padding:44px 0 38px}}
+</style>
+</head>
+<body>
+<div class="band"><div class="wrap">
+<div class="kicker">ALPÖGE · REMARK · SOURCE AUDIT</div>
+<h1>一纸宣告与两千页重构</h1>
+<div class="sub">Alpöge 黎曼猜想宣告：原文译注、背景导读、重构稿可信度评估，以及那份 2178 页重构稿的全文影印。<br><em>2227 页合订本 · 2026 年 11 月</em></div>
+<div class="meta"><span>2227 页</span><span>26.1 MB</span><span>288 条书签</span><span>220 卷 · 1227 章</span></div>
+</div></div>
+
+<div class="quote">它可信到“可以据它去找代码”，不可信到“可以据它相信定理”。<span class="src">—— 第二部，第 20 章</span></div>
+
+<section>
+<h2>下载</h2>
+<p class="body">全书一个文件，A4，2227 页，含 PDF 书签（第一部各章、第二部各章、第三部 220 卷）。</p>
+<a class="btn" href="book.pdf">下载全书 PDF（26.1 MB）</a>
+<a class="btn ghost" href="https://github.com/zrx-11/alpoge-remark-book">查看仓库</a>
+<p class="note">若 book.pdf 尚未生成，可直接访问 CDN 副本：<a href="https://aka.doubaocdn.com/s/ZRwtxIKQgb">aka.doubaocdn.com/s/ZRwtxIKQgb</a></p>
+</section>
+
+<section>
+<h2>三部分</h2>
+<div class="grid">
+<div class="card"><div class="n">PART I</div><h3>原文译注与导读</h3><p>4 页原文逐段中英对照；补黎曼猜想是什么、167 年发展史、五条历史路线；术语表与脚注译注。</p><div class="pg">第 1–9 章 · 书内 p.4–25</div></div>
+<div class="card"><div class="n">PART II</div><h3>重构稿可信度评估</h3><p>源码规模核对、主链六层、语句核验、4454 次“源码定位”引用审计、循环性检查、分层评级。</p><div class="pg">第 10–20 章 · 书内 p.26–41，附录 p.42–44</div></div>
+<div class="card"><div class="n">PART III</div><h3>重构稿全文影印</h3><p>2178 页原样嵌入，公式与断行不动；重排的是目录与页眉，不是正文。</p><div class="pg">书内 p.45–49 为外框，p.50 起为原书 p.1–2178</div></div>
+</div>
+</section>
+
+<section>
+<h2>页码怎么找</h2>
+<table>
+<thead><tr><th style="width:22%">书内页</th><th>内容</th></thead>
+<tbody>
+<tr><td class="num">1–44</td><td>封面、阅读指引、总目录、第一部（第 1–9 章）、第二部（第 10–20 章）、附录 A–C</td></tr>
+<tr><td class="num">45</td><td>第三部扉页</td></tr>
+<tr><td class="num">46</td><td>第三部使用说明（为什么保留原版式、页码约定）</td></tr>
+<tr><td class="num">47–49</td><td>第三部分卷目录：220 卷，卷号沿用原书罗马数字，右侧为原书页码</td></tr>
+<tr><td class="num">50–2227</td><td>原稿全文，页脚数字即原书页码（p.1–2178）</td></tr>
+</tbody></table>
+</section>
+
+<section>
+<h2>为什么第三部只重排外框</h2>
+<p class="body">那份稿子由 LaTeX（xdvipdfmx）排出，公式用 Computer Modern 字形按矢量逐个摆放。从 PDF 抽取文本时，一个行内公式会散成几行碎片——<code>q^d−1 = Σ_{e|d} eI×_e</code> 抽出来是“qd −1 / X / e|d / eI× / e”这样的五六行。据此重排等于把每个公式打散重拼，错误率无法估计，也无法核对。</p>
+<p class="body">要真正重排，需要 LaTeX 源码；目前只有成品 PDF。所以第三部采用可核查的方案：原页矢量嵌入，一个字不动，另加部扉页、使用说明、220 卷目录与逐页页眉。</p>
+</section>
+
+<section>
+<h2>核查数字（抽样）</h2>
+<p class="body">源码 229 MB、解包 1.4 GB、175,187 个 .lean、17,374,215 行；“源码定位”出现 4,454 次，其中 41 次带文件名、10 次带行号、0 次可机器解析到声明；sorry / admit / axiom / native_decide 均为 0；定理 5,595 条（<code>*_holds</code>）。主链 6 层，顶层无任何条件参数。</p>
+<p class="body">重构稿自述（原书 p.352）：“作为一份人类可读的稿件，本书尚不能无条件推出黎曼猜想。”这句话决定了最终评级：<strong>对象存在性 A，结构完整性 A−，可追溯性 C+，自洽性 B−，数学有效性未定。</strong></p>
+</section>
+
+<footer>
+<a href="https://github.com/zrx-11/alpoge-remark-book">github.com/zrx-11/alpoge-remark-book</a> · 排版：HTML/CSS → WeasyPrint，装订与页眉：PyMuPDF<br>
+第三部分内容版权归原稿作者；本书仅作文本核对与导读。
+</footer>
+</body>
+</html>
