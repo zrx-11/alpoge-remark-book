@@ -24,7 +24,12 @@ jobs:
           mkdir -p _site
           cp index.html README.md _site/
           touch _site/.nojekyll
-          curl -fL --retry 3 -o _site/book.pdf "https://aka.doubaocdn.com/s/ZRwtxIKQgb" || echo "pdf fetch failed, site will link to CDN"
+          if [ -f book.pdf ]; then
+            cp book.pdf _site/book.pdf
+            echo "using repo book.pdf"
+          else
+            curl -fL --retry 3 -o _site/book.pdf "https://aka.doubaocdn.com/s/ZRwtxIKQgb" || echo "pdf fetch failed, page will link to CDN"
+          fi
           ls -lh _site
       - uses: actions/configure-pages@v5
         with:
