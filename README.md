@@ -1,51 +1,44 @@
 # 一纸宣告与两千页重构
 
-Alpöge《Remark》（2026 年 11 月，宣告与 Claude 合作证明黎曼猜想并完成 Lean 形式化）的 4 页原文译注与背景导读，以及对《广义黎曼猜想证明（未简化 2000 页）》（实际 2178 页）的可信度评估，附该稿全文影印。
+Alpöge《Remark》（2026 年 11 月）4 页原文的逐段译注与背景导读，以及《广义黎曼猜想证明（未简化 2000 页）》（实际 2178 页）的可信度评估。网页版把前两部（20 章 + 附录）排成可阅读的单页；第三部原稿保留为 PDF 下载。
 
-**成品**：一册 PDF，2227 页，A4，26.1 MB，288 条书签。站点首页提供下载。
+站点：https://zrx-11.github.io/alpoge-remark-book/
 
-## 结构
+## 网页版结构
 
-| 书内页 | 内容 |
+| 区块 | 内容 |
 |---|---|
-| 1–44 | 封面、阅读指引、总目录、第一部（第 1–9 章）、第二部（第 10–20 章）、附录 A–C |
-| 45 | 第三部扉页 |
-| 46 | 第三部使用说明 |
-| 47–49 | 第三部分卷目录（220 卷） |
-| 50–2227 | 原稿影印（原书 p.1–2178） |
+| 阅读指引 / 导读说明 | 这本书由哪三份材料组成、怎么读 |
+| 第一部（第 1–9 章） | 黎曼猜想是什么、167 年发展史、五条历史路线、4 页原文逐段对照、术语表、脚注译注 |
+| 第二部（第 10–20 章） | 源码规模、主链六层、语句核验、4454 次引用审计、循环性检查、评级 |
+| 附录 A–C | 核查清单、未核实项、图表索引 |
+| 第三部 | 220 卷目录（可搜索）+ 全书 PDF 下载 |
+
+## 为什么第三部不进网页
+
+原稿 2178 页由 LaTeX（xdvipdfmx）排出，公式是 Computer Modern 矢量字形。PDF 抽文会把行内公式拆成碎片（`q^d−1 = Σ_{e|d} eI×_e` 抽出来是“qd −1 / X / e|d / eI× / e”），据此转 HTML 等于把公式打散重拼，错误率无法估计，也无法核对。要真正重排需要 LaTeX 源码，目前只有成品 PDF。所以网页版只提供 220 卷导航，正文看 PDF。
 
 ## 页码约定
 
-- 第 1–49 页为本书连续编号。
-- 第三部正文沿用**原书页码**（页脚数字），页眉右侧标注“原书 p.N”。第二部中“见第 349 页”“p2178”这类引用因此仍然有效。
+网页版按章节组织；文中出现的 `p.N`、`第 349 页` 均指 PDF 版页码。PDF 里第三部沿用原书页码（页脚数字），页眉另标“卷 X · 原书 p.N”。
 
-## 第三部为什么只重排外框
+## PDF
 
-原稿由 LaTeX（xdvipdfmx）排出，公式为 Computer Modern 矢量字形。PDF 文本抽取会把行内公式拆成碎片，据此重排会破坏数学内容；目前只有成品 PDF，没有 LaTeX 源码。因此第三部原页矢量嵌入、一字不动，另加扉页、使用说明、220 卷目录、逐页页眉与书签。
+`book.pdf`，2227 页，A4，26.1 MB，288 条书签：
 
-## 核查要点
+- 书内 p.1–44：前两部 + 附录
+- p.45：第三部扉页；p.46：使用说明；p.47–49：220 卷目录
+- p.50–2227：原稿影印（原书 p.1–2178）
 
-- 源码：14 个分卷 229 MB，解包 1.4 GB，175,187 个 `.lean`，17,374,215 行，Lean `v4.33.1`。
-- 引用：4,454 次“源码定位”，41 次带文件名（0.9%），10 次带行号（0.2%），0 次可机器解析到声明。
-- 空洞：`sorry` / `admit` / `axiom` / `constant` / `native_decide` 计数均为 0；`*_holds` 定理 5,595 条。
-- 主链：6 层，`Main.lean:4 riemannHypothesis := rhOfAll` 起，顶层无任何条件参数。
-- 关键误读：`OpenLiteratureStatements` 只有 3 个字段，814 行文件里约 200 条 `*_of_literature` 引理均不使用该参数——重构稿“literature 黑箱导致缺口”的推论不成立，literature 是标注层，不是依赖层。
-- 原稿自述（p.352）：“作为一份人类可读的稿件，本书尚不能无条件推出黎曼猜想。”
-
-评级：对象存在性 A，结构完整性 A−，可追溯性 C+，自洽性 B−，数学有效性未定。
-
-## 构建
+## 本地生成
 
 ```bash
-# 前置 44 页
-cd merged && python3 build.py && /usr/local/bin/weasyprint book.html book.pdf
-# 第三部外框（扉页/说明/卷目）
-cd fullbook && python3 build_part3.py && /usr/local/bin/weasyprint part3.html part3.pdf
-# 装订：44 + 5 + 2178，统一页眉、页码、书签
-python3 assemble.py
+# 网页版：由 44 页书稿转排（merged/book.html → index.html）
+python3 build_site.py
+# PDF：前置 44 页 + 第三部外框 5 页 + 原稿 2178 页
+cd ../merged && python3 build.py && /usr/local/bin/weasyprint book.html book.pdf
+cd ../fullbook && python3 build_part3.py && /usr/local/bin/weasyprint part3.html part3.pdf && python3 assemble.py
 ```
-
-依赖：Python 3、WeasyPrint、PyMuPDF、fontTools；原稿 `src_pdf/gjrm.pdf` 与卷目数据 `src_pdf/toc.json`、`vol_ranges.json`。
 
 ## 声明
 
