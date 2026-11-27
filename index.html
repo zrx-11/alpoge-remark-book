@@ -116,8 +116,8 @@ figcaption{font:12.5px/1.7 "PingFang SC",sans-serif;color:#444;margin-top:10px;b
 <a class="dlbtn" href="book.pdf" download="一纸宣告与两千页重构.pdf">下载最终版 PDF · 2227 页 / 26 MB</a>
 </div>
 <h1 class="t">一纸宣告与两千页重构</h1>
-<div class="sub">Alpöge 黎曼猜想宣告：4 页原文逐段译注、背景导读，以及对 2178 页中文重构稿的可信度评估。网页版读完前两部约两小时；第三部原稿保留为 PDF。</div>
-<div class="chips"><span>2227 页 PDF</span><span>二部正文 20 章</span><span>220 卷 · 1227 章</span><span>288 条书签</span></div>
+<div class="sub">Alpöge 黎曼猜想宣告：4 页原文逐段译注、背景导读，以及对 2178 页中文重构稿的可信度评估。网页版读完前两部约两小时；第三部原稿保留为 PDF。补编另记 2026 年 11 月公开的 322 页手稿与已通过内核检查的 Lean 4 证明。</div>
+<div class="chips"><span>2227 页 PDF</span><span>二部正文 20 章</span><span>220 卷 · 1227 章</span><span>288 条书签</span><span>补编 · 322 页手稿</span></div>
 <div class="btns"><a class="btn" href="#c1">从第 1 章读起</a><a class="btn ghost" href="https://github.com/zrx-11/alpoge-remark-book">GitHub</a></div>
 </div></header>
 
@@ -152,6 +152,8 @@ figcaption{font:12.5px/1.7 "PingFang SC",sans-serif;color:#444;margin-top:10px;b
 <a href="#a1" data-id="a1">附录 A　核查清单与数据来源</a>
 <a href="#a2" data-id="a2">附录 B　本报告未能核实的项目</a>
 <a href="#a3" data-id="a3">附录 C　图表索引与复现信息</a>
+<div class="ng">补编</div>
+<a href="#sup" data-id="sup">补编　322 页手稿与内核已验证的 Lean 证明</a>
 <div class="ng">第三部</div>
 <a href="#p3" data-id="p3">第三部　重构稿原文（影印）</a>
 </aside>
@@ -924,6 +926,7 @@ lake env lean Check.lean</div>
 </div>
 <p>如果需要一句可引用的判断：<b>这份 2178 页文档可信到“可以据它去找代码”，不可信到“可以据它相信定理”。</b>两者的差别不在文风，而在它是否愿意把每一个“源码定位”落到一个能被 <code>grep</code> 找到的声明上——目前这个比例是 0/4454。</p>
 <!-- ============ 附录 A ============ -->
+<div class="warn"><b>补编（2026-11-28）</b>：下表「RH 成立吗」一行写于本稿完成时。此后公开了一份 322 页手稿与其 Lean 4 形式化（钉 commit 72fead10），五条定理只依赖 propext、Classical.choice、Quot.sound，并经 Andrew Sutherland 独立复核。判定的锚点由文本换到内核，见 <a href="#sup">补编</a>。本节对 2178 页重构稿的判断不变。</div>
 <h1 id="a1">附录 A　核查清单与数据来源</h1>
 <div class="tw"><table class="stack">
 <thead><tr><th style="width:26%">核查项</th><th style="width:34%">方法与命令</th><th>结果</th></tr></thead>
@@ -969,6 +972,55 @@ lake env lean Check.lean</div>
 <tr><td>排版</td><td>HTML + CSS → WeasyPrint；正文 Noto Serif CJK SC，标题 Noto Sans CJK SC；图由 matplotlib 生成</td></tr>
 <tr><td>生成命令</td><td><code>python3 build.py</code> → <code>weasyprint book.html book.pdf</code></td></tr>
 </table></div>
+<h1 id="sup">补编　322 页手稿与内核已验证的 Lean 证明</h1>
+<p class="lead">第二部审的是一份 AI 撰写的中文重构稿：引用 4454 次，能落到文件与行号的 0 处。这里记录的是另一条线——先有 Lean 4 形式化证明，再由该证明的文本转写成 322 页自然语言手稿。两者的可信度来源不同：前者靠文本，后者靠内核。</p>
+<div class="kv">
+<div><span class="n">322</span><span class="t">页手稿 · 11 节 + 6 附录</span></div>
+<div><span class="n">76k</span><span class="t">行 Lean（非空 95,030 / 全 112,827）</span></div>
+<div><span class="n">3</span><span class="t">条公理</span></div>
+<div><span class="n">794</span><span class="t">个模块，0 处 sorry</span></div>
+<div><span class="n">3</span><span class="t">条已公开勘误（均在手稿层）</span></div>
+</div>
+<h2>1　它证了什么</h2>
+<p>手稿开篇的定理：对每个 Dirichlet 特征 χ——任意模、含非本原——<em>L</em>(<em>s</em>,χ) 在 0&lt;Re <em>s</em>&lt;1 内的零点都在 Re <em>s</em>=1/2；并且 Re <em>s</em>&gt;1/2 时 <em>L</em>(<em>s</em>,χ)≠0，只留主特征在 <em>s</em>=1 的极点。取模 1 的主特征就是 ζ，故 RH 是特例。零点在 Re <em>s</em>≤0 的部分两边都不声明，范围一致。</p>
+<p>这句话与 Lean 里的五条定理逐条对应：<code>riemannHypothesis</code>、<code>riemannZeta_eq_zero_re</code>、<code>LFunction_ne_zero_of_half_lt_re</code>、<code>LFunction_eq_zero_re</code>、<code>LFunction_eq_zero_re_of_isPrimitive</code>。手稿不是另一套结论，是这五条的可读版。</p>
+<h2>2　论证骨架</h2>
+<p>整条论证是比较同一个 θ 提升族的平方余体积（covolume）的两个界：</p>
+<ul>
+<li>上界来自沿一条整 θ 提升链的可除性；算术项里是两个平滑素数幂余项之差，外加小尺度修正。</li>
+<li>下界在每个有限嵌入处选一个反循环扭，使其前 <em>m</em> 次幂同时满足 Selmer 长度估计与归一化 Hecke 值界。Selmer 估计控制原 Hecke 格上 Gram 行列式的有限分母，值界进入个体提升体积的比较。</li>
+<li>两界相除，公共主项抵消，余项拿到 <em>m</em><sup>−1</sup> 的因子，而 <em>m</em>≍<em>x</em><sup>1/2</sup>；对固定模的素数定理压住小尺度余项，得单侧估计；二次扭分离对数导数的极点，Landau 引理排除临界线右侧的零点，函数方程补上临界带内的另一半。</li>
+</ul>
+<p>手稿把定理归约为四条命题：比较数据的存在性、短提升族、余体积下界、单侧零点判据。§3.4 从四者推出定理，§8 收尾短族，§11 收尾下界，§3.5 证明零点判据。正文 11 节占 p.4–190，附录 6 篇占 p.191–320；全文 43 个编号结果、35 个 proof 环境、86 处交叉引用，无悬空引用。</p>
+<h2>3　凭什么信</h2>
+<p>不是「读起来像证明」，而是有独立的机器检查。以下三项我本地复核过，第四项是外部记录：</p>
+<ul>
+<li><b>形式化</b>：<code>lsernau/grh-lean</code> 的 <code>grh-compact</code>，钉在 commit <code>72fead10</code>，Lean 4.35.0 + Mathlib 固定 commit。794 个模块、112,827 行（非空 95,030）。</li>
+<li><b>公理</b>：五条定理的 <code>#print axioms</code> 只列出 <code>propext</code>、<code>Classical.choice</code>、<code>Quot.sound</code>，没有第四条。</li>
+<li><b>空洞</b>：在该 commit 的 <code>src/</code> 里检索 <code>sorry</code>、<code>axiom</code>、<code>native_decide</code>、<code>ofReduceBool</code>，命中均为 0。</li>
+<li><b>外部复核</b>：Andrew Sutherland（MIT）的验证页（2026-11-27 更新，全部检查完成）记录——两版 build 通过（9,852 / 9,843 个 job，无错）；compact 版 794/794 模块逐模块经 Lean 内核重放；两台机器独立导出的定理导出字节一致；nanoda、con-leche、con-ron 接受；compact 版的 <code>lake comparator --paranoid</code> 在两台机器上都返回 “Your solution is okay!”；Schoenfeld 显式界 |ψ(<em>x</em>)−<em>x</em>| &lt; √<em>x</em> log²<em>x</em>/(8π) 也从 compact 版导出并同样通过。</li>
+</ul>
+<div class="warn"><b>限度</b>：内核检查的是 Lean 代码，不是这 322 页。可信度的最终锚点是 Mathlib 对 ζ 与 <em>L</em> 的定义和 Lean 内核——Sutherland 页亦如此注明。</div>
+<h2>4　已知缺陷：在手稿层，不在 Lean 层</h2>
+<p>仓库 issue #1、#4 记录了三处，截至 2026-11-28 均未关闭。三处都只影响手稿文字，对应的上游 Lean 引理是对的：</p>
+<ul>
+<li><b>§11.11（p.149）</b>：写作 ∏<sub>v</sub>det(δ<sub>h</sub><sup>−1</sup>δ<sub>L</sub>)<sub>v</sub><sup>s<sub>v</sub></sup>。δ<sub>h</sub> 作用在秩 <em>r</em>+9<em>m</em>+1 的 <em>V</em>″，δ<sub>L</sub> 作用在秩 12<em>m</em>−<em>j</em>+1 的 <em>L</em><sup>+</sup>；两个矩阵尺寸不等，乘积无定义。正确写法是两个行列式之积，与 Lean 的 <code>twoSidedSubst_stackedDetProd</code> 一致。</li>
+<li><b>Prop. 11.8 与 §§11.14–15（p.142、167–169）</b>：交换定理里测试支集的非空性、tame 支集条件，以及扭特征 ψ<sub>w</sub><sup>j</sup>≠1 的前提，正文没有显式带出。</li>
+<li><b>§11.15（p.170）</b>：<code>Thus d_{i,0}a_{i,0}j_i x = j_{i+1}S_i x/w_0</code> 一步跨得过大，需补上核伴随与好空间投影的论证。</li>
+</ul>
+<p>所以：这 322 页是可读版，不是可提交的证明文本。当「证明」读会踩到这三处；当「已验证 Lean 证明的导读」读没有问题。</p>
+<h2>5　与本书前两部的关系</h2>
+<p>第二部对 2178 页重构稿的判断不变：那份稿子的问题是<em>没有可核对的定位</em>，不是数学对错。这一份的问题方向相反——可核对的东西（Lean 代码）经得起内核，文字反而有三处瑕疵。一句话：一个的锚点在引用列表，一个的锚点在证明助手。</p>
+<p>第 20 章表里「RH 成立吗」一行，当时的答案是「本环境无法判定，需 lake build + #print axioms」。现在有答案：就这份形式化而言成立；判定它的是内核与外部复核记录，不是这份手稿的文采，也不是它的 322 页排版。</p>
+<h2>6　入口</h2>
+<div class="dl">
+<a class="btn2" href="https://github.com/yuiyuiui/Natural-Language-Proof-Generalized-Riemann-Hypothesis">手稿仓库</a>
+<a class="btn2 o" href="https://github.com/yuiyuiui/Natural-Language-Proof-Generalized-Riemann-Hypothesis/raw/main/proof-of-GRH.pdf">322 页手稿 PDF（1.8 MB）</a>
+<a class="btn2 o" href="https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207/grh-compact">Lean 形式化（pinned 72fead10）</a>
+<a class="btn2 o" href="https://math.mit.edu/~drew/shortgrh/">Sutherland 验证记录</a>
+<a class="btn2 o" href="https://alpo.ge/remark.pdf">原始 4 页 remark</a>
+</div>
+<p class="small">版本：手稿 commit <code>163ad1f</code>（2026-11-27），Lean commit <code>72fead10</code>（2026-11-25 发布，11-27 复核完成）。本站补编写于 2026-11-28。</p>
 
 
 <h1 id="p3">第三部　重构稿原文（影印）</h1>
